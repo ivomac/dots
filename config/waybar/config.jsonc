@@ -1,0 +1,160 @@
+[
+  {
+    "position": "right",
+    "exclusive": false,
+    "layer": "top",
+    "spacing": 0,
+    "margin": "0 0 2000 0",
+    "no-center": true,
+    "expand-left": true,
+    "modules-left": [
+      "group/group-niri"
+    ],
+    "group/group-niri": {
+      "orientation": "inherit",
+      "drawer": {
+        "transition-duration": 400,
+        "transition-left-to-right": true
+      },
+      "modules": [
+        "niri/workspaces",
+        "wlr/taskbar"
+      ]
+    },
+    "niri/workspaces": {
+      "on-click": "activate",
+      "on-click-middle": "close",
+      "format": "{icon}",
+      "format-icons": {
+        "default": "·",
+        "active": "●"
+      }
+    },
+    "wlr/taskbar": {
+      "tooltip": true,
+      "icon-size": 20,
+      "on-click": "activate",
+      "on-click-middle": "close"
+    }
+  },
+  {
+    "position": "right",
+    "exclusive": false,
+    "layer": "top",
+    "spacing": 0,
+    "height": 2,
+    "modules-center": [
+      "group/group-tray"
+    ],
+    "group/group-tray": {
+      "orientation": "inherit",
+      "modules": [
+        "tray",
+        "systemd-failed-units",
+        "power-profiles-daemon",
+        "pulseaudio",
+        "backlight",
+        "custom/notification"
+      ]
+    },
+    "systemd-failed-units": {
+      "format": "✗"
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
+    },
+    "tray": {
+      "show-passive-items": true,
+      "icon-size": 20,
+      "spacing": 6
+    },
+    "pulseaudio": {
+      "format": "{icon}",
+      "format-muted": "",
+      "format-icons": {
+        "default": [
+          "",
+          ""
+        ]
+      },
+      "on-scroll-up": "swayosd-client --output-volume raise",
+      "on-scroll-down": "swayosd-client --output-volume lower",
+      "on-click": "swayosd-client --output-volume mute-toggle",
+      "on-click-middle": "swayosd-client --playerctl play-pause",
+      "on-click-right": "pavucontrol"
+    },
+    "backlight": {
+      "device": "NONE",
+      "format": "󰖨",
+      "format-icons": [],
+      "tooltip": false,
+      "on-scroll-up": "swayosd-client-backlight +10",
+      "on-scroll-down": "swayosd-client-backlight -10",
+      "on-click-right": "wdisplays",
+      "on-click-middle": "backlight-search && notify-send 'Updating backlights...'"
+    },
+    "custom/notification": {
+      "escape": true,
+      "exec": "swaync-client -swb",
+      "format": "{icon}",
+      "format-icons": {
+        "dnd-inhibited-none": "󱏧",
+        "dnd-inhibited-notification": "<span foreground='#458588'>󱏧</span>",
+        "dnd-none": "󱏧",
+        "dnd-notification": "<span foreground='#458588'>󱏧</span>",
+        "inhibited-none": "󱏩",
+        "inhibited-notification": "<span foreground='#458588'>󱏩</span>",
+        "none": "󰂚",
+        "notification": "<span foreground='#458588'>󰂚</span>"
+      },
+      "on-click": "sleep 0.1 && swaync-client -d -sw",
+      "on-click-right": "sleep 0.1 && swaync-client -t -sw",
+      "return-type": "json",
+      "tooltip": false
+    }
+  },
+  {
+    "position": "right",
+    "exclusive": false,
+    "layer": "top",
+    "spacing": 0,
+    "no-center": true,
+    "margin": "815 0 0 0",
+    "modules-right": [
+      "clock"
+    ],
+    "clock": {
+      "interval": 12,
+      "format": "{:%a %m.%d <span weight='bold'>%H:%M:%S</span> %Z}",
+      "rotate": 90,
+      "tooltip": true,
+      "tooltip-format": "<tt><small>{calendar}</small></tt>",
+      "calendar": {
+        "mode": "year",
+        "mode-mon-col": 3,
+        "weeks-pos": "right",
+        "on-scroll": 1,
+        "format": {
+          "months": "<span color='#689d6a'>{}</span>",
+          "days": "<span color='#689d6a'>{}</span>",
+          "weeks": "<span color='#d79921'>W{}</span>",
+          "weekdays": "<span color='#458588'>{}</span>",
+          "today": "<span color='#cc241d'><u>{}</u></span>"
+        }
+      },
+      "actions": {
+        "on-click-right": "mode",
+        "on-scroll-up": "shift_up",
+        "on-scroll-down": "shift_down"
+      }
+    }
+  }
+]

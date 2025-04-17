@@ -1,0 +1,14 @@
+/* vertical tabs - not pinned */
+#vertical-tabs.customization-target #tabbrowser-tabs tab:not([pinned]) .tab-background {
+  margin-block: -2px !important;
+}
+
+/* vertical tabs - pinned */
+#vertical-tabs.customization-target #tabbrowser-tabs tab[pinned] .tab-background {
+  margin-block: -2px !important;
+}
+
+/* get rid of space between pinned/not pinned tabs */
+#vertical-pinned-tabs-container {
+  margin-bottom: -6px !important;
+}

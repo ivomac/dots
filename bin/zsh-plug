@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+urls=(
+  "https://github.com/zdharma-continuum/fast-syntax-highlighting"
+  "https://github.com/Aloxaf/fzf-tab"
+  "https://github.com/zsh-users/zsh-autosuggestions"
+  "https://github.com/olets/zsh-abbr"
+  "https://github.com/zsh-users/zsh-history-substring-search"
+  "https://github.com/zsh-users/zsh-completions"
+)
+
+for url in "${urls[@]}"; do
+  repo_name=$(basename "$url" .git)
+
+  if [ ! -d "$ZDOTDIR/plugins/$repo_name" ]; then
+    git clone "$url" "$ZDOTDIR/plugins/$repo_name"
+  fi
+done
