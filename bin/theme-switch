@@ -1,0 +1,119 @@
+#!/usr/bin/env zsh
+
+setopt errexit nounset pipefail err_return no_nomatch noclobber
+
+COLORS="$HOME/.local/colors"
+
+WALLPAPERS="$MEDIA/Pictures/Wallpapers"
+
+function notify {
+  echo "$1"
+  icon="/usr/share/icons/Papirus/64x64/categories/org.gnome.design.Palette.svg"
+  notify-send --icon "$icon" "ThemeSwitch" "$1"
+}
+
+if [[ "$1" == "toggle" ]]; then
+	current=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)
+
+	if [[ "$current" == *dark* ]]; then
+		choice="gruvbox_light_soft"
+	else
+		choice="gruvbox_dark"
+	fi
+else
+	choice=$1
+fi
+
+for folder in $COLORS/*; do
+  if [[ ! -d "$folder" ]]; then
+    continue
+  fi
+	random_file="$(ls -1 $folder | head -n 1)"
+	extension="${random_file:e}"
+
+	theme_file="$folder/$choice${extension:+.$extension}"
+	symlink_file="$folder/default${extension:+.$extension}"
+
+	if [[ ! -f "$theme_file" ]]; then
+		notify "Error - Source file does not exist: $theme_file"
+    exit 1
+	fi
+	ln -f -s "$theme_file" "$symlink_file"
+done
+
+if [[ $choice == *dark* ]]; then
+	gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark &>/dev/null & disown
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark &>/dev/null & disown
+	gsettings set org.gnome.desktop.interface color-scheme prefer-dark &>/dev/null & disown
+	kvantummanager --set KvGnomeDark &>/dev/null & disown
+	wallpaper_path="$WALLPAPERS/dark"
+	bat_theme="dark"
+else
+	gsettings set org.gnome.desktop.interface gtk-theme adwaita &>/dev/null & disown
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Light &>/dev/null & disown
+	gsettings set org.gnome.desktop.interface color-scheme prefer-light &>/dev/null & disown
+	kvantummanager --set KvGnome &>/dev/null & disown
+	wallpaper_path="$WALLPAPERS/light"
+	bat_theme="light"
+fi
+
+sed --follow-symlinks -i -e "s/.*--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
+
+if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "swww-daemon.service" > /dev/null; then
+  echo "Changing wallpaper"
+	wallpapers=("${(@f)$(ls "$wallpaper_path" | sort -R)}")
+
+	outputs=("${(@f)$(swww query)}")
+
+	for i in {1..${#outputs[@]}}; do
+	  output_line="${outputs[i]}"
+	  output_name="${output_line%%:*}"
+	  wallpaper="${wallpapers[i]}"
+    echo "  output:$output_name"
+	  swww img -o "$output_name" "$wallpaper_path/$wallpaper"
+	done
+fi
+
+echo "Restarting apps"
+
+echo "  app:ulauncher"
+ulauncher-start &>/dev/null & disown
+
+services=( "waybar" "swaync" "swayosd" "qbittorrent" )
+
+for service in ${services[@]}; do
+	if systemctl --user is-active --quiet "$service.service" > /dev/null; then
+    echo "  service:$service"
+		systemctl --user restart "$service.service" &>/dev/null & disown
+	fi
+done
+
+echo "Updating terminals"
+TERMCOLORS="$COLORS/OSC/default.ini"
+for pts in /dev/pts/[0-9]*; do
+  if [[ ! -c "$pts" ]]; then
+    continue
+  fi
+  echo "  term:$pts"
+	while IFS='=' read -r key value; do
+		if [[ "$key" == "fg" ]]; then
+			printf "\033]10;%s\033\\" "$value" > "$pts"
+		elif [[ "$key" == "bg" ]]; then
+			printf "\033]11;%s\033\\" "$value" > "$pts"
+		else
+			printf "\033]4;%s;%s\033\\" "$key" "$value" > "$pts"
+		fi
+	done < "$TERMCOLORS"
+done
+
+echo "Updating nvim"
+for nvimserver in $XDG_RUNTIME_DIR/nvim.*; do
+  if [[ ! -S "$nvimserver" ]]; then
+    continue
+  fi
+  echo "  instance:$(basename "$nvimserver")"
+	nvim --server "$nvimserver" --remote-send '<cmd>lua dofile(os.getenv("HOME") .. "/.local/colors/nvim/default.lua")<CR>' &>/dev/null & disown
+done
+
+notify "New theme: $choice"
+

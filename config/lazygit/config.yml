@@ -1,0 +1,107 @@
+os:
+  editPreset: "nvim"
+  edit: 'nvimwrapper {{filename}}'
+  editAtLine: 'nvimwrapper +{{line}} {{filename}}'
+  editAtLineAndWait: 'nvimwrapper +{{line}} {{filename}}'
+  openDirInEditor: 'nvimwrapper {{dir}}'
+  editInTerminal: true
+gui:
+  theme:
+    activeBorderColor:
+      - yellow
+      - bold
+    searchingActiveBorderColor:
+      - cyan
+      - bold
+  sidePanelWidth: 0.5
+  expandFocusedSidePanel: true
+  expandedSidePanelWeight: 2
+  screenMode: half
+  mainPanelSplitMode: vertical
+  portraitMode: never
+  showBottomLine: false
+  showPanelJumps: false
+  showNumstatInFilesView: true
+  filterMode: fuzzy
+  timeFormat: "06-01-02"
+  shortTimeFormat: "15:04"
+  scrollOffMargin: 8
+  nerdFontsVersion: "3"
+  commitHashLength: 4
+  commitAuthorLongLength: 12
+  commandLogSize: 12
+  showCommandLog: false
+  showRandomTip: false
+  showBranchCommitHash: false
+  skipDiscardChangeWarning: true
+  statusPanelView: "allBranchesLog"
+  scrollHeight: 6
+git:
+  parseEmoji: true
+  paging:
+    colorArg: always
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium --all
+  log:
+    showWholeGraph: false
+  merging:
+    manualCommit: true
+  # If not "none", lazygit will automatically fast-forward local branches to match their upstream after fetching. Applies to branches that are not the currently checked out branch, and only to those that are strictly behind their upstream (as opposed to diverged).
+  # Possible values: 'none' | 'onlyMainBranches' | 'allBranches'
+  autoForwardBranches: onlyMainBranches
+  autoStageResolvedConflicts: true
+  # Command used when displaying the current branch git log in the main window
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+  commitPrefix:
+    - pattern: "^\\w+\\/(\\w+-\\w+).*"
+      replace: '[$1] '
+    - pattern: "^([^_]+)_.*" # Take all text prior to the first underscore
+      replace: '($1) '
+  truncateCopiedCommitHashesTo: 6
+update:
+  method: never
+refresher:
+  refreshInterval: 20
+  fetchInterval: 360
+disableStartupPopups: true
+notARepository: skip
+promptToReturnFromSubprocess: false
+customCommands:
+  - key: "<c-a>"
+    command: 'nvimwrapper .'
+    context: "files"
+    description: "Open Folder"
+    output: terminal
+  - key: "<c-f>"
+    command: |
+      git fetch --prune && for branch in $(git for-each-ref --format '%(refname) %(upstream:track)' refs/heads | awk '$2 == "[gone]" {sub("refs/heads/", "", $1); print $1}'); do git branch -D $branch; done
+    context: "localBranches"
+    description: "Prune local branches no longer on its remote"
+    loadingText: "Pruning..."
+    prompts:
+      - type: "confirm"
+        title: "Fetch and prune"
+        body: "Are you sure you want to remove all branches no longer on its remote?"
+  - key: "<c-f>"
+    command: "git remote prune {{.SelectedRemote.Name}}"
+    context: "remotes"
+    loadingText: "Pruning..."
+    description: "Prune selected remote"
+  - key: "f"
+    command: "git difftool -y {{.SelectedLocalCommit.Sha}} -- {{.SelectedCommitFile.Name}}"
+    context: "commitFiles"
+    description: "Compare (difftool) with local copy"
+  - key: "P"
+    command: "git push {{.SelectedRemote.Name}} {{.SelectedLocalCommit.Sha}}:{{.SelectedLocalBranch.RefName}}"
+    context: "commits"
+    loadingText: "Pushing commit..."
+    description: "Push a specific commit (and any preceding)"
+  - key: "M"
+    command: "git mergetool {{ .SelectedFile.Name }}"
+    context: "files"
+    loadingText: "opening git mergetool"
+    description: "Open git mergetool for file"
+  - key: "O"
+    context: commits
+    description: open files in commit
+    command: "git diff -z --name-only {{.SelectedLocalCommit.ParentRefName}} {{.SelectedLocalCommit.Sha}} | xargs -0 nvimwrapper"

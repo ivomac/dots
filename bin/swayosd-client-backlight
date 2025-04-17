@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+for bl in /sys/class/backlight/*; do
+  swayosd-client --device "$(basename "$bl")" --brightness "$1"
+done

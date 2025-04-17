@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=theme-switch toggle
+Name=Theme Toggle
+Icon=/usr/share/icons/Adwaita/symbolic/actions/color-select-symbolic.svg
+StartupNotify=false
+Type=Application

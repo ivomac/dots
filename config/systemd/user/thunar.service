@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Thunar Daemon
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/thunar --daemon
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

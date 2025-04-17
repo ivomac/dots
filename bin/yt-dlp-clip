@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+
+ICON=/usr/share/icons/Papirus/128x128/apps/youtube-dl.svg
+
+DL_HOME="/tmp/yt-dlp-clip"
+
+clip="$(wl-paste)"
+
+rm -rf "$DL_HOME"
+mkdir -p "$DL_HOME"
+
+function notify() {
+  notify-send --icon "$ICON" "YT-DLP: $1" "$2"
+}
+
+if ! echo "$clip" | grep -q "^https\?://"; then
+  notify "Input not a URL" "$clip"
+  exit 1
+fi
+
+# Use a youtube icon:
+notify "Downloading" "$clip"
+yt-dlp --paths "temp:/tmp" --paths "home:$DL_HOME" "$clip" &>/dev/null
+
+if [[ $? -ne 0 ]]; then
+  notify "Download Failed" "$clip"
+else
+  notify "Download Finished" "$clip"
+  tmp_path="$(fd --type file . "$DL_HOME" | head -n 1)"
+  mv "$tmp_path" "$HOME/Downloads/"
+  if [[ $? -ne 0 ]]; then
+    notify "Move Failed" "Failed to move the downloaded file to Downloads."
+  fi
+fi

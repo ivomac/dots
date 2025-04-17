@@ -1,0 +1,43 @@
+@import "../../.local/colors/css/default.css";
+
+window#osd {
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: 1px solid @fg0;
+  background: alpha(@bg2, 0.95);
+}
+
+window#osd #container {
+  margin: 0px;
+}
+
+window#osd image,
+window#osd label {
+  color: @fg0;
+}
+
+window#osd progressbar:disabled,
+window#osd image:disabled {
+  opacity: 0.5;
+}
+
+window#osd progressbar {
+  min-height: 6px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+}
+
+window#osd trough {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: alpha(@fg0, 0.4);
+}
+
+window#osd progress {
+  min-height: inherit;
+  border-radius: inherit;
+  border: none;
+  background: @fg0;
+}

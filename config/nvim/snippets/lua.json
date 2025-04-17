@@ -1,0 +1,32 @@
+{
+  "ifn": {
+    "prefix": "ifn",
+    "body": [
+      "function(${1}) ${2} end${0}"
+    ]
+  },
+  "fn": {
+    "prefix": "fn",
+    "body": [
+      "function ${1}(${2})",
+      "  ${3}",
+      "end${0}"
+    ]
+  },
+  "afn": {
+    "prefix": "afn",
+    "body": [
+      "function(${1})",
+      "  ${2}",
+      "end${0}"
+    ]
+  },
+  "lfn": {
+    "prefix": "lfn",
+    "body": [
+      "local function ${1}(${2})",
+      "  ${3}",
+      "end${0}"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+include ../../.local/colors/zathura/default.rc
+
+set font "Firosevka 14"
+
+set render-loading "false"
+set scroll-step 50
+
+set selection-clipboard clipboard
+
+set adjust-open "best-fit"
+
+set pages-per-row 1
+
+set zoom-min 10
+set guioptions ""
+
+set synctex true
+set synctex-editor-command "texlab inverse-search -i %{input} -l %{line}"

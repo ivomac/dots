@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=${TERMINAL} --maximized zsh -c 'source $ZDOTDIR/.zshrc; todo edit'
+Name=Todo Edit
+Icon=/usr/share/icons/Adwaita/symbolic/legacy/text-editor-symbolic.svg
+StartupNotify=false
+Terminal=false
+Type=Application

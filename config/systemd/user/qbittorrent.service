@@ -1,0 +1,13 @@
+[Unit]
+Description=Run qBittorrent
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qbittorrent
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target

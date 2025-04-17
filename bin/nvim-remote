@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+setopt errexit nounset pipefail err_return no_nomatch noclobber
+
+if [[ "$1" == \+* ]]; then
+  command="${1#\+}"
+  shift
+fi
+
+nvim --server "$NVIM" --remote-send "<cmd>lua require('floatterm').close_all()<CR>" &&
+  sleep 0.01s &&
+  nvim --server "$NVIM" --remote "${@}"
+
+if [[ -n "$command" ]]; then
+  nvim --server "$NVIM" --remote-send "<cmd>${command}<CR>"
+fi

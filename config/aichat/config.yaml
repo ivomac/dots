@@ -1,0 +1,19 @@
+# see https://github.com/sigoden/aichat/blob/main/config.example.yaml
+
+model: claude:claude-3-7-sonnet-20250219
+temperature: 0.1
+top_p: 0.9
+
+save: false
+
+wrap: no
+wrap_code: false
+
+clients:
+  - type: claude
+  - type: openai
+
+document_loaders:
+  pdf: 'pdftotext $1 -'
+  git: >
+    sh -c "yek $1 --json | jq '[.[] | { path: .filename, contents: .content }]'"

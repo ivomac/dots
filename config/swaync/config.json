@@ -1,0 +1,85 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "right",
+  "positionY": "bottom",
+  "layer": "overlay",
+  "control-center-layer": "none",
+  "layer-shell": true,
+  "layer-shell-cover-screen": true,
+  "cssPriority": "user",
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-icon-size": 32,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
+  "timeout": 8,
+  "timeout-low": 6,
+  "timeout-critical": 0,
+  "fit-to-screen": false,
+  "relative-timestamps": true,
+  "control-center-width": 500,
+  "control-center-height": 700,
+  "notification-window-width": 400,
+  "keyboard-shortcuts": false,
+  "transition-time": 200,
+  "hide-on-action": false,
+  "text-empty": "",
+  "script-fail-notify": true,
+  "notification-visibility": {
+    "all": {
+      "state": "enabled",
+      "app-name": "*",
+      "urgency": "Normal"
+    }
+  },
+  "widgets": [
+    "notifications",
+    "mpris",
+    "buttons-grid"
+  ],
+  "widget-config": {
+    "label": {
+      "max-lines": 5,
+      "text": "Label Text"
+    },
+    "mpris": {
+      "image-size": 48,
+      "image-radius": 8,
+      "blur": false
+    },
+    "volume": {
+      "show-per-app": true,
+      "label": "󰕾"
+    },
+    "buttons-grid": {
+      "actions": [
+        {
+          "label": "󱏧",
+          "type": "toggle",
+          "command": "swaync-client --toggle-dnd",
+          "update-command": "swaync-client --get-dnd"
+        },
+        {
+          "label": "",
+          "command": "niri msg action screenshot"
+        },
+        {
+          "label": "󰌾",
+          "command": "lock"
+        },
+        {
+          "label": "󰍃",
+          "command": "niri msg action quit"
+        },
+        {
+          "label": "󰜉",
+          "command": "systemctl reboot"
+        },
+        {
+          "label": "󰐥",
+          "command": "systemctl poweroff"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+DEVICE_FOLDER="/sys/bus/i2c/devices"
+
+load_modules() {
+  sudo -A modprobe ddcci ddcci_backlight i2c_dev i2c_smbus i2c_piix4
+}
+
+get_monitors() {
+  ddcutil \
+    --brief \
+    --skip-ddc-checks \
+    --enable-dynamic-sleep \
+    --maxtries 1,1,1 \
+    detect |
+    grep -oE 'i2c-[0-9]+'
+}
+
+backlight_activate() {
+  for monitor in $(get_monitors); do
+    echo "Activating backlight for $monitor"
+    echo 'ddcci 0x37' | sudo -A tee "$DEVICE_FOLDER/$monitor/new_device" &>/dev/null
+  done
+}
+
+load_modules
+backlight_activate

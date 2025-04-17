@@ -1,0 +1,26 @@
+@import "../../.local/colors/css/default.css";
+
+* {
+  all: unset;
+  font-size: 18px;
+  font-family: "Firosevka", "Symbols Nerd Font Mono";
+  min-height: 0px;
+  min-width: 0px;
+  border: none;
+  padding: 0 0 0 0;
+  border-radius: 0;
+  background: none;
+  background-color: transparent;
+  transition: 200ms;
+  transition-property: background-color;
+  transition-duration: 200ms;
+  color: @fg0;
+}
+
+@import "./styles/workspace.css";
+
+@import "./styles/tray.css";
+
+@import "./styles/clock.css";
+
+@import "./styles/tooltip.css";

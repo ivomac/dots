@@ -1,0 +1,16 @@
+{
+    "com.github.iboyperson.ulauncher-system": {
+        "id": "com.github.iboyperson.ulauncher-system",
+        "url": "https://github.com/iboyperson/ulauncher-system",
+        "updated_at": "2025-06-12T13:42:16.632003",
+        "last_commit": "7dedd992709fa2297735cddf852404144d4da47c",
+        "last_commit_time": "2023-11-14T16:53:20"
+    },
+    "com.github.u1f98e.ulauncher-qalc": {
+        "id": "com.github.u1f98e.ulauncher-qalc",
+        "url": "https://github.com/u1f98e/ulauncher-qalc",
+        "updated_at": "2025-06-12T19:21:01.485849",
+        "last_commit": "45882831f57c265ee3b4bf47cdb862379d47a89a",
+        "last_commit_time": "2021-03-03T03:33:36"
+    }
+}

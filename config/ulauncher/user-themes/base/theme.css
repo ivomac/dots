@@ -1,0 +1,102 @@
+@import url("../../../../.local/colors/css/default.css");
+
+* {
+  all: unset;
+  font-size: 20px;
+  font-family: "Firosevka", "Symbols Nerd Font Mono";
+  min-height: 0px;
+  min-width: 0px;
+  margin: 0;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  background-color: transparent;
+  transition-property: background-color;
+  transition: 0ms;
+  transition-duration: 0ms;
+  color: @fg0;
+}
+
+.no-window-shadow {
+  margin: -20px;
+}
+
+/* .result-box { */
+/*   background-color: @bg0; */
+/*   border: 1px solid @fg0; */
+/*   border-radius: 8px; */
+/* } */
+
+.app {
+  background-color: @bg0;
+  border: 1px solid @fg0;
+  border-radius: 8px;
+  margin-bottom: 600px;
+}
+
+.input {
+  margin-bottom: 1px;
+}
+
+.input *:selected,
+.input *:focus {
+  background-color: @fg2;
+  color: @bg0;
+}
+
+.item-name {
+  color: @fg0;
+}
+
+.item-text {
+  color: @fg1;
+}
+
+.item-shortcut {
+  color: @bg0;
+}
+
+.item-box {
+  border-radius: 8px;
+  background-color: @bg0;
+  margin-bottom: 2px;
+}
+
+.selected.item-box {
+  background-color: @fg1;
+}
+
+.selected.item-box .item-text {
+  color: @bg1;
+}
+
+.selected.item-box .item-name {
+  color: @bg0;
+}
+
+.selected.item-box .item-shortcut {
+  color: @fg1;
+}
+
+.item-descr {
+  font-size: 18px;
+}
+
+.small-result-item .item-name {
+  font-size: 18px;
+}
+
+.prefs-btn {
+  border-radius: 8px;
+}
+
+.prefs-btn:hover {
+  background-color: @yellow;
+}
+
+
+.item {
+  min-height: 100px;
+}
+

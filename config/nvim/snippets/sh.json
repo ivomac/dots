@@ -1,0 +1,40 @@
+{
+  "bang": {
+    "body": [
+      "#!/usr/bin/${1}",
+      "${0}"
+    ],
+    "prefix": "bang"
+  },
+  "bang-env-bash": {
+    "body": [
+      "#!/usr/bin/env bash",
+      "",
+      "set -Eeuo pipefail"
+    ],
+    "prefix": "bang-env-bash"
+  },
+  "bang-env-zsh": {
+    "body": [
+      "#!/usr/bin/env zsh",
+      "",
+      "setopt errexit nounset pipefail err_return no_nomatch noclobber"
+    ],
+    "prefix": "bang-env-zsh"
+  },
+  "bang-sh": {
+    "body": [
+      "#!/usr/bin/sh",
+      "",
+      "set -eu"
+    ],
+    "prefix": "bang-sh"
+  },
+  "bange": {
+    "body": [
+      "#!/usr/bin/env ${1}",
+      "${0}"
+    ],
+    "prefix": "bange"
+  }
+}

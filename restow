@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+stow_cmd() {
+  mkdir -p "$1"
+  stow --dir="." --restow --no-folding --target="$1" "$2"
+}
+
+stow_cmd "$HOME/.local/bin" "bin"
+stow_cmd "$HOME/.local/colors" "colors"
+stow_cmd "$HOME/.local/share/applications" "desktop"
+
+stow_cmd "$HOME/.config/" "config"
+
+mkdir -p "$HOME/.config/zsh/cache"
+
+for fprofile in $HOME/.mozilla/firefox/*.default-release; do
+  stow_cmd "$fprofile" "firefox-css"
+done
+

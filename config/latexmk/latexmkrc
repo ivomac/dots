@@ -1,0 +1,14 @@
+# LuaLaTeX
+$pdf_mode = 4;
+$postscript_mode = $dvi_mode = 0;
+
+# Use bibtex if a .bib file exists
+$bibtex_use = 1;
+
+$sleep_time = 1;
+$view = 'none';
+
+# Also remove pdfsync files on clean
+$clean_ext = 'pdfsync out aux nav synctex.gz synctex\(busy\).gz synctex synctex\(busy\)';
+
+set_tex_cmds('-synctex=1 -halt-on-error %O %S');

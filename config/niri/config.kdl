@@ -1,0 +1,329 @@
+
+prefer-no-csd
+
+screenshot-path "~/Media/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
+
+environment {
+  CALIBRE_USE_SYSTEM_THEME "1"
+  CLUTTER_BACKEND "wayland"
+  DISPLAY ":0"
+  ECORE_EVAS_ENGINE "wayland"
+  ELM_ENGINE "wayland"
+  GDK_BACKEND "wayland"
+  KWIN_IM_SHOW_ALWAYS "1"
+  MOZ_ENABLE_WAYLAND "1"
+  QT_QPA_PLATFORM "wayland"
+  QT_QPA_PLATFORMTHEME "qt6ct"
+  QT_SCALE_FACTOR_ROUNDING_POLICY "Round"
+  QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+  QUTE_QT_WRAPPER "PyQt6"
+  SDL_VIDEODRIVER "wayland"
+  WLR_DRM_NO_ATOMIC "1"
+  WLR_DRM_NO_MODIFIERS "1"
+  WLR_NO_HARDWARE_CURSORS "1"
+  WLR_RENDERER "gles2"
+  XDG_CURRENT_DESKTOP "niri"
+  XDG_SESSION_TYPE "wayland"
+}
+
+hotkey-overlay {
+  skip-at-startup
+}
+
+cursor {
+  xcursor-size 32
+
+  hide-when-typing
+  hide-after-inactive-ms 4000
+}
+
+input {
+  keyboard {
+    xkb {
+      layout "us"
+      options "compose:menu"
+    }
+
+    repeat-delay 200
+    repeat-rate 50
+  }
+
+  mouse {
+    accel-speed 0.3
+    accel-profile "flat"
+  }
+
+  // focus-follows-mouse max-scroll-amount="0%"
+  warp-mouse-to-focus
+}
+
+output "ASUSTek COMPUTER INC VG249Q3R T3LMDW007766" {
+  position x=0 y=0
+  mode "1920x1080@180.061"
+  background-color "#000000"
+}
+
+output "ASUSTek COMPUTER INC ASUS VP249 0x0001154B" {
+  position x=1920 y=0
+  mode "1920x1080@143.855"
+  background-color "#000000"
+}
+
+output "PNP(AOC) 2470W GGWJ1HA038640" {
+  position x=1920 y=0
+  mode "1920x1080@60.000"
+  background-color "#000000"
+}
+
+output "Seiko Epson Corporation EPSON PJ 0x01010101" {
+  position x=3840 y=0
+  mode "1920x1080@60.000"
+  background-color "#000000"
+}
+
+output "Chimei Innolux Corporation 0x1249 Unknown" {
+  position x=0 y=0
+  mode "1920x1280@60.001"
+  background-color "#000000"
+}
+
+layout {
+  gaps 16
+
+  empty-workspace-above-first
+
+  always-center-single-column
+
+  preset-column-widths {
+    proportion 0.5;
+    proportion 1.0;
+  }
+
+  default-column-width { proportion 1.0; }
+
+  focus-ring {
+    width 4
+    inactive-color "#00000000"
+    active-color "#d65d0eF2"
+  }
+
+  border {
+    off
+  }
+
+  shadow {
+  }
+
+  insert-hint {
+    color "#45858880"
+    gradient from="#45858800" to="#45858880" angle=0
+  }
+
+  struts {
+    left 15
+    right 15
+    top -10
+    bottom -10
+  }
+}
+
+gestures {
+  dnd-edge-view-scroll {
+    trigger-width 30
+    delay-ms 200
+    max-speed 1500
+  }
+}
+
+animations {
+
+  slowdown 0.4
+
+  workspace-switch {
+    spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
+  }
+
+  window-open {
+    duration-ms 300
+    curve "ease-out-quad"
+  }
+
+  window-close {
+    duration-ms 300
+    curve "ease-out-quad"
+  }
+
+  horizontal-view-movement {
+    spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
+  }
+
+  window-movement {
+		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
+  }
+
+  window-resize {
+		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
+  }
+
+  config-notification-open-close {
+		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
+  }
+
+  screenshot-ui-open {
+    duration-ms 300
+    curve "ease-out-quad"
+  }
+
+}
+
+overview {
+  zoom 0.4
+  backdrop-color "#282828"
+  workspace-shadow {
+    off
+  }
+
+}
+
+window-rule {
+  draw-border-with-background false
+  geometry-corner-radius 8
+  clip-to-geometry true
+}
+
+window-rule {
+  match is-floating=true
+  opacity 0.95
+  block-out-from "screencast"
+}
+
+window-rule {
+  match is-window-cast-target=true
+
+  focus-ring {
+    width 4
+    active-color "#689d6a"
+    inactive-color "#8ec07c"
+  }
+}
+
+window-rule {
+  match app-id="org.pwmt.zathura"
+  default-column-width { proportion 0.5; }
+}
+
+window-rule {
+  match app-id="footclient"
+  default-column-width { proportion 0.5; }
+}
+
+window-rule {
+  match app-id="floatfoot"
+  default-column-width { proportion 0.5; }
+  open-floating true
+}
+
+window-rule {
+  match app-id="xarchiver"
+  open-floating true
+  open-focused true
+  default-column-width { proportion 0.5; }
+	default-window-height { proportion 0.7; }
+}
+
+window-rule {
+  match app-id="ulauncher"
+  clip-to-geometry false
+  open-floating true
+  default-floating-position x=0 y=200 relative-to="top"
+  default-window-height { proportion 0.5; }
+  default-column-width { proportion 0.8; }
+  focus-ring {
+    off
+  }
+}
+
+window-rule {
+  match app-id="org.pulseaudio.pavucontrol"
+  open-floating true
+  open-focused true
+  default-column-width { proportion 0.5; }
+	default-window-height { proportion 0.7; }
+}
+
+binds {
+  Super+H   { focus-column-or-monitor-left; }
+  Super+J   { focus-window-or-workspace-down; }
+  Super+K   { focus-window-or-workspace-up; }
+  Super+L   { focus-column-or-monitor-right; }
+
+  Super+Shift+H   { move-column-left-or-to-monitor-left; }
+  Super+Shift+J   { move-window-down-or-to-workspace-down; }
+  Super+Shift+K   { move-window-up-or-to-workspace-up; }
+  Super+Shift+L   { move-column-right-or-to-monitor-right; }
+
+  Super+Ctrl+H   { move-workspace-to-monitor-left; }
+  Super+Ctrl+J   { move-workspace-down; }
+  Super+Ctrl+K   { move-workspace-up; }
+  Super+Ctrl+L   { move-workspace-to-monitor-right; }
+
+  Super+G    { focus-column-first; }
+  Super+Shift+G { focus-column-last; }
+
+  MouseForward  { toggle-window-floating; }
+  MouseBack    { close-window; }
+
+  Super+M { switch-preset-window-width; }
+  Super+Space { fullscreen-window; }
+
+  Super+Slash { switch-focus-between-floating-and-tiling; }
+  Super+Shift+Slash  { toggle-window-floating; }
+
+  Super+Backslash  { consume-or-expel-window-left; }
+
+  Print { screenshot; }
+  Shift+Print { screenshot-window; }
+  Ctrl+Print { screenshot-screen; }
+
+  Super+Minus { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
+  Super+Comma { spawn "swayosd-client" "--output-volume" "lower"; }
+  Super+Period { spawn "swayosd-client" "--output-volume" "raise"; }
+
+  Super+Ctrl+Minus { spawn "swayosd-client" "--player" "mpd" "--playerctl" "play-pause"; }
+  Super+Ctrl+Comma { spawn "swayosd-client" "--player" "mpd" "--playerctl" "prev"; }
+  Super+Ctrl+Period { spawn "swayosd-client" "--player" "mpd" "--playerctl" "next"; }
+  Super+Ctrl+Apostrophe { spawn "swayosd-client" "--player" "mpd" "--playerctl" "shuffle"; }
+
+  Super+Shift+Semicolon { spawn "swayosd-client-backlight" "+10"; }
+  Super+Semicolon { spawn "swayosd-client-backlight" "-10"; }
+
+  Super+Return { spawn "footclient"; }
+  Super+Escape { spawn "ulauncher-toggle"; }
+  Super+E { spawn "thunar"; }
+
+  Super+Ctrl+Backslash { spawn "footclient" "--maximized" "zsh" "-c" "source $ZDOTDIR/.zshrc; todo"; }
+
+  Super+O { toggle-overview; }
+
+  Super+R { spawn "transcribe"; }
+  Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
+  Super+P { spawn "yt-dlp-clip"; }
+  Super+Ctrl+P { spawn "/home/ivo/Projects/25.03-job_applications_CV_CL/new_job.zsh"; }
+
+  Super+Backspace { spawn "lock"; }
+
+  Super+Q { close-window; }
+  Super+Ctrl+Q { quit; }
+}
+
+spawn-at-startup "powerprofilesctl" "configure-action" "--enable" "amdgpu_dpm"
+
+spawn-at-startup "mpd-reset"
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
+spawn-at-startup "udiskie" "-At"
+
+spawn-at-startup "backlight-search"
+
+spawn-at-startup "ulauncher-start"
+

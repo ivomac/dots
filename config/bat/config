@@ -1,0 +1,10 @@
+
+--italic-text=always
+--color=always
+--tabs=2
+--pager="less -RF --mouse"
+--style=plain
+--theme-light=gruvbox-light
+--theme-dark=gruvbox-dark
+--theme=light
+
