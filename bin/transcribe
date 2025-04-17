@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+proc=$(ps aux | grep 'transcribe.py XXZY7' | grep -v grep | awk '{print $2}')
+
+if [ -n "$proc" ]; then
+  echo "Transcribe is already running with PID: $proc"
+  kill -USR1 $proc
+else
+  exec transcribe.py XXZY7 "$@" 2>/dev/null
+fi

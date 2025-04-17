@@ -1,0 +1,30 @@
+@import "../../.local/colors/css/default.css";
+
+* {
+  all: unset;
+  font-size: 16px;
+  font-family: "Firosevka", "Symbols Nerd Font Mono";
+  transition: 100ms;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  color: @fg0;
+}
+
+.control-center-window {
+  all: unset;
+}
+
+.control-center {
+  all: unset;
+  background-color: @bg2;
+  border-radius: 8px 8px 0px 0px;
+  border: 1px solid @fg0;
+  padding: 12px;
+  margin-right: 32px;
+  margin-bottom: -1px;
+}
+
+@import "./styles/notifications.css";
+@import "./styles/mpris.css";
+@import "./styles/buttons.css";

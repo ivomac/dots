@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=epfl-vpn toggle
+Name=EPFL VPN
+Icon=/usr/share/icons/Adwaita/symbolic/devices/auth-fingerprint-symbolic.svg
+StartupNotify=false
+Type=Application

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+niri msg action power-off-monitors
+sleep 0.1s
+exec gtklock \
+  --modules playerctl-module \
+  --modules userinfo-module \
+  --follow-focus \
+  --idle-hide \
+  --idle-timeout 8 \
+  --start-hidden
