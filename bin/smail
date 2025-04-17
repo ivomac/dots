@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+SEFF=@bindir@/seff
+
+IFS=","
+array=($2)
+IFS=" "
+
+JOB_COMPLETION_TIME=5
+
+# Get the ClusterName
+ClusterName=${SLURM_CLUSTER_NAME}
+subject="$ClusterName $2"
+recipient=$3
+
+status=$(echo "${array[2]}" | tr -d ' ')
+if [ -n "$status" ]; then
+  sarray=(${array[0]})
+  IFS="="
+  if [ "${sarray[1]}" = "Array" ]; then
+    sarray=(${sarray[3]})
+  else
+    sarray=(${sarray[1]})
+  fi
+  IFS=" "
+  jobid="${sarray[1]}"
+  # Remove the trailing "_*" until seff supports array jobs fully
+  jobid=${jobid%"_*"}
+  sleep $JOB_COMPLETION_TIME
+  $SEFF $jobid | msmtp -a default -s "$subject" $recipient
+else
+  msmtp -a default -s "$subject" $recipient
+fi

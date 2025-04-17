@@ -1,0 +1,93 @@
+{
+  "bang": {
+    "prefix": "bang",
+    "body": [
+      "#!/usr/bin/python",
+      "${0}"
+    ]
+  },
+  "bange": {
+    "prefix": "bange",
+    "body": [
+      "#!/usr/bin/env python",
+      "${0}"
+    ]
+  },
+  "from": {
+    "prefix": "from",
+    "body": [
+      "from ${1} import ${2}",
+      "${0}"
+    ]
+  },
+  "for": {
+    "prefix": "for",
+    "body": [
+      "for ${1} in ${2}:",
+      "    ${0}"
+    ]
+  },
+  "forr": {
+    "prefix": "forr",
+    "body": [
+      "for ${1} in range(${2}):",
+      "    ${0}"
+    ]
+  },
+  "fore": {
+    "prefix": "fore",
+    "body": [
+      "for ${1} in enumerate(${2}):",
+      "    ${0}"
+    ]
+  },
+  "while": {
+    "prefix": "while",
+    "body": [
+      "while ${1}:",
+      "    ${0}"
+    ]
+  },
+  "if": {
+    "prefix": "if",
+    "body": [
+      "if ${1}:",
+      "    ${0}"
+    ]
+  },
+  "elif": {
+    "prefix": "elif",
+    "body": [
+      "elif ${1}:",
+      "    ${0}"
+    ]
+  },
+  "else": {
+    "prefix": "elif",
+    "body": [
+      "else:",
+      "    ${0}"
+    ]
+  },
+  "def": {
+    "prefix": "def",
+    "body": [
+      "def ${1}($2):",
+      "    ${0}"
+    ]
+  },
+  "tdef": {
+    "prefix": "tdef",
+    "body": [
+      "def ${1}($2) -> $3:",
+      "    ${0}"
+    ]
+  },
+  "ifmain": {
+    "prefix": "ifmain",
+    "body": [
+      "if __name__ == \"__main__\":",
+      "    ${1:main()}"
+    ]
+  }
+}
