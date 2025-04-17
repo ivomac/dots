@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+git clone https://aur.archlinux.org/yay.git ~/yay &&
+	makepkg -si --needed -D ~/yay &&
+	rm -rf ~/yay &&
+	rm -rf ~/go

@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+
+
+from os import environ
+from pathlib import Path
+import pandas as pd
+import subprocess as sp
+from multiprocessing import Pool
+import re
+
+MUSIC = Path(environ["MEDIA"]) / "Music"
+DB = MUSIC / ".songs.csv"
+
+
+def cleanup(string):
+    string = string.replace("/", "_").replace("'", "").replace(":", "").replace("?", "")
+    return re.sub(r"\(.*\)", "", string).strip()
+
+
+EXISTING_SONGS = {cleanup(file.stem) for file in MUSIC.glob("*") if file.is_file()}
+
+
+def missing_songs():
+    items = pd.read_csv(DB).to_dict(orient="records")
+
+    missing = []
+    for row in items:
+        id = row["Video ID"]
+
+        title = cleanup(row["Song Title"])
+
+        artist = cleanup(re.sub("The", "", row["Artist Name"]))
+
+        filename = f"{artist} - {title}"
+        filepath = MUSIC / f"{filename}.m4a"
+
+        if filename not in EXISTING_SONGS:
+            missing.append((id, filepath))
+
+    return missing
+
+
+def get_song(inp):
+    id, filepath = inp
+    print(f"Downloading {filepath.stem}")
+    sp.call(
+        [
+            "yt-dlp",
+            "--extract-audio",
+            "--cookies-from-browser",
+            "firefox",
+            "--audio-quality",
+            "2",
+            "-o",
+            filepath,
+            f"https://www.youtube.com/watch?v={id}",
+        ],
+        stdout=sp.DEVNULL,  # Suppress standard output
+        stderr=sp.DEVNULL,  # Suppress standard error
+    )
+
+
+def main():
+    print("Starting downloads")
+    songs = missing_songs()
+    print(f"There are {len(songs)} songs to download")
+    with Pool() as p:
+        p.imap_unordered(get_song, songs, chunksize=6)
+        p.close()
+        p.join()
+
+
+if __name__ == "__main__":
+    main()

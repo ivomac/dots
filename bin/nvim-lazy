@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+# First arg is mode: edit, editAtLine, editAtLineAndWait, openDirInEditor
+
+MODE="$1"
+shift
+
+if [[ -z "$NVIM" || "${1}" =~ "^/tmp/" ]]; then
+	case "$MODE" in
+	edit | openDirInEditor)
+		exec nvim "${@}"
+		;;
+	editAtLine | editAtLineAndWait)
+		exec nvim +${1} "${@:2}"
+		;;
+	esac
+else
+	nvim --server "$NVIM" --remote-send "<cmd>Close<CR>" &&
+		case "$MODE" in
+		edit | openDirInEditor)
+			nvim --server "$NVIM" --remote "$@"
+			;;
+		editAtLine | editAtLineAndWait)
+			nvim --server "$NVIM" --remote "${@:2}"
+			nvim --server "$NVIM" --remote-send "<cmd>$1<CR>"
+			;;
+		esac
+fi
