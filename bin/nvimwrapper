@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+if [[ -z "$NVIM" || "${1}" =~ "^/tmp/" ]]; then
+  exec nvim "${@}"
+else
+  nohup nvim-remote "${@}" &>/dev/null &
+fi

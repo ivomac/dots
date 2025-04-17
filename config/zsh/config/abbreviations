@@ -1,0 +1,36 @@
+abbr -g "D"="& disown &> /dev/null"
+abbr -g "E"="| $EDITOR"
+abbr -g "G"="| grep"
+abbr -g "L"="| $PAGER"
+abbr -g "S"="| sort -n"
+
+abbr "s"="sudo"
+
+abbr "sc"="systemctl"
+abbr "scu"="systemctl --user"
+abbr "ssc"="sudo systemctl"
+
+abbr "p"="pacman"
+abbr "sp"="sudo pacman"
+abbr "pac"="sudo paccache -rk1"
+abbr "au"="paru"
+
+abbr "refl"="systemctl start reflector.service"
+
+abbr "g"="git"
+
+abbr "o"="\$OPEN"
+abbr "e"="\$EXPLORER"
+abbr "n"="\$EDITOR"
+
+abbr "ns"="\$EDITOR '+Session load'"
+abbr "ne"="\$EDITOR +Explorer"
+abbr "nl"="\$EDITOR +LazyGit"
+abbr "lg"="lazygit"
+
+abbr "py"="python"
+abbr "ipy"="ipython"
+
+abbr "aish"="ai --role ask-zsh"
+abbr "aicmd"="ai --role cmd-zsh"
+abbr "aicode"="ai --role code"

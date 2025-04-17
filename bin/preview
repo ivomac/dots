@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+
+file="${@: -1}"
+
+# Parse --line=<int> from arguments, store value in $line, and remove the option
+for arg in "$@"; do
+  if [[ $arg =~ --line=(.*) ]]; then
+	if [[ ${match[1]} =~ [0-9]+ ]]; then
+		line=${match[1]}
+	fi
+    args=("${(@)argv:#$arg}")
+    set -- "${args[@]}"
+    break
+  fi
+done
+
+flags=""
+if [[ -h "$file" ]]; then
+	echo "Symlink -> $(readlink -f $file)\n"
+	flags+=" --links"
+fi
+
+if [[ -d "$file" ]]; then
+	eza -Al --color=always $flags "$@"
+elif [[ -f "$file" ]]; then
+	if [[ -n "$line" ]]; then
+		start=$(( $line-10 ))
+		if [[ $start -le 0 ]]; then
+			start=1
+		fi
+		bat --line-range="$start:" --highlight-line "$line" "$@"
+	else
+		bat "$@"
+	fi
+elif [[ -n "$file" ]]; then
+	bat -
+fi
+
+
