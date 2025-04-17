@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=lock
+Name=Lock
+Icon=/usr/share/icons/HighContrast/256x256/status/system-lock-screen.png
+StartupNotify=false
+Terminal=false
+Type=Application

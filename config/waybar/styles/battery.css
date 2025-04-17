@@ -1,0 +1,17 @@
+
+#battery.charging {
+    color: @green;
+}
+
+#battery.discharging {
+    color: @blue;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+}
+
+#battery.low:not(.charging) {
+    color: @orange;
+}
+

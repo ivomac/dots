@@ -1,0 +1,253 @@
+#!/usr/bin/env python
+"""
+Audio transcription tool using Deepgram's API.
+
+This script records audio from the microphone, transcribes it using Deepgram's
+speech-to-text API, and outputs the transcript in one of three ways: printed to
+console, copied to clipboard, or typed out as keyboard input.
+
+The recording stops when F9 is pressed.
+The audio is temporarily saved to a file, sent to Deepgram for transcription,
+and then the transcript is output according to the specified mode.
+
+Requires a Deepgram API key set as the DEEPGRAM_API_KEY environment variable.
+The '--reformat' option requires an Anthropic API key set as ANTHROPIC_API_KEY.
+
+Usage:
+    python transcribe [--output {print|clipboard|type}] [--reformat]
+
+Examples:
+    python transcribe --output print                # Print transcript to console (default)
+    python transcribe --output clipboard            # Copy transcript to clipboard
+    python transcribe --output type                 # Type transcript as keyboard input
+    python transcribe --reformat --output clipboard # Reformat with Claude AI and copy to clipboard
+"""
+
+import asyncio
+import argparse
+import tempfile
+import numpy as np
+import sounddevice as sd
+import soundfile as sf
+from pynput import keyboard
+import pyperclip
+import pyautogui
+from os import environ
+import sys
+import subprocess
+from typing import Literal
+from anthropic import Anthropic
+from deepgram import DeepgramClient, PrerecordedOptions
+
+# ---------------------------
+# Configuration
+# ---------------------------
+
+DEEPGRAM_API_KEY = environ["DEEPGRAM_API_KEY"]
+
+ANTHROPIC_API_KEY = environ["ANTHROPIC_API_KEY"]
+CLAUDE_MODEL = "claude-3-5-haiku-20241022"
+
+SAMPLE_RATE = 16000
+CHANNELS = 1
+
+
+def parse_args() -> argparse.Namespace:
+    """
+    Parse command line arguments.
+
+    Returns:
+        argparse.Namespace: Parsed command line arguments
+    """
+    parser = argparse.ArgumentParser(description="Audio transcription tool using Deepgram's API")
+    parser.add_argument(
+        "--output",
+        choices=["print", "clipboard", "type"],
+        default="print",
+        help="Output mode: print to console, copy to clipboard, or type as keyboard input",
+    )
+    parser.add_argument(
+        "--reformat",
+        action="store_true",
+        help="Reformat the transcript using Claude AI before output",
+    )
+    return parser.parse_args()
+
+
+def send_notification(message: str) -> None:
+    """
+    Send a system notification using notify-send.
+
+    Args:
+        message: The notification message to display
+    """
+    subprocess.run(["notify-send", "Transcribe", message], check=False)
+
+
+def record_audio() -> tuple[np.ndarray, str]:
+    """
+    Record audio from microphone until F9 is pressed.
+
+    Returns:
+        np.ndarray: Recorded audio data
+        str: Temporary file path
+    """
+
+    send_notification("Recording. Press F9 to stop.")
+
+    temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    temp_file_path = temp_file.name
+    temp_file.close()
+
+    audio_data = []
+
+    def callback(indata, frames, time, status):
+        if status:
+            print(f"Error: {status}")
+        audio_data.append(indata.copy())
+
+    f9_pressed = False
+
+    def on_press(key):
+        nonlocal f9_pressed
+        if key == keyboard.Key.f9:
+            f9_pressed = True
+            return False
+
+    # Create listener for stopping recording
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()
+
+    with sd.InputStream(samplerate=SAMPLE_RATE, channels=CHANNELS, callback=callback):
+        while not f9_pressed:
+            asyncio.run(asyncio.sleep(0.05))
+
+    # Convert list of arrays to a single array
+    if audio_data:
+        audio_array = np.concatenate(audio_data, axis=0)
+        sf.write(temp_file_path, audio_array, SAMPLE_RATE)
+        return audio_array, temp_file_path
+    else:
+        sys.exit(1)
+
+
+async def transcribe_audio_async(file_path: str) -> str:
+    """
+    Transcribe audio using Deepgram API asynchronously.
+
+    Args:
+        file_path: Path to the audio file
+
+    Returns:
+        str: Transcribed text
+    """
+    # Initialize the Deepgram SDK
+    deepgram = DeepgramClient(DEEPGRAM_API_KEY)
+
+    # Open the audio file and read the buffer
+    with open(file_path, "rb") as file:
+        buffer_data = file.read()
+
+    payload = {
+        "buffer": buffer_data,
+    }
+
+    # Set up options for transcription
+    options = PrerecordedOptions(
+        model="nova",
+        smart_format=True,
+        punctuate=True,
+    )
+
+    # Send the audio to Deepgram and get the response
+    response = deepgram.listen.rest.v("1").transcribe_file(payload, options)
+
+    # Get the transcript from the response
+    response_dict = response.to_dict()
+    transcript = response_dict["results"]["channels"][0]["alternatives"][0]["transcript"]
+    return transcript
+
+
+def transcribe_audio(file_path: str) -> str:
+    """
+    Transcribe audio using Deepgram API.
+
+    Args:
+        file_path: Path to the audio file
+
+    Returns:
+        str: Transcribed text
+    """
+    return asyncio.run(transcribe_audio_async(file_path))
+
+
+def reformat_transcription(transcript: str) -> str:
+    """
+    Reformat the transcript using Claude 3.5 Haiku to improve grammar and fix errors.
+
+    Args:
+        transcript: The raw transcribed text
+
+    Returns:
+        str: The reformatted text with improved grammar and corrections
+    """
+    try:
+        client = Anthropic(api_key=ANTHROPIC_API_KEY)
+
+        prompt = (
+            "You are part of a transcription pipeline that corrects transcribed text for grammar,"
+            + " probable transcription mistakes, repeated and stuttered speech."
+            + " Try to keep content intact. Do not add explanations or notes,"
+            + f"""just return the corrected text:
+
+{transcript}"""
+        )
+
+        message = client.messages.create(
+            model=CLAUDE_MODEL, max_tokens=1024, messages=[{"role": "user", "content": prompt}]
+        )
+
+        return message.content[0].text
+    except Exception as e:
+        send_notification(f"Error reformatting with Claude: {str(e)}")
+        return transcript
+
+
+def output_transcript(transcript: str, output_mode: Literal["print", "clipboard", "type"]) -> None:
+    """
+    Output the transcript according to the specified mode.
+
+    Args:
+        transcript: The transcribed text
+        output_mode: How to output the transcript (print, clipboard, or type)
+    """
+    if not transcript:
+        return
+
+    if output_mode == "print":
+        print(transcript)
+    elif output_mode == "clipboard":
+        pyperclip.copy(transcript)
+    elif output_mode == "type":
+        pyautogui.write(transcript)
+
+
+def main() -> None:
+    """
+    Main function to run the transcription tool.
+    """
+    args = parse_args()
+
+    _, temp_file_path = record_audio()
+
+    transcript = transcribe_audio(temp_file_path)
+
+    # Apply reformatting if requested
+    if args.reformat:
+        transcript = reformat_transcription(transcript)
+
+    output_transcript(transcript, args.output)
+
+
+if __name__ == "__main__":
+    main()

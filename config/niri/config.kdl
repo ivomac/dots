@@ -1,0 +1,217 @@
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+cursor {
+    xcursor-size 32
+
+    hide-when-typing
+    hide-after-inactive-ms 2000
+}
+
+environment {
+	DISPLAY ":0"
+
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+
+	GDK_BACKEND "wayland"
+	CLUTTER_BACKEND "wayland"
+	ELM_ENGINE "wayland"
+	ECORE_EVAS_ENGINE "wayland"
+	SDL_VIDEODRIVER "wayland"
+
+	WLR_RENDERER "gles2"
+
+	WLR_NO_HARDWARE_CURSORS "1"
+	WLR_DRM_NO_MODIFIERS "1"
+	WLR_DRM_NO_ATOMIC "1"
+
+	QUTE_QT_WRAPPER "PyQt6"
+
+	QT_QPA_PLATFORM "wayland"
+	QT_QPA_PLATFORMTHEME "qt5ct"
+	QT_SCALE_FACTOR_ROUNDING_POLICY "Round"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+	KWIN_IM_SHOW_ALWAYS "1"
+
+    MOZ_ENABLE_WAYLAND "1"
+	CALIBRE_USE_SYSTEM_THEME "1"
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+            options "compose:menu"
+        }
+
+        repeat-delay 200
+        repeat-rate 50
+    }
+
+    mouse {
+        accel-speed 0.3
+        accel-profile "flat"
+    }
+
+	workspace-auto-back-and-forth
+    warp-mouse-to-focus
+}
+
+output "PNP(AOC) 2470W GGWJ1HA038640" {
+	position x=0 y=0
+}
+
+output "ASUSTek COMPUTER INC ASUS VP249 0x0001154B" {
+	position x=1920 y=0
+	mode "1920x1080@143.855"
+}
+
+output "Seiko Epson Corporation EPSON PJ 0x01010101" {
+	position x=3840 y=0
+}
+
+layout {
+    gaps 12
+
+	empty-workspace-above-first
+
+    center-focused-column "on-overflow"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+    }
+
+    default-column-width { proportion 1.0; }
+
+    focus-ring {
+        width 2
+
+        active-color "#458588"
+
+        inactive-color "#00000000"
+    }
+
+    border {
+        off
+    }
+
+    shadow {
+    }
+
+    struts {
+        left 6
+        right 16
+        top 0
+        bottom 0
+    }
+}
+
+gestures {
+    dnd-edge-view-scroll {
+        trigger-width 30
+        delay-ms 200
+        max-speed 1500
+    }
+}
+
+prefer-no-csd
+
+screenshot-path "~/Media/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
+
+animations {
+    slowdown 0.8
+}
+
+window-rule {
+    match app-id=r#"^foot"#
+    default-column-width { proportion 0.5; }
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+binds {
+    Super+Q { close-window; }
+
+    Super+H     { focus-column-or-monitor-left; }
+    Super+J     { focus-window-or-workspace-down; }
+    Super+K     { focus-window-or-workspace-up; }
+    Super+L     { focus-column-or-monitor-right; }
+
+    Super+Backslash   { consume-or-expel-window-left; }
+    Super+Shift+H     { move-column-left-or-to-monitor-left; }
+    Super+Shift+J     { move-window-down-or-to-workspace-down; }
+    Super+Shift+K     { move-window-up-or-to-workspace-up; }
+    Super+Shift+L     { move-column-right-or-to-monitor-right; }
+
+    Super+G        { focus-column-first; }
+    Super+Shift+G  { focus-column-last; }
+
+    MouseBack       { focus-workspace-down; }
+    MouseForward    { focus-workspace-up; }
+
+    Super+A     { focus-monitor-left; }
+    Super+S     { focus-workspace-down; }
+    Super+D     { focus-workspace-up; }
+    Super+F     { focus-monitor-right; }
+
+    Super+Shift+A     { move-workspace-to-monitor-left; }
+    Super+Shift+S     { move-workspace-down; }
+    Super+Shift+D     { move-workspace-up; }
+    Super+Shift+F     { move-workspace-to-monitor-right; }
+
+    Super+W { switch-preset-window-width; }
+
+    Super+M { maximize-column; }
+    Super+Space { fullscreen-window; }
+
+    Super+X { set-column-width "-10%"; }
+    Super+C { center-column; }
+    Super+V { set-column-width "+10%"; }
+
+    Super+Slash { switch-focus-between-floating-and-tiling; }
+    Super+Shift+Slash   { toggle-window-floating; }
+
+    Super+T { toggle-column-tabbed-display; }
+
+    Print { screenshot; }
+    Shift+Print { screenshot-window; }
+    Ctrl+Print { screenshot-screen; }
+
+	Super+Minus { spawn "pactl" "set-sink-mute" "@DEFAULT_SINK@" "toggle"; }
+	Super+Comma { spawn "pactl" "set-sink-volume" "@DEFAULT_SINK@" "-5%"; }
+	Super+Period { spawn "pactl" "set-sink-volume" "@DEFAULT_SINK@" "+5%"; }
+
+	Super+Ctrl+Minus { spawn "playerctl" "play-pause"; }
+	Super+Ctrl+Comma { spawn "playerctl" "previous"; }
+	Super+Ctrl+Period { spawn "playerctl" "next"; }
+
+    Super+Return { spawn "footclient"; }
+    Super+Escape { spawn "sirula"; }
+    Super+E { spawn "pcmanfm-qt"; }
+
+    Super+Ctrl+Backslash { spawn "footclient" "--maximized" "zsh" "-c" "source $ZDOTDIR/.zshrc; todo"; }
+
+	Super+Z { spawn "clip-list"; }
+    Super+Backspace { spawn "lock"; }
+    Super+Ctrl+Q { quit; }
+}
+
+spawn-at-startup "backlight-search"
+
+spawn-at-startup "nm-applet" "--indicator"
+spawn-at-startup "blueman-applet"
+spawn-at-startup "udiskie" "-At"
+
+spawn-at-startup "firefox"

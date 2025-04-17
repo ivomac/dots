@@ -1,0 +1,30 @@
+
+@import "../../.local/colors/css/default.css";
+
+* {
+	all: unset;
+	font-size: 16px;
+	font-family: "Fira Mono", "Symbols Nerd Font Mono";
+	transition: 100ms;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	color: @fg0;
+}
+
+.control-center-window {
+	all: unset;
+}
+
+.control-center {
+	all: unset;
+	background: linear-gradient(30deg, @bg3, @bg0);
+	border: none;
+	border-radius: 0px 0px 12px 0px;
+	padding: 12px;
+}
+
+@import "./styles/notifications.css";
+@import "./styles/mpris.css";
+@import "./styles/sliders.css";
+@import "./styles/buttons.css";

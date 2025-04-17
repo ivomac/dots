@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+DEVICE_FOLDER="/sys/bus/i2c/devices"
+BACKLIGHT_FOLDER="/sys/class/backlight"
+
+get_monitors() {
+	ddcutil \
+		--brief \
+		--skip-ddc-checks \
+		--enable-dynamic-sleep \
+		--maxtries 1,1,1 \
+		detect \
+		| grep -oE 'i2c-[0-9]+'
+}
+
+reload_modules() {
+	sudo -A modprobe -r ddcci_backlight i2c_dev i2c_piix4
+	sudo -A modprobe -r ddcci i2c_smbus
+	sudo -A modprobe ddcci ddcci_backlight i2c_dev i2c_smbus i2c_piix4
+}
+
+backlight_activate() {
+	for integer in {0..20}; do
+		echo 'ddcci 0x37' | sudo -A tee "$DEVICE_FOLDER/i2c-$integer/new_device" &> /dev/null
+	done
+}
+
+reload_modules
+backlight_activate
+
+sleep 2s
+systemctl --user restart swaync.service
+

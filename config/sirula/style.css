@@ -1,0 +1,36 @@
+@import "../../.local/colors/css/default.css";
+
+* {
+	all: unset;
+	font-family: "Fira Mono", "Symbols Nerd Font Mono";
+	font-size: 18px;
+	background: transparent;
+	color: @fg0;
+}
+
+.background {
+	opacity: 1;
+}
+
+#root-box {
+	background-color: alpha(@bg0, 0.9);
+	border-radius: 12px;
+	border: 1px solid @black1;
+}
+
+#search {
+	padding: 8px 8px;
+	margin: 4px;
+}
+.app-row {
+	transition: unset;
+	padding: 5px 0 5px 10px;
+}
+
+.app-row:selected, .app-row:hover {
+	background-color: alpha(@blue, 0.5);
+}
+
+.app-label {
+	margin-left: 10px;
+}

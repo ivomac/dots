@@ -1,0 +1,28 @@
+.widget-buttons-grid * {
+	all: unset;
+}
+
+.widget-buttons-grid {
+	padding: 0px;
+	margin: 0px;
+	margin-top: 8px;
+	border: none;
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button {
+	font-size: 18px;
+	min-height: 30px;
+	margin: 0px 4px;
+	padding: 0px;
+	border: none;
+	border-radius: 12;
+	background: @bg0;
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button:hover {
+	background: @yellow;
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button:checked {
+	background: @blue;
+}

@@ -1,0 +1,9 @@
+#custom-notification {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+#power-profiles-daemon,
+#systemd-failed-units {
+	padding-bottom: 8px;
+}

@@ -1,0 +1,97 @@
+#!/usr/bin/env zsh
+# This script changes the symlinks in $COLORS, resets the wallpaper, and restarts some services.
+
+WALLPAPERS="$MEDIA/Pictures/Wallpapers"
+COLORS="$HOME/.local/colors"
+
+theme_opts=(
+	"gruvbox_dark"
+	"gruvbox_dark_soft"
+	"gruvbox_light"
+	"gruvbox_light_soft"
+)
+
+exit_msg() {
+	echo "$1"
+	notify-send "$1"
+	exit 1
+}
+
+
+if [[ "$1" == "toggle" ]]; then
+	current=$(gsettings get org.gnome.desktop.interface gtk-theme)
+
+	if [[ "$current" == *dark* ]]; then
+		choice=${theme_opts[4]}
+	else
+		choice=${theme_opts[1]}
+	fi
+else
+	if [[ -z $@ ]]; then
+		choice=$(echo ${(j,\n,)theme_opts[@]} | $MENU)
+	else
+		choice=$1
+	fi
+fi
+
+if [[ -z $choice ]]; then
+	exit 0
+fi
+
+for folder in $COLORS/*; do
+	random_file="$(ls -1 $folder | head -n 1)"
+	extension="${random_file:e}"
+
+	theme_file="$folder/$choice${extension:+.$extension}"
+	symlink_file="$folder/default${extension:+.$extension}"
+
+	if [[ ! -f "$theme_file" ]]; then
+		exit_msg "Error - Source file does not exist: $theme_file"
+	fi
+	ln -f -s "$theme_file" "$symlink_file"
+done
+
+if [[ $choice == *dark* ]]; then
+	gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
+	gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+	kvantummanager --set KvGnomeDark
+	wallpaper_path="$WALLPAPERS/dark"
+	background_color="#282828"
+else
+	gsettings set org.gnome.desktop.interface gtk-theme adwaita
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Light
+	gsettings set org.gnome.desktop.interface color-scheme prefer-light
+	kvantummanager --set KvGnome
+	wallpaper_path="$WALLPAPERS/light"
+	background_color="#fbf1c7"
+fi
+
+sed --follow-symlinks -i -e "s/.*background-colour.*/	background-colour = \"$background_color\";/" "$XDG_CONFIG_HOME/lavalauncher/lavalauncher.conf"
+
+if pgrep -x "swww-daemon" > /dev/null; then
+	wallpapers=("${(@f)$(ls "$wallpaper_path" | sort -R)}")
+
+	outputs=("${(@f)$(swww query)}")
+
+	for i in {1..${#outputs[@]}}; do
+	  output_line="${outputs[i]}"
+	  output_name="${output_line%%:*}"
+	  wallpaper="${wallpapers[i]}"
+	  swww img -o "$output_name" "$wallpaper_path/$wallpaper"
+	done
+fi
+
+processes=( "waybar" "swaync" "qbittorrent" "foot" )
+
+services=( "waybar" "swaync" "qbittorrent" "foot-server" )
+
+for i in {1..${#processes[@]}}; do
+	process="${processes[i]}"
+	service="${services[i]}"
+	if pgrep -x "$process" > /dev/null; then
+		echo "Restarting $service"
+		systemctl --user restart "$service.service" & disown
+	fi
+done
+

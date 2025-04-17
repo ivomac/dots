@@ -1,0 +1,39 @@
+#!/usr/bin/env zsh
+
+tex_trash=(
+	"*.run.xml"
+	"*Notes.bib"
+	"*.aux"
+	"*.brf"
+	"*.nav"
+	"*.snm"
+	"*.dvi"
+	"*.lof"
+	"*.log"
+	"*.lot"
+	"*.fls"
+	"*.out"
+	"*.toc"
+	"*.fmt"
+	"*.fot"
+	"*.cb"
+	"*.cb2"
+	"*.lb"
+	"*.bbl"
+	"*.bcf"
+	"*.blg"
+	"*.fdb_latexmk"
+	"*.synctex"
+	"*.synctex(busy)"
+	"*.synctex.gz"
+	"*.synctex.gz(busy)"
+	"*.pdfsync"
+	"*.end"
+)
+
+# join tex_trash array into a single string
+
+trash=$(IFS=" "; echo "${tex_trash[*]}")
+
+rm -I -f $trash
+

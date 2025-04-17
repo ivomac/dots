@@ -1,0 +1,156 @@
+{
+	"$schema": "/etc/xdg/swaync/configSchema.json",
+	"positionX": "left",
+	"positionY": "bottom",
+	"layer": "overlay",
+	"control-center-layer": "none",
+	"layer-shell": true,
+	"layer-shell-cover-screen": true,
+	"cssPriority": "user",
+	"notification-2fa-action": true,
+	"notification-inline-replies": false,
+	"notification-icon-size": 32,
+	"notification-body-image-height": 100,
+	"notification-body-image-width": 200,
+	"timeout": 8,
+	"timeout-low": 6,
+	"timeout-critical": 0,
+	"fit-to-screen": false,
+	"relative-timestamps": true,
+	"control-center-width": 500,
+	"control-center-height": 700,
+	"notification-window-width": 400,
+	"keyboard-shortcuts": false,
+	"transition-time": 200,
+	"hide-on-action": false,
+	"text-empty": "",
+	"script-fail-notify": true,
+	"notification-visibility": {
+		"all": {
+			"state": "enabled",
+			"app-name": "*",
+			"urgency": "Normal"
+		}
+	},
+	"widgets": [
+		"notifications",
+		"mpris",
+		"backlight#IN",
+		"backlight#D0",
+		"backlight#D1",
+		"backlight#D2",
+		"backlight#D3",
+		"backlight#D4",
+		"backlight#D5",
+		"backlight#D6",
+		"backlight#D7",
+		"backlight#D8",
+		"backlight#D9",
+		"volume",
+		"buttons-grid"
+	],
+	"widget-config": {
+		"label": {
+			"max-lines": 5,
+			"text": "Label Text"
+		},
+		"mpris": {
+			"image-size": 48,
+			"image-radius": 12,
+			"blur": false
+		},
+		"volume": {
+			"show-per-app": true,
+			"label": "󰕾"
+		},
+		"backlight#IN": {
+			"label": "󰌢",
+			"device": "intel_backlight",
+			"min": 5
+		},
+		"backlight#D0": {
+			"label": "󱡶",
+			"device": "ddcci0",
+			"min": 5
+		},
+		"backlight#D1": {
+			"label": "󱡶",
+			"device": "ddcci1",
+			"min": 5
+		},
+		"backlight#D2": {
+			"label": "󱡶",
+			"device": "ddcci2",
+			"min": 5
+		},
+		"backlight#D3": {
+			"label": "󱡶",
+			"device": "ddcci3",
+			"min": 5
+		},
+		"backlight#D4": {
+			"label": "󱡶",
+			"device": "ddcci4",
+			"min": 5
+		},
+		"backlight#D5": {
+			"label": "󱡶",
+			"device": "ddcci5",
+			"min": 5
+		},
+		"backlight#D6": {
+			"label": "󱡶",
+			"device": "ddcci6",
+			"min": 5
+		},
+		"backlight#D7": {
+			"label": "󱡶",
+			"device": "ddcci7",
+			"min": 5
+		},
+		"backlight#D8": {
+			"label": "󱡶",
+			"device": "ddcci8",
+			"min": 5
+		},
+		"backlight#D9": {
+			"label": "󱡶",
+			"device": "ddcci9",
+			"min": 5
+		},
+		"buttons-grid": {
+			"actions": [
+				{
+					"label": "󱏧",
+					"type": "toggle",
+					"command": "swaync-client --toggle-dnd",
+					"update-command": "swaync-client --get-dnd"
+				},
+				{
+					"label": "⟳",
+					"command": "backlight-search"
+				},
+				{
+					"label": "",
+					"command": "niri msg action screenshot"
+				},
+				{
+					"label": "󰌾",
+					"command": "lock"
+				},
+				{
+					"label": "󰍃",
+					"command": "niri msg action quit"
+				},
+				{
+					"label": "󰜉",
+					"command": "systemctl reboot"
+				},
+				{
+					"label": "󰐥",
+					"command": "systemctl poweroff"
+				}
+			]
+		}
+	}
+}

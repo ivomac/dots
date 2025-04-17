@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=systemctl poweroff
+Name=Shutdown
+Icon=/usr/share/icons/HighContrast/256x256/actions/system-shutdown.png
+StartupNotify=false
+Terminal=false
+Type=Application

@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+
+import subprocess as sp
+from pathlib import Path
+from os import getenv
+from sys import argv
+
+import pyperclip as clip
+
+clip.set_clipboard("wl-clipboard")
+
+MENU = getenv("TERM_MENU", "fzf").split()
+
+if MENU[0] == "fzf":
+    MENU += ["--bind=enter:accept-or-print-query", "--exact", "--prompt", "TODO> "]
+
+
+EDITOR = getenv("EDITOR", "vim").split()
+
+
+def main():
+    gist = getenv("GIST_KEY")
+    todolist = sp.check_output(["gist", "-r", str(gist), "todo"], text=True).rstrip("\n")
+
+    filepath = Path("/tmp/todo")
+    with filepath.open("w+") as file:
+        if len(argv) > 1 and argv[1] in "edit":
+            edit(file, todolist)
+        else:
+            menu(file, todolist)
+
+    cmd = ["nohup", "gist", "-u", gist, str(filepath)]
+    sp.Popen(cmd, stdin=sp.DEVNULL, stdout=sp.DEVNULL, stderr=sp.DEVNULL)
+
+    return
+
+
+def edit(file, todolist):
+    file.write(todolist)
+    file.flush()
+    sp.call([*EDITOR, file.name])
+    return
+
+
+def menu(file, todolist):
+    while 1:
+        try:
+            out = sp.check_output(
+                MENU,
+                input=todolist,
+                text=True,
+            ).rstrip("\n")
+        except sp.CalledProcessError:
+            break
+
+        lines = todolist.split("\n")
+        if out in lines:
+            lines.remove(out)
+            clip.copy(out)
+        else:
+            lines.insert(0, out)
+
+        todolist = "\n".join(lines)
+    file.write(todolist)
+    file.flush()
+    return
+
+
+main()

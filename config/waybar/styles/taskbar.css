@@ -1,0 +1,17 @@
+#taskbar {
+	padding: 2px 0px;
+}
+
+#taskbar button {
+	padding: 2px 2px;
+	margin: 4px 0px;
+}
+
+#taskbar button box label {
+	all: unset;
+	margin: -999px;
+}
+
+#taskbar button.active {
+	box-shadow: inset 2px 0 0 0 @cyan;
+}

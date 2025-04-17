@@ -1,0 +1,29 @@
+
+#tray  {
+	margin-bottom: 8px;
+}
+
+#tray menu {
+	background: transparent;
+	background-color: @bg0;
+	padding: 8px;
+	margin-left: 20px;
+	border-radius: 12px;
+}
+
+#tray menu :hover {
+	background-color: @blue;
+}
+
+#tray > .passive {
+	-gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+	-gtk-icon-effect: highlight;
+}
+
+#tray > * {
+	padding: 2px 0px;
+	margin: 2px 0px;
+}

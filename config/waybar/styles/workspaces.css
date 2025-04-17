@@ -1,0 +1,25 @@
+
+#workspaces {
+	padding: 0px 0px;
+}
+
+#workspaces button {
+	padding: 0px 0px;
+	margin: 0px 0px;
+}
+
+#workspaces button.focused {
+}
+
+#workspaces button.visible {
+	color: @yellow;
+}
+
+#workspaces button.urgent {
+	color: @red1 ;
+}
+
+#workspaces button.persistent {
+	color: @green;
+}
+

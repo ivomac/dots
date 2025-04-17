@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=systemctl reboot
+Name=Reboot
+Icon=/usr/share/icons/HighContrast/256x256/actions/view-refresh.png
+StartupNotify=false
+Terminal=false
+Type=Application

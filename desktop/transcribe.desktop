@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=transcribe --reformat --output type
+Name=Transcribe
+Icon=/usr/share/icons/Adwaita/symbolic/devices/audio-card-symbolic.svg
+StartupNotify=false
+Terminal=false
+Type=Application

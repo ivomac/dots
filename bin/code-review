@@ -1,0 +1,51 @@
+#!/usr/bin/env zsh
+
+model="openai:gpt-4o-mini"
+
+message="Hi, please be the code reviewer of my module. You will be looking for
+code that is not pythonic, not efficient, or not well documented. The
+docstrings are expected to be in the google format, documenting all available
+public attributes, including properties and cached properties, as well as
+methods. You will be providing feedback on how to improve the code. I will
+provide the files one at a time on further messages.
+"
+
+mkdir -p feedback
+
+session_file="feedback/.session_id.txt"
+# read session id from session file
+# otherwise, generate random session id
+if [[ -f $session_file ]]; then
+	session=$(cat $session_file)
+	echo "Session resumed: $session"
+else
+	session=$(uuidgen)
+	echo $session > $session_file
+	echo "Session initiated: $session"
+	aichat --model $model --save-session -s $session "$message"
+fi
+
+
+# iterate over python files in the current directory
+for f in *.py; do
+	# out file in feedback folder with suffix .md
+	out_file="feedback/${f:r}.md"
+	if [[ -f $out_file ]]; then
+		if [[ "$1" == "-f" ]]; then
+			rm $out_file
+		else
+			continue
+		fi
+	fi
+	echo "Reviewing the file $f."
+	sleep 4
+	aichat --model $model --save-session -s $session -f $f "Thank you. Please review the file $f." > ${out_file}
+	if [[ $? -ne 0 ]]; then
+		echo "There was an error in the review of the file $f."
+		exit 1
+	fi
+done
+
+
+
+

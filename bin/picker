@@ -1,0 +1,3 @@
+#!/usr/bin/zsh
+
+$TERMINAL -e nnn -S -spicker "-p$1"
