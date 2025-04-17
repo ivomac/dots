@@ -1,0 +1,43 @@
+abbr -g "D"="& disown &> /dev/null"
+abbr -g "E"="| $EDITOR"
+abbr -g "G"="| grep"
+abbr -g "L"="| $PAGER"
+abbr -g "S"="| sort -n"
+
+abbr "s"="sudo"
+
+abbr "sc"="systemctl"
+abbr "scu"="systemctl --user"
+abbr "ssc"="sudo systemctl"
+
+abbr "p"="pacman"
+abbr "sp"="sudo pacman"
+abbr "pac"="sudo paccache -rk1"
+abbr "au"="paru"
+
+abbr "reflect"="sudo reflector --country Germany,France,Switzerland --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist"
+
+abbr "g"="git"
+abbr "g1"="git --git-dir=./.git1"
+abbr "g2"="git --git-dir=./.git2"
+abbr "g3"="git --git-dir=./.git3"
+
+abbr "o"="\$OPEN"
+abbr "y"="\$EXPLORER"
+abbr "e"="\$EDITOR"
+
+abbr "el"="nvim +LazyGit"
+abbr "lg"="lazygit"
+
+abbr "py"="python"
+abbr "ipy"="ipython"
+
+abbr "aish"="ai --role ask-zsh"
+abbr "aicmd"="ai --role cmd-zsh"
+abbr "aicode"="ai --role code"
+abbr "aijobs"="ai --rag jobs --rebuild-rag && ai --role jobs --rag jobs"
+
+abbr "mg"="mgitstatus -e -d 3 \"\$PROJECTS\" 2> /dev/null"
+abbr "mgf"="mgitstatus -f -e -d 3 \"\$PROJECTS\" 2> /dev/null"
+abbr "mgp"="mgitstatus -e -d 3 \"\$PROJECTS\" | grep \"Needs pull\" | awk -F':' '{print \"-C \"\$1\" pull\"}' | xargs -n 3 git"
+abbr "mgP"="mgitstatus -e -d 3 \"\$PROJECTS\" | grep \"Needs push\" | awk -F':' '{print \"-C \"\$1\" push\"}' | xargs -n 3 git"
