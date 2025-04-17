@@ -1,0 +1,27 @@
+[waybar]
+
+enter_command = ["killall", "-SIGUSR1", "waybar"]
+exit_command = ["true"]
+
+# - for corners: top_left, top_right, bottom_right, and bottom_left;
+# - for edges: top, bottom, right, left.
+locations = ["top_right", "bottom_right"]
+
+# Size of the hot corners in pixels, for edges the size means the width
+# for vertical edges, and height for horizontal edges. The other dimension
+# will be the width/height of your display - the set margin.
+size = 12
+
+# Margin on the sides of the hot edges, only applicable to edge locations.
+# See the comment with sizes attribute above.
+margin = 0
+
+# Timeout in milliseconds before command is triggered.
+timeout_ms = 600 # default
+
+# Hex color of the corner when previewed, supports transparency. (#AARRGGBB or #RRGGBB)
+# (Useful for debugging purposes when setting up several hot corners.)
+color = "#FFFF0000" # default
+
+[waybar.output]
+description = ""

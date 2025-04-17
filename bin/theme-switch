@@ -1,0 +1,106 @@
+#!/usr/bin/env zsh
+# This script changes the symlinks in $COLORS, resets the wallpaper, and restarts some services.
+
+WALLPAPERS="$MEDIA/Pictures/Wallpapers"
+
+exit_msg() {
+	echo "$1"
+	notify-send "$1"
+	exit 1
+}
+
+
+if [[ "$1" == "toggle" ]]; then
+	current=$(gsettings get org.gnome.desktop.interface gtk-theme)
+
+	if [[ "$current" == *dark* ]]; then
+		choice="gruvbox_light_soft"
+	else
+		choice="gruvbox_dark"
+	fi
+else
+	choice=$1
+fi
+
+if [[ -z $choice ]]; then
+	exit 0
+fi
+
+for folder in $COLORS/*; do
+	random_file="$(ls -1 $folder | head -n 1)"
+	extension="${random_file:e}"
+
+	theme_file="$folder/$choice${extension:+.$extension}"
+	symlink_file="$folder/default${extension:+.$extension}"
+
+	if [[ ! -f "$theme_file" ]]; then
+		exit_msg "Error - Source file does not exist: $theme_file"
+	fi
+	ln -f -s "$theme_file" "$symlink_file"
+done
+
+if [[ $choice == *dark* ]]; then
+	gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
+	gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+	kvantummanager --set KvGnomeDark
+	wallpaper_path="$WALLPAPERS/dark"
+	ll_background_color="#665c54"
+	bat_theme="dark"
+else
+	gsettings set org.gnome.desktop.interface gtk-theme adwaita
+	gsettings set org.gnome.desktop.interface icon-theme Papirus-Light
+	gsettings set org.gnome.desktop.interface color-scheme prefer-light
+	kvantummanager --set KvGnome
+	wallpaper_path="$WALLPAPERS/light"
+	ll_background_color="#bdae93"
+	bat_theme="light"
+fi
+
+sed --follow-symlinks -i -e "s/.*background-colour.*/	background-colour = \"$ll_background_color\";/" "$XDG_CONFIG_HOME/lavalauncher/lavalauncher.conf"
+sed --follow-symlinks -i -e "s/.*--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
+
+if pgrep -x "swww-daemon" > /dev/null; then
+	wallpapers=("${(@f)$(ls "$wallpaper_path" | sort -R)}")
+
+	outputs=("${(@f)$(swww query)}")
+
+	for i in {1..${#outputs[@]}}; do
+	  output_line="${outputs[i]}"
+	  output_name="${output_line%%:*}"
+	  wallpaper="${wallpapers[i]}"
+	  swww img -o "$output_name" "$wallpaper_path/$wallpaper" & disown
+	done
+fi
+
+albert restart
+
+processes=( "waybar" "swaync" "swayosd-server" "qbittorrent" )
+
+services=( "waybar" "swaync" "swayosd" "qbittorrent" )
+
+for i in {1..${#processes[@]}}; do
+	process="${processes[i]}"
+	service="${services[i]}"
+	if pgrep -x "$process" > /dev/null; then
+		echo "Restarting $service"
+		systemctl --user restart "$service.service" & disown
+	fi
+done
+
+for nvimserver in $XDG_RUNTIME_DIR/nvim.*; do
+	nvim --server "$nvimserver" --remote-send '<cmd>lua dofile(os.getenv("HOME") .. "/.local/colors/nvim/default.lua")<CR>' & disown
+done
+
+TERMCOLORS="$COLORS/OSC/default.ini"
+for pts in /dev/pts/[0-9]*; do
+	while IFS='=' read -r key value; do
+		if [[ "$key" == "fg" ]]; then
+			printf "\033]10;%s\033\\" "$value" > "$pts"
+		elif [[ "$key" == "bg" ]]; then
+			printf "\033]11;%s\033\\" "$value" > "$pts"
+		else
+			printf "\033]4;%s;%s\033\\" "$key" "$value" > "$pts"
+		fi
+	done < "$TERMCOLORS"
+done

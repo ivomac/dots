@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+MAX_WAIT=60
+WAITED=0
+
+while ! ping -c1 8.8.8.8 &>/dev/null; do
+  sleep 2
+  WAITED=$((WAITED + 2))
+done
+
+exec "$@"

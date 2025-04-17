@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Keep track of media player activity
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/playerctld daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

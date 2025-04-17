@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+git clone https://aur.archlinux.org/paru.git ~/paru &&
+  makepkg -si --needed -D ~/paru &&
+  rm -rf ~/paru
