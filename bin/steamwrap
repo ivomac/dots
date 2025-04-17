@@ -1,0 +1,7 @@
+#!/usr/bin/sh
+
+FAKEHOME="$HOME/.config/steam"
+mkdir -p "$FAKEHOME"
+
+env HOME="$FAKEHOME" /usr/bin/steam $@
+

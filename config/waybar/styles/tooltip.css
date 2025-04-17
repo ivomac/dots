@@ -1,0 +1,9 @@
+tooltip {
+	font-size: 20px;
+	border: 2px solid @bg2;
+	border-radius: 12px;
+}
+
+tooltip * {
+	background-color: @bg0;
+}

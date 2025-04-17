@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+while ! pgrep mpd > /dev/null; do
+	sleep 2
+done
+
+mpc random off
+mpc consume on
+mpc crossfade 2
+
+mpc clear
+mpc add /
+mpc shuffle
+
+mpc play 1
+mpc pause

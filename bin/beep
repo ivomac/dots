@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+AUDIO_FILE="/usr/share/sounds/ocean/stereo/alarm-clock-elapsed.oga"
+
+cvlc --quiet --repeat "$AUDIO_FILE" > /dev/null &
+
+if [[ "$3" == "forever" ]]; then
+	notify-send -w -u critical --expire-time=0 -i dialog-warning -a "${1:-Beep!}" "${2:-"Close to stop."}"
+else
+	waittime="${3:-9}"
+	notify-send -a "${1:-Beep!}" "${2:-"Ringing for ${waittime}s."}"
+	sleep "$waittime"
+fi
+
+pkill vlc

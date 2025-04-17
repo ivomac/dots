@@ -1,0 +1,55 @@
+.widget-backlight,
+.widget-volume > box,
+.activatable > box {
+	background: transparent;
+	border: none;
+	padding: 0px;
+	margin: 0px 8px;
+	min-height: 30px;
+}
+
+.widget-volume,
+.activatable,
+.per-app-volume {
+	background: transparent;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.widget-backlight > scale > contents > trough,
+.widget-volume > box > scale > contents > trough,
+.activatable > box > scale > contents > trough {
+	background-color: @bg2;
+	min-height: 4px;
+	padding: 0px;
+	margin-left: 6px;
+	margin-right: 6px;
+	border-radius: 9999px;
+}
+
+.widget-backlight > scale > contents > trough > highlight {
+	background-color: @blue1;
+	border-radius: 9999px;
+}
+
+.widget-volume > box > scale > contents > trough > highlight,
+.activatable > box > scale > contents > trough > highlight {
+	background-color: @cyan1;
+	border-radius: 9999px;
+}
+
+.widget-backlight > label,
+.widget-volume > box > label,
+.widget-volume > box > button,
+.activatable > box > image {
+	background: none;
+	border: none;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.widget-volume > box > button {
+	margin-right: 6px;
+}
+
