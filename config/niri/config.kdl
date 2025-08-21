@@ -308,7 +308,7 @@ binds {
   Super+R { spawn "transcribe"; }
   Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
   Super+P { spawn "yt-dlp-clip"; }
-  Super+Ctrl+P { spawn "/home/ivo/Projects/25.03-job_applications_CV_CL/new_job.zsh"; }
+  Super+Shift+P { spawn "yt-dlp-clip" "song"; }
 
   Super+Backspace { spawn "lock"; }
 
