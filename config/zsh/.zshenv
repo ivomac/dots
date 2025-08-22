@@ -1,5 +1,4 @@
-for file in $ZDOTDIR/env/*.sh; do
-  # file is wayland.sh and WAYLAND_DISPLAY is not set, skip
+for file in "$ZDOTDIR"/env/*.sh; do
   if [[ "$file" == "*wayland.sh" && -z "$WAYLAND_DISPLAY" ]]; then
     continue
   fi
