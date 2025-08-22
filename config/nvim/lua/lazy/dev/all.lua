@@ -101,7 +101,7 @@ local MRW_opts = {
   prompt = " MRW ",
   format_item = {
     separator = " ",
-    columns = { "name", "rest", "twrite" },
+    columns = { "filename", "shortpath", "twrite" },
     justify = { "r", "l", "r" },
     hl = { "Normal", "Comment", "Character" },
   },
@@ -135,8 +135,7 @@ end
 local LFT_opts = {
   pipe = {
     filter = function(buf)
-      return
-          buf.loaded == 1
+      return buf.loaded == 1
           and (buf.variables.TS_tfocused or 0) > 0
     end,
     sort = function(buf1, buf2)
@@ -147,7 +146,7 @@ local LFT_opts = {
   prompt = " LFT ",
   format_item = {
     separator = "  ",
-    columns = { "name", "rest", "tfocused" },
+    columns = { "filename", "shortpath", "tfocused" },
     justify = { "r", "l", "r" },
     hl = { "Normal", "Comment", "Character" },
   },
@@ -183,8 +182,11 @@ return {
         mode = { "x" },
         "<C-h>",
         function()
-          require("toggleterm").send_lines_to_terminal("visual_lines", false,
-            { args = require("toggleterm.terminal").get_last_focused().id })
+          require("toggleterm").send_lines_to_terminal(
+            "visual_lines",
+            false,
+            { args = require("toggleterm.terminal").get_last_focused().id }
+          )
         end,
         silent = true,
         noremap = true,
