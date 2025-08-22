@@ -58,7 +58,7 @@ fpath=("$ZDOTDIR/completions/" "$ZDOTDIR/plugins/zsh-completions/src" $fpath)
 autoload -Uz compinit && compinit -d "$ZDOTDIR/cache/completions"
 
 plugs=(
-  "ivomac/fzf-nav"
+  "ivomac/zsh-fzf-nav"
   "Aloxaf/fzf-tab"
   "olets/zsh-abbr"
   "zdharma-continuum/fast-syntax-highlighting"
@@ -156,11 +156,30 @@ function _foreground() {
 }
 zle -N _foreground
 
+# fzf-nav
+
+function fzf-nav() {
+  if [[ -z "$BUFFER" ]]; then
+    zle _fzf-nav
+  else
+    # if using fzf-tab plugin
+    zle fzf-tab-complete
+  fi
+}
+zle -N fzf-nav
+
+function nav-edit() {
+  tmpfile="$(mktemp -t "fzf-nav-edit.XXXXXX")"
+  echo 'nvim $1 +$2' > "$tmpfile"
+  chmod +x "$tmpfile"
+  FZF_NAV_USER_OPEN="$tmpfile" _fzf-nav
+}
+
 bindkey '^[[A' history-substring-search-up    # Up arrow
 bindkey '^[[B' history-substring-search-down  # Down arrow
 bindkey '^P' history-substring-search-up      # Ctrl+P
 bindkey '^N' history-substring-search-down    # Ctrl+N
-bindkey '^I' _fzf-open                        # Tab
+bindkey '^I' fzf-nav                          # Tab
 bindkey '^[[Z' _cd-back-and-forth             # Shift+Tab
 bindkey '^[[27;5;46~' _cd-up                  # Ctrl+.
 bindkey '^Z' _foreground                      # Ctrl+Z
