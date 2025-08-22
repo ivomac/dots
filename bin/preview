@@ -2,7 +2,6 @@
 
 file="${@: -1}"
 
-# Parse --line=<int> from arguments, store value in $line, and remove the option
 for arg in "$@"; do
   if [[ $arg =~ --line=(.*) ]]; then
 	if [[ ${match[1]} =~ [0-9]+ ]]; then
