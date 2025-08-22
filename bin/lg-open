@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+if [[ -d "$1" ]]; then
+  (cd "$1" && lazygit)
+else
+  (cd "$(dirname "$1")" && lazygit)
+fi
+
+

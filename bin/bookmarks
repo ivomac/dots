@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+head -n1 "$XDG_STATE_HOME/yazi/.dds" \
+| cut -d, -f4- \
+| jq -r '.[] | "\(.path)◇\(.desc)"'
+
+
+

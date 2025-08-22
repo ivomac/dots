@@ -39,7 +39,6 @@ export TERMCMD=$TERMINAL
 export OPEN="yazi_cwd"
 export EXPLORER="yazi_cwd"
 export PICKER="yazi --chooser-file"
-export PREVIEW="preview"
 export PAGER="pager"
 export MANPAGER="pager"
 export EDITOR="nvim"
@@ -118,69 +117,69 @@ $color_str \
 --bind='ctrl-\\:toggle-preview' \
 "
 
-FZF_NAV_FD_COMMAND="\
-fd \
---color=always \
---hidden \
---no-ignore \
-"
+export FZF_DEFAULT_COMMAND="fzf-nav-find"
 
-FZF_NAV_RG_COMMAND="\
-rg \
---color=always \
---hidden \
---no-ignore \
---line-number \
---with-filename \
---field-match-separator=◇ \
---no-heading \
---smart-case \
-"
+# fzf nav plugin
 
-FZF_NAV_SEARCH_EXCLUDE=(
-  "**/.git/**"
-  "**/.parallel/**"
-  "**/.cargo/**"
-  "**/.npm/**"
-  "**/.pki/**"
-  "**/.venv**/**"
-  "**/__pycache__/**"
-  "**/.ipython/**"
-  "**/cache/**"
-  "**/.cache/**"
-  "**/.nvim/**"
-  "**/nvim/undo/**"
-  "**/.android/**"
-  "**/.mozilla/firefox/*/**"
-  "**/.stfolder/**"
-  "**/.steam/**"
-  "**/.aider*/**"
-  "**/.local/share/*/**"
-  "**/yazi/packages/**"
-  "**/.bib/**"
+export FZF_NAV_SEPARATOR=◇
+export FZF_NAV_TERMCMD="$TERMCMD"
+export FZF_NAV_OPEN="yazi"
+
+export FZF_NAV_USER_MODE="bookmarks"
+export FZF_NAV_USER_OPEN="lg-open"
+
+export FZF_NAV_FD_OPTS=(
+    "--color=always"
+    "--hidden"
+    "--no-ignore"
+    "--exclude='**/.git/**'"
+    "--exclude='**/.parallel/**'"
+    "--exclude='**/.cargo/**'"
+    "--exclude='**/.npm/**'"
+    "--exclude='**/.pki/**'"
+    "--exclude='**/.venv**/**'"
+    "--exclude='**/__pycache__/**'"
+    "--exclude='**/.ipython/**'"
+    "--exclude='**/cache/**'"
+    "--exclude='**/.cache/**'"
+    "--exclude='**/.nvim/**'"
+    "--exclude='**/nvim/undo/**'"
+    "--exclude='**/.android/**'"
+    "--exclude='**/.mozilla/firefox/*/**'"
+    "--exclude='**/.stfolder/**'"
+    "--exclude='**/.steam/**'"
+    "--exclude='**/.aider*/**'"
+    "--exclude='**/.local/share/*/**'"
+    "--exclude='**/yazi/packages/**'"
 )
 
-for dir in "${FZF_NAV_SEARCH_EXCLUDE[@]}"; do
-  if [[ -n "$dir" ]]; then
-    FZF_NAV_FD_COMMAND+=' --exclude='"'$dir'"
-    FZF_NAV_RG_COMMAND+=' --glob=!'"'$dir'"
-  fi
-done
-
-export FZF_NAV_FD_COMMAND
-export FZF_NAV_RG_COMMAND
-
-export FZF_DEFAULT_COMMAND="$FZF_NAV_FD_COMMAND"
-
-export FZF_NAV_BOOKMARKS_COMMAND="\
-head -n1 '$XDG_STATE_HOME/yazi/.dds' \
-| cut -d, -f4- \
-| jq -r '.[] | \"\(.path)◇\(.desc)\"' \
-"
-
-export FZF_NAV_GITDIRS_COMMAND="$FZF_NAV_FD_COMMAND --type=dir '^\.git$' \"$PROJECTS\" -x echo {//}"
-export FZF_NAV_GITSTATUS_COMMAND="mgitstatus --no-ok -c --depth 3 \"$PROJECTS\""
-export FZF_NAV_GITFETCH_COMMAND="mgitstatus --no-ok -c --depth 3 -f \"$PROJECTS\""
+export FZF_NAV_RG_OPTS=(
+    "--color=always"
+    "--hidden"
+    "--no-ignore"
+    "--line-number"
+    "--with-filename"
+    "--smart-case"
+    "--glob=!'**/.git/**'"
+    "--glob=!'**/.parallel/**'"
+    "--glob=!'**/.cargo/**'"
+    "--glob=!'**/.npm/**'"
+    "--glob=!'**/.pki/**'"
+    "--glob=!'**/.venv**/**'"
+    "--glob=!'**/__pycache__/**'"
+    "--glob=!'**/.ipython/**'"
+    "--glob=!'**/cache/**'"
+    "--glob=!'**/.cache/**'"
+    "--glob=!'**/.nvim/**'"
+    "--glob=!'**/nvim/undo/**'"
+    "--glob=!'**/.android/**'"
+    "--glob=!'**/.mozilla/firefox/*/**'"
+    "--glob=!'**/.stfolder/**'"
+    "--glob=!'**/.steam/**'"
+    "--glob=!'**/.aider*/**'"
+    "--glob=!'**/.local/share/*/**'"
+    "--glob=!'**/yazi/packages/**'"
+)
 
 # ADD TO PATH
 
