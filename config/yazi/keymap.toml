@@ -11,7 +11,7 @@ desc = "Jump to char"
 
 [[mgr.prepend_keymap]]
 on = "<C-Enter>"
-run = 'shell --orphan $TERMINAL -D=$0'
+run = 'shell --orphan $TERMCMD -D=$0'
 desc = "Open terminal here"
 
 [[mgr.prepend_keymap]]
