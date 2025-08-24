@@ -34,8 +34,7 @@ export RUSTUP_HOME="$HOME/.cache"
 
 export MENU="menu"
 
-export TERMINAL="footclient"
-export TERMCMD=$TERMINAL
+export TERMCMD="footclient"
 export OPEN="yazi_cwd"
 export EXPLORER="yazi_cwd"
 export PICKER="yazi --chooser-file"
