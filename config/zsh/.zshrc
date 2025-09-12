@@ -175,6 +175,37 @@ function nav-edit() {
   FZF_NAV_USER_OPEN="$tmpfile" _fzf-nav
 }
 
+# Python Env
+function venv() {
+  local env_folder="$PROJECTS/.venvs"
+
+  if [ -n "$VIRTUAL_ENV" ]; then
+    echo "Deactivating current virtual environment: $(basename "$VIRTUAL_ENV")"
+    deactivate
+    return 0
+  fi
+
+  if [ -z "$1" ]; then
+    ls -1 "$env_folder"
+    return 0
+  fi
+
+  local env_name="$1"
+  local python_version="${2:-3.13}"
+  local env_path="$env_folder/$env_name$python_version"
+
+  local python_path="$(which "python$python_version" )"
+
+  if [ ! -d "$env_path" ]; then
+    echo "Creating virtual environment: $env_name"
+    "$python_path" -m venv "$env_path"
+  fi
+
+  echo "Activating virtual environment: $env_name"
+  source "$env_path/bin/activate"
+  return 0
+}
+
 bindkey '^[[A' history-substring-search-up    # Up arrow
 bindkey '^[[B' history-substring-search-down  # Down arrow
 bindkey '^P' history-substring-search-up      # Ctrl+P
