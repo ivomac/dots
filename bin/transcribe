@@ -2,9 +2,14 @@
 
 proc=$(ps aux | grep 'transcribe.py XXZY7' | grep -v grep | awk '{print $2}')
 
+function notify {
+  notify-send --app-name=Deepgram --icon=/usr/share/icons/Papirus/128x128/apps/gtranscribe.svg "$1" "$2"
+}
+
 if [ -n "$proc" ]; then
-  echo "Transcribe is already running with PID: $proc"
   kill -USR1 $proc
 else
-  exec transcribe.py XXZY7 "$@" 2>/dev/null
+  notify "Transcribe" "Transcribing..."
+  transcribe.py XXZY7 "$@" 2>/dev/null | wl-copy
+  notify "Transcribe" "Transcription copied to clipboard"
 fi
