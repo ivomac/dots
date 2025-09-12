@@ -15,6 +15,8 @@ pretty: true
 cache-prompts: true
 restore-chat-history: false
 
+subtree-only: true
+
 suggest-shell-commands: false
 auto-lint: true
 lint-cmd:
@@ -38,6 +40,7 @@ watch-files: true
 voice-format: wav
 voice-language: en
 
+# deepseek/deepseek-reasoner
 model: anthropic/claude-sonnet-4-20250514
 
 editor-model: anthropic/claude-sonnet-4-20250514
