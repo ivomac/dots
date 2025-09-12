@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 
 import signal
-import subprocess as sp
 import time
 from os import environ
 from sys import argv
 
-import pyperclip as clip
 from deepgram import (
     DeepgramClient,
     FileSource,
@@ -18,17 +16,6 @@ from deepgram import (
 
 ## NOTIFICATIONS
 
-
-def notify(title, message):
-    sp.run(
-        [
-            "notify-send",
-            "--app-name=Deepgram",
-            "--icon=/usr/share/icons/Papirus/128x128/apps/gtranscribe.svg",
-            title,
-            message,
-        ]
-    )
 
 
 ## SIGNAL HANDLER
@@ -121,9 +108,6 @@ if __name__ == "__main__":
     if len(argv) > 2:
         transcript = transcribe.from_file(argv[2])
     else:
-        notify("Deepgram", "Transcribing...")
         transcript = transcribe.from_mic()
 
     print(transcript)
-    clip.copy(transcript)
-    notify("Deepgram", "Transcription ready on clipboard.")
