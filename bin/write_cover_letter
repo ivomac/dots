@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+folder="/home/ivo/Projects/25.03-job_applications_CV_CL/CL"
+
+source "$PROJECTS/.venvs/cl_gen/bin/activate"
+
+py_script="$folder/write_cover_letter.py"
+
+wl-paste | "$py_script" | wl-copy
+

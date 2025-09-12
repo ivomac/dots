@@ -28,7 +28,7 @@ if [[ "$1" == "song" ]]; then
 fi
 
 notify "Downloading $typ" "$url"
-yt-dlp --paths "temp:/tmp" --paths "home:$DL_HOME" --output "%(title)s" "${=opts}" "$url" &>/dev/null
+yt-dlp --paths "temp:/tmp" --paths "home:$DL_HOME" --output "%(title)s" ${=opts} "$url" &>/dev/null
 
 if [[ $? -ne 0 ]]; then
   notify "Download Failed" "$url"
