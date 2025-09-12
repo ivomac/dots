@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+tmpfolder="$(mktemp -d)"
+
+folders=("preferences" "runs" "saves")
+
+phone="/sdcard/Android/data/com.humble.SlayTheSpire/files"
+steam="/mnt/SSD/SteamLibrary/steamapps/common/SlayTheSpire"
+
+for folder in "${folders[@]}"; do
+  echo "Syncing $folder..."
+
+  echo "  Pulling from phone..."
+  adb pull "$phone/$folder" "$tmpfolder/$folder" >/dev/null 2>&1
+
+  echo "  Syncing with Steam..."
+  rsync -auq "$steam/$folder/" "$tmpfolder/$folder/"
+  rsync -auq "$tmpfolder/$folder/" "$steam/$folder/"
+
+  echo "  Pushing to phone..."
+  adb push "$tmpfolder/$folder" "$phone/$folder" >/dev/null 2>&1
+
+  rm -rf "$tmpfolder/$folder"
+done
+
+rm -rf "$tmpfolder"
