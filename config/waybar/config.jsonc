@@ -173,7 +173,7 @@
     ],
     "clock": {
       "interval": 12,
-      "format": "{:%a %d.%m <span weight='bold'>%H:%M:%S</span> %Z}",
+      "format": "{:%y.%m.%d %a <span weight='bold'>%H:%M:%S</span> %Z}",
       "rotate": 90,
       "tooltip": true,
       "tooltip-format": "<tt><small>{calendar}</small></tt>",
