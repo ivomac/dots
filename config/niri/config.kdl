@@ -305,10 +305,13 @@ binds {
 
   Super+O { toggle-overview; }
 
-  Super+R { spawn "transcribe"; }
+  Super+T { spawn "transcribe"; }
   Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
-  Super+P { spawn "yt-dlp-clip"; }
-  Super+Shift+P { spawn "yt-dlp-clip" "song"; }
+
+  Super+W { spawn "write_cover_letter"; }
+
+  Super+Y { spawn "yt-dlp-clip"; }
+  Super+Shift+Y { spawn "yt-dlp-clip" "song"; }
 
   Super+Backspace { spawn "lock"; }
 
@@ -316,14 +319,10 @@ binds {
   Super+Ctrl+Q { quit; }
 }
 
-spawn-at-startup "powerprofilesctl" "configure-action" "--enable" "amdgpu_dpm"
-
-spawn-at-startup "mpd-reset"
 spawn-at-startup "nm-applet" "--indicator"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "udiskie" "-At"
 
-spawn-at-startup "backlight-search"
-
 spawn-at-startup "ulauncher-start"
 
+spawn-at-startup "mpd-reset"
