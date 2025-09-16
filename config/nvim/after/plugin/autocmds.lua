@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd({ "VimEnter", "BufAdd" },
     pattern = "*",
     callback = function(ev)
       if vim.g.SessionLoad ~= 1 and vim.fn.isdirectory(ev.file) == 1 then
-        require("floatterm").new("Yazi")
+        require("floatterm").open({choice="Yazi"})
         vim.api.nvim_buf_delete(ev.buf, { force = true })
       end
     end
