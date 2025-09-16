@@ -43,10 +43,13 @@ else
     | sed -E -e 's/\s\s+/ /g' \
     | sed -E -e 's/\s\././g'
   )
-  mv "$tmp_path" "$dest/$short_base"
-  if [[ $? -ne 0 ]]; then
-    notify "Move Failed" "Failed to move the downloaded file to $dest"
+  if [[ "$short_base" == *.webm ]]; then
+    mp4_name="${short_base%.webm}.mp4"
+    ffmpeg -i "$tmp_path" "$dest/$mp4_name" &>/dev/null
+    rm "$tmp_path"
+    notify "Move Success" "Converted $short_base to .mp4 and moved to $dest"
   else
+    mv "$tmp_path" "$dest/$short_base"
     notify "Move Success" "$short_base moved to $dest"
   fi
 fi
