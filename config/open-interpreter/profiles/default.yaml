@@ -1,0 +1,11 @@
+llm:
+  model: "claude-sonnet-4-5-20250929"
+  temperature: 0
+
+computer:
+  import_computer_api: True
+
+safe_mode: "ask"
+offline: True
+
+version: 0.2.5

@@ -17,6 +17,8 @@ abbr "au"="paru"
 
 abbr "refl"="systemctl start reflector.service"
 
+abbr "i"="interpreter"
+
 abbr "g"="git"
 
 abbr "o"="\$OPEN"
