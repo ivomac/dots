@@ -208,30 +208,6 @@ window-rule {
 }
 
 window-rule {
-  match app-id="org.pwmt.zathura"
-  default-column-width { proportion 0.5; }
-}
-
-window-rule {
-  match app-id="footclient"
-  default-column-width { proportion 0.5; }
-}
-
-window-rule {
-  match app-id="floatfoot"
-  default-column-width { proportion 0.5; }
-  open-floating true
-}
-
-window-rule {
-  match app-id="xarchiver"
-  open-floating true
-  open-focused true
-  default-column-width { proportion 0.5; }
-	default-window-height { proportion 0.7; }
-}
-
-window-rule {
   match app-id="ulauncher"
   clip-to-geometry false
   open-floating true
@@ -241,14 +217,6 @@ window-rule {
   focus-ring {
     off
   }
-}
-
-window-rule {
-  match app-id="org.pulseaudio.pavucontrol"
-  open-floating true
-  open-focused true
-  default-column-width { proportion 0.5; }
-	default-window-height { proportion 0.7; }
 }
 
 binds {
