@@ -260,10 +260,10 @@ binds {
 
   Super+O { toggle-overview; }
 
+  Super+Tab { spawn "niri-switch"; }
+
   Super+T { spawn "transcribe"; }
   Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
-
-  Super+W { spawn "write_cover_letter"; }
 
   Super+Y { spawn "yt-dlp-clip"; }
   Super+Shift+Y { spawn "yt-dlp-clip" "song"; }
@@ -283,3 +283,6 @@ spawn-at-startup "udiskie" "-At"
 spawn-at-startup "anyrun" "daemon"
 
 spawn-at-startup "mpd-reset"
+
+spawn-at-startup "niri-switch-daemon"
+spawn-at-startup "niri-float-sticky"
