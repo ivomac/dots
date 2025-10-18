@@ -34,18 +34,12 @@
   },
   "widgets": [
     "notifications",
-    "mpris",
     "buttons-grid"
   ],
   "widget-config": {
     "label": {
       "max-lines": 5,
       "text": "Label Text"
-    },
-    "mpris": {
-      "image-size": 48,
-      "image-radius": 8,
-      "blur": false
     },
     "volume": {
       "show-per-app": true,
