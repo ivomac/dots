@@ -8,11 +8,6 @@
   padding: 0px;
 }
 
-.notification-row:focus,
-.notification-row:hover {
-  background-color: @bg3;
-}
-
 .notification {
   background-color: @bg1;
   border-radius: 8px;
@@ -20,6 +15,11 @@
   padding: 4px 12px;
   margin-right: 32px;
   margin-bottom: 6px;
+}
+
+.notification:focus,
+.notification:hover {
+  background-color: @bg0;
 }
 
 .notification-content {
@@ -33,13 +33,13 @@
 }
 
 .close-button {
-  background-color: @bg1;
+  background-color: @bg3;
   color: @bg0;
   text-shadow: none;
   padding: 0px;
   border-radius: 8px;
-  margin-top: 5px;
-  margin-right: 5px;
+  margin-top: 6px;
+  margin-right: 38px;
 }
 
 .close-button:hover {
@@ -53,11 +53,6 @@
   border: 2px solid @fg0;
   border-top: none;
   border-radius: 8px;
-}
-
-.notification-default-action:hover,
-.notification-action:hover {
-  background-color: @bg0;
 }
 
 .notification-default-action {
