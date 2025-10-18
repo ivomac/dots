@@ -6,14 +6,15 @@
   padding: 0px;
   margin: 0px;
   margin-top: 8px;
+  margin-bottom: 32px;
   border: none;
 }
 
 .widget-buttons-grid>flowbox>flowboxchild>button {
-  font-size: 18px;
+  font-size: 20px;
   min-height: 30px;
-  margin: 0px 4px;
-  padding: 0px;
+  margin: 0px 6px;
+  padding: 0px 16px;
   border: none;
   border-radius: 8px;
   background-color: @bg1;
