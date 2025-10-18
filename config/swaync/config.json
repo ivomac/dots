@@ -1,7 +1,7 @@
 {
   "$schema": "/etc/xdg/swaync/configSchema.json",
   "positionX": "right",
-  "positionY": "bottom",
+  "positionY": "center",
   "layer": "overlay",
   "control-center-layer": "none",
   "layer-shell": true,
@@ -9,16 +9,15 @@
   "cssPriority": "user",
   "notification-2fa-action": true,
   "notification-inline-replies": false,
-  "notification-icon-size": 32,
   "notification-body-image-height": 100,
   "notification-body-image-width": 200,
   "timeout": 8,
   "timeout-low": 6,
   "timeout-critical": 0,
-  "fit-to-screen": false,
   "relative-timestamps": true,
-  "control-center-width": 500,
-  "control-center-height": 700,
+  "fit-to-screen": false,
+  "control-center-width": 400,
+  "control-center-height": 600,
   "notification-window-width": 400,
   "keyboard-shortcuts": false,
   "transition-time": 200,
@@ -40,10 +39,6 @@
     "label": {
       "max-lines": 5,
       "text": "Label Text"
-    },
-    "volume": {
-      "show-per-app": true,
-      "label": "󰕾"
     },
     "buttons-grid": {
       "actions": [
