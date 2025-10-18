@@ -18,11 +18,10 @@
 .control-center {
   all: unset;
   background-color: @bg2;
-  border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 0px 0px 8px;
   border: 1px solid @fg0;
   padding: 12px;
-  margin-right: 32px;
-  margin-bottom: -1px;
+  margin: 0px -1px -1px -1px;
 }
 
 @import "./styles/notifications.css";
