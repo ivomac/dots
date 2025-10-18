@@ -207,18 +207,6 @@ window-rule {
   }
 }
 
-window-rule {
-  match app-id="ulauncher"
-  clip-to-geometry false
-  open-floating true
-  default-floating-position x=0 y=200 relative-to="top"
-  default-window-height { proportion 0.5; }
-  default-column-width { proportion 0.8; }
-  focus-ring {
-    off
-  }
-}
-
 binds {
   Super+H   { focus-column-or-monitor-left; }
   Super+J   { focus-window-or-workspace-down; }
@@ -266,7 +254,6 @@ binds {
   Super+Semicolon { spawn "swayosd-client-backlight" "-10"; }
 
   Super+Return { spawn "footclient"; }
-  Super+Escape { spawn "ulauncher-toggle"; }
   Super+E { spawn "thunar"; }
 
   Super+Ctrl+Backslash { spawn "footclient" "--maximized" "zsh" "-c" "source $ZDOTDIR/.zshrc; todo"; }
@@ -283,6 +270,8 @@ binds {
 
   Super+Backspace { spawn "lock"; }
 
+  Super+Escape { spawn "anyrun"; }
+
   Super+Q { close-window; }
   Super+Ctrl+Q { quit; }
 }
@@ -291,6 +280,6 @@ spawn-at-startup "nm-applet" "--indicator"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "udiskie" "-At"
 
-spawn-at-startup "ulauncher-start"
+spawn-at-startup "anyrun" "daemon"
 
 spawn-at-startup "mpd-reset"

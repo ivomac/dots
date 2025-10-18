@@ -1,0 +1,49 @@
+* {
+  font-size: 20px;
+  font-family: "Firosevka", "Symbols Nerd Font Mono";
+  min-height: 0px;
+  min-width: 0px;
+  margin: 0;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+window {
+  border-radius: 8px;
+}
+
+box.main {
+  border: 1px solid @theme_selected_fg_color;
+  border-radius: 8px;
+}
+
+text {
+  min-height: 30px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+box.plugin:first-child {
+  margin-top: 5px;
+}
+
+box.plugin.info {
+  min-width: 160px;
+}
+
+label.match.description {
+  font-size: 12px;
+}
+
+label.plugin.info {
+  font-size: 16px;
+}
+
+.match {
+  padding: 1px;
+}
+
+.match:selected {
+  background-color: #458588;
+}

@@ -1,8 +1,0 @@
-#!/usr/bin/env zsh
-
-if pgrep -x "ulauncher" > /dev/null; then
-  killall ulauncher
-fi
-
-ulauncher --no-window-shadow --hide-window & disown
-
