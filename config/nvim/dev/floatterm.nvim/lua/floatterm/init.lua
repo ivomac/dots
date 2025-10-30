@@ -51,10 +51,10 @@ function M.open(opts)
   local dir = vim.api.nvim_buf_get_name(0) or vim.fn.getcwd()
   local bufname = vim.api.nvim_buf_get_name(0)
   local termdict = {
-    Aider = {
+    Code = {
       mode = "hide",
-      display_name = "Aider",
-      cmd = "aid",
+      display_name = "Code",
+      cmd = "opencode",
       dir = "git_dir",
     },
     Yazi = {
@@ -134,7 +134,7 @@ function M.open(opts)
     {
       hints = {
         show = true,
-        chars = "aflrse",
+        chars = "cflrse",
       },
       pipe = {
         sort = function(t1, t2) return t1.display_name < t2.display_name end,
