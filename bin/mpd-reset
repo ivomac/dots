@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+mkdir -p "$XDG_CACHE_HOME/mpd/playlists"
+
 while ! pgrep mpd >/dev/null; do
   sleep 2
 done
