@@ -282,6 +282,8 @@ return {
         { noremap = true, silent = true, desc = "Action list" })
       vim.keymap.set({ "n", "x" }, "gar", vim.lsp.buf.rename, { noremap = true, silent = true, desc = "Rename" })
       vim.keymap.set({ "n", "x" }, "gaf", vim.lsp.buf.format, { noremap = true, silent = true, desc = "Format" })
+      vim.keymap.set({ "n", "x" }, "gd", vim.diagnostic.open_float,
+        { noremap = true, silent = true, desc = "Symb Diagnostics" })
 
       vim.keymap.set({ "n", "x" }, "gsd", vim.lsp.buf.definition,
         { noremap = true, silent = true, desc = "Symb definition" })
