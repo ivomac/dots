@@ -20,3 +20,11 @@ vim.keymap.set("n", "<leader>a<Tab>", ":setlocal noexpandtab<CR>:retab!<CR>", { 
 vim.keymap.set("n", "<leader>a ", ":setlocal expandtab<CR>:retab!<CR>", { desc = "Tabs to Spaces" })
 
 vim.keymap.set("n", "<leader>m", function() vim.cmd("make") end, { desc = "Make" })
+
+vim.keymap.set("n", "<C-CR>",
+  function()
+    local current_dir = vim.fn.expand("%:p:h")
+    if current_dir == "" then current_dir = vim.fn.getcwd() end
+    vim.fn.jobstart({ vim.env.TERMCMD }, { cwd = current_dir, detach = true })
+  end
+)
