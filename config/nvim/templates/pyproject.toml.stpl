@@ -2,7 +2,7 @@
 name = "${1}"
 version = "${2:0.1}"
 description = "${3}"
-readme = "README.md"
+readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.${4}"
 license = { text = "MIT" }
 authors = [
@@ -13,29 +13,58 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+  "uv",
   "ruff",
-  "ty",
+  "mypy",
+  "pytest",
+  "pytest-cov",
 ]
-
-[tool.uv]
-python = "3.${4}"
 
 [tool.ruff]
 target-version = "py3${4}"
-exclude = ["build", "dist", ".venv"]
-extend-include = ["*.pyi"]
-line-length = 100
-indent-width = 4
+line-length = 88
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "NPY201", "RET"]
+select = [
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "W",      # pycodestyle warnings
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "SIM",    # flake8-simplify
+    "C4",     # flake8-comprehensions
+    "PTH",    # flake8-use-pathlib
+    "NPY201", # numpy 2.0 rules
+    "RET",    # flake8-return
+]
 ignore = ["D203", "D213"]
 fixable = ["ALL"]
 unfixable = []
 
 [tool.ruff.format]
 quote-style = "double"
-indent-style = "space"
 docstring-code-format = true
-docstring-code-line-length = "dynamic"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+# plugins = ["pydantic.mypy", "numpy.mypy_plugin"]
+strict = true
+disallow_any_unimported = true
+
+[tool.coverage.run]
+concurrency = ["thread"]
+source = ["src"]
+omit = ["tests/*", "*/migrations/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
