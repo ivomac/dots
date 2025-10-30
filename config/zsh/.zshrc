@@ -104,6 +104,7 @@ function osc7-pwd() {
 
 function chpwd() {
     (( ZSH_SUBSHELL )) || osc7-pwd
+    auto_venv
 }
 
 # AUTOCD ON YAZI EXIT
@@ -177,33 +178,48 @@ function nav-edit() {
 
 # Python Env
 function venv() {
-  local env_folder="$PROJECTS/.venvs"
-
   if [ -n "$VIRTUAL_ENV" ]; then
-    echo "Deactivating current virtual environment: $(basename "$VIRTUAL_ENV")"
+    echo "Deactivating virtual env:  ${VIRTUAL_ENV:h}"
     deactivate
     return 0
   fi
 
-  if [ -z "$1" ]; then
-    ls -1 "$env_folder"
+  if [[ -z "$1" ]]; then
     return 0
   fi
 
-  local env_name="$1"
+  local env_path="$1/.venv"
   local python_version="${2:-3.13}"
-  local env_path="$env_folder/$env_name$python_version"
 
   local python_path="$(which "python$python_version" )"
 
-  if [ ! -d "$env_path" ]; then
-    echo "Creating virtual environment: $env_name"
+  if [[ ! -d "$env_path" ]]; then
+    echo "Creating virtual env:  ${env_path:h}"
     "$python_path" -m venv "$env_path"
   fi
 
-  echo "Activating virtual environment: $env_name"
+  echo "Activating virtual env:  ${env_path:h}"
   source "$env_path/bin/activate"
-  return 0
+}
+
+function auto_venv() {
+    local current_path="$PWD"
+    local env_path=""
+
+    while [[ "$current_path" == "${PROJECTS}"* ]]; do
+        if [[ -d "$current_path/.venv" ]]; then
+          env_path="$current_path"
+          break
+        fi
+
+        current_path="${current_path:h}"
+    done
+
+    if [[ -n "$env_path" ]]; then
+        venv "$env_path"
+    elif [[ -z "$env_path" ]] && [[ -n "$VIRTUAL_ENV" ]]; then
+        venv
+    fi
 }
 
 bindkey '^[[A' history-substring-search-up    # Up arrow
