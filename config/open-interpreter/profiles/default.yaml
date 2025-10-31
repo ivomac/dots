@@ -6,6 +6,6 @@ computer:
   import_computer_api: True
 
 safe_mode: "ask"
-offline: True
+offline: False
 
 version: 0.2.5
