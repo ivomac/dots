@@ -221,6 +221,7 @@ function auto_venv() {
         venv
     fi
 }
+auto_venv
 
 bindkey '^[[A' history-substring-search-up    # Up arrow
 bindkey '^[[B' history-substring-search-down  # Down arrow
