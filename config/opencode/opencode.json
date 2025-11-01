@@ -67,6 +67,12 @@
       "agent": "build",
       "model": "anthropic/claude-haiku-4-5-20251001",
     },
+    "commit": {
+      "template": "Commit the staged changes with a concise git commit message following the Conventional Commits specification.\nEnsure the message is clear, descriptive, and accurately reflects the changes made.",
+      "description": "Commit the staged changes following Conventional Commits",
+      "agent": "build",
+      "model": "anthropic/claude-haiku-4-5-20251001",
+    },
   },
   "watcher": {
     "ignore": []
