@@ -33,6 +33,8 @@ abbr "lg"="lazygit"
 abbr "py"="python"
 abbr "ipy"="ipython"
 
-abbr "aish"="ai --role ask-zsh"
-abbr "aicmd"="ai --role cmd-zsh"
-abbr "aicode"="ai --role code"
+abbr "aic"="ai --role code"
+abbr "aicl"="ai --role code-long"
+
+abbr "aisl"="ai --role zsh-long"
+abbr "ais"="ai --role zsh"
