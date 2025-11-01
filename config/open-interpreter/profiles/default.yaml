@@ -1,5 +1,5 @@
 llm:
-  model: "claude-sonnet-4-5-20250929"
+  model: "deepseek/deepseek-reasoner"
   temperature: 0
 
 computer:
