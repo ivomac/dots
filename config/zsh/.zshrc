@@ -178,12 +178,6 @@ function nav-edit() {
 
 # Python Env
 function venv() {
-  if [ -n "$VIRTUAL_ENV" ]; then
-    echo "Deactivating virtual env:  ${VIRTUAL_ENV:h}"
-    deactivate
-    return 0
-  fi
-
   if [[ -z "$1" ]]; then
     return 0
   fi
@@ -203,23 +197,21 @@ function venv() {
 }
 
 function auto_venv() {
-    local current_path="$PWD"
-    local env_path=""
+  local current_path="$PWD"
+  local env_path=""
 
-    while [[ "$current_path" == "${PROJECTS}"* ]]; do
-        if [[ -d "$current_path/.venv" ]]; then
-          env_path="$current_path"
-          break
-        fi
-
-        current_path="${current_path:h}"
-    done
-
-    if [[ -n "$env_path" ]]; then
-        venv "$env_path"
-    elif [[ -z "$env_path" ]] && [[ -n "$VIRTUAL_ENV" ]]; then
-        venv
+  while [[ "$current_path" == "${PROJECTS}"* ]]; do
+    if [[ -d "$current_path/.venv" ]]; then
+      env_path="$current_path"
+      break
     fi
+
+    current_path="${current_path:h}"
+  done
+
+  if [[ -n "$env_path" ]] && [[ -z "$VIRTUAL_ENV" ]]; then
+    venv "$env_path"
+  fi
 }
 auto_venv
 
