@@ -245,7 +245,7 @@ return {
             score_offset = 40,
           },
           snippets = {
-            score_offset = 200,
+            score_offset = 10,
             opts = {
               search_paths = {
                 string.format("%s/snippets", vim.fn.stdpath("config")),
