@@ -116,7 +116,7 @@ $color_str \
 --bind='ctrl-\\:toggle-preview' \
 "
 
-export FZF_DEFAULT_COMMAND="fzf-nav-find"
+export FZF_DEFAULT_COMMAND="fd ${FZF_NAV_FD_OPTS[*]}"
 
 # fzf nav plugin
 
@@ -129,6 +129,7 @@ export FZF_NAV_USER_OPEN="lg-open"
 
 export FZF_NAV_FD_OPTS=(
   "--color=always"
+  "--follow"
   "--hidden"
   "--no-ignore"
   "--exclude='**/.git/**'"
