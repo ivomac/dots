@@ -38,8 +38,8 @@ gui:
   scrollHeight: 6
 git:
   parseEmoji: true
-  paging:
-    colorArg: always
+  pagers:
+    - colorArg: always
   allBranchesLogCmds:
     - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium --all
   log:
