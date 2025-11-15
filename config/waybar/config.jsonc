@@ -1,200 +1,162 @@
-[
-  {
-    "position": "left",
-    "exclusive": false,
-    "layer": "top",
-    "spacing": 0,
-    "margin": "0 0 2000 0",
-    "no-center": true,
-    "expand-left": true,
-    "modules-left": [
-      "niri/workspaces"
-    ],
-    "niri/workspaces": {
-      "on-click": "activate",
-      "on-click-middle": "close",
-      "format": "{icon}",
-      "format-icons": {
-        "default": "·",
-        "active": "●"
+{
+  "position": "right",
+  "exclusive": false,
+  "layer": "top",
+  "spacing": 0,
+  "margin": "0 0 2000 0",
+  "no-center": true,
+  "expand-left": true,
+  "modules-left": [
+    "clock",
+    "group/group-tray",
+    "niri/workspaces"
+  ],
+  "clock": {
+    "interval": 10,
+    "format": "{:%a %d.%m <span weight='bold'>%H:%M</span>}",
+    "rotate": 90,
+    "tooltip": true,
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "year",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#689d6a'>{}</span>",
+        "days": "<span color='#689d6a'>{}</span>",
+        "weeks": "<span color='#d79921'>W{}</span>",
+        "weekdays": "<span color='#458588'>{}</span>",
+        "today": "<span color='#cc241d'><u>{}</u></span>"
       }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
     }
   },
-  {
-    "position": "right",
-    "exclusive": false,
-    "layer": "top",
-    "spacing": 0,
-    "margin": "0 0 2000 0",
-    "no-center": true,
-    "expand-left": true,
-    "modules-left": [
-      "wlr/taskbar"
-    ],
-    "wlr/taskbar": {
-      "tooltip": true,
-      "icon-size": 20,
-      "on-click": "activate",
-      "on-click-middle": "close"
+  "niri/workspaces": {
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "format": "{icon}",
+    "format-icons": {
+      "default": "·",
+      "active": "●"
     }
   },
-  {
-    "position": "right",
-    "exclusive": false,
-    "layer": "top",
-    "spacing": 0,
-    "height": 2,
-    "modules-center": [
-      "group/group-tray"
-    ],
-    "group/group-tray": {
-      "orientation": "inherit",
-      "modules": [
-        "tray",
-        "systemd-failed-units",
-        "power-profiles-daemon",
-        "pulseaudio",
-        "backlight",
-        "battery",
-        "custom/notification"
+  "group/group-tray": {
+    "orientation": "inherit",
+    "modules": [
+      "tray",
+      "systemd-failed-units",
+      "power-profiles-daemon",
+      "pulseaudio",
+      "backlight",
+      "battery",
+      "custom/notification"
+    ]
+  },
+  "tray": {
+    "show-passive-items": true,
+    "icon-size": 20,
+    "spacing": 6
+  },
+  "systemd-failed-units": {
+    "format": "✗"
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "tooltip": true,
+    "format-icons": {
+      "performance": "󰓅",
+      "balanced": "󰾅",
+      "power-saver": "󰾆"
+    }
+  },
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-muted": "",
+    "format-icons": {
+      "default": [
+        "",
+        ""
       ]
     },
-    "tray": {
-      "show-passive-items": true,
-      "icon-size": 20,
-      "spacing": 6
-    },
-    "systemd-failed-units": {
-      "format": "✗"
-    },
-    "power-profiles-daemon": {
-      "format": "{icon}",
-      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-      "tooltip": true,
-      "format-icons": {
-        "performance": "󰓅",
-        "balanced": "󰾅",
-        "power-saver": "󰾆"
-      }
-    },
-    "pulseaudio": {
-      "format": "{icon}",
-      "format-muted": "",
-      "format-icons": {
-        "default": [
-          "",
-          ""
-        ]
-      },
-      "on-scroll-up": "swayosd-client --output-volume raise",
-      "on-scroll-down": "swayosd-client --output-volume lower",
-      "on-click": "swayosd-client --output-volume mute-toggle",
-      "on-click-middle": "swayosd-client --playerctl play-pause",
-      "on-click-right": "pavucontrol"
-    },
-    "backlight": {
-      "device": "NONE",
-      "format": "",
-      "format-icons": [],
-      "tooltip": false,
-      "on-scroll-up": "swayosd-client-backlight +10",
-      "on-scroll-down": "swayosd-client-backlight -10",
-      "on-click-right": "wdisplays",
-      "on-click-middle": "notify-send 'Backlight Search' 'Updating' && backlight-search && notify-send 'Backlight Search' 'Updated'"
-    },
-    "battery": {
-      "interval": 60,
-      "states": {
-        "s00": 5,
-        "s01": 15,
-        "s02": 25,
-        "s03": 35,
-        "s04": 45,
-        "s05": 55,
-        "s06": 65,
-        "s07": 75,
-        "s08": 85,
-        "s09": 95,
-        "s10": 100
-      },
-      "format-s00": "󰂎",
-      "format-s01": "󰁺",
-      "format-s02": "󰁻",
-      "format-s03": "󰁼",
-      "format-s04": "󰁽",
-      "format-s05": "󰁾",
-      "format-s06": "󰁿",
-      "format-s07": "󰂀",
-      "format-s08": "󰂁",
-      "format-s09": "󰂂",
-      "format-s10": "󰁹",
-      "format-charging-s00": "󰢟",
-      "format-charging-s01": "󰢜",
-      "format-charging-s02": "󰂆",
-      "format-charging-s03": "󰂇",
-      "format-charging-s04": "󰂈",
-      "format-charging-s05": "󰢝",
-      "format-charging-s06": "󰂉",
-      "format-charging-s07": "󰢞",
-      "format-charging-s08": "󰂊",
-      "format-charging-s09": "󰂋",
-      "format-charging-s10": "󰂅",
-      "tooltip-format": "{capacity}% ({timeTo})",
-      "max-length": 25
-    },
-    "custom/notification": {
-      "escape": true,
-      "exec": "swaync-client -swb",
-      "format": "{icon}",
-      "format-icons": {
-        "dnd-inhibited-none": "",
-        "dnd-inhibited-notification": "",
-        "dnd-none": "",
-        "dnd-notification": "",
-        "inhibited-none": "",
-        "inhibited-notification": "",
-        "none": "",
-        "notification": ""
-      },
-      "on-click": "sleep 0.1 && swaync-client -d -sw",
-      "on-click-right": "sleep 0.1 && swaync-client -t -sw",
-      "return-type": "json",
-      "tooltip": false
-    }
+    "on-scroll-up": "swayosd-client --output-volume raise",
+    "on-scroll-down": "swayosd-client --output-volume lower",
+    "on-click": "swayosd-client --output-volume mute-toggle",
+    "on-click-middle": "swayosd-client --playerctl play-pause",
+    "on-click-right": "pavucontrol"
   },
-  {
-    "position": "left",
-    "exclusive": false,
-    "layer": "top",
-    "spacing": 0,
-    "height": 2,
-    "modules-center": [
-      "clock"
-    ],
-    "clock": {
-      "interval": 12,
-      "format": "{:%y.%m.%d %a <span weight='bold'>%H:%M:%S</span> %Z}",
-      "rotate": 90,
-      "tooltip": true,
-      "tooltip-format": "<tt><small>{calendar}</small></tt>",
-      "calendar": {
-        "mode": "year",
-        "mode-mon-col": 3,
-        "weeks-pos": "right",
-        "on-scroll": 1,
-        "format": {
-          "months": "<span color='#689d6a'>{}</span>",
-          "days": "<span color='#689d6a'>{}</span>",
-          "weeks": "<span color='#d79921'>W{}</span>",
-          "weekdays": "<span color='#458588'>{}</span>",
-          "today": "<span color='#cc241d'><u>{}</u></span>"
-        }
-      },
-      "actions": {
-        "on-click-right": "mode",
-        "on-scroll-up": "shift_up",
-        "on-scroll-down": "shift_down"
-      }
-    }
+  "backlight": {
+    "device": "NONE",
+    "format": "",
+    "format-icons": [],
+    "tooltip": false,
+    "on-scroll-up": "swayosd-client-backlight +10",
+    "on-scroll-down": "swayosd-client-backlight -10",
+    "on-click-right": "wdisplays",
+    "on-click-middle": "notify-send 'Backlight Search' 'Updating' && backlight-search && notify-send 'Backlight Search' 'Updated'"
+  },
+  "battery": {
+    "interval": 60,
+    "states": {
+      "s00": 5,
+      "s01": 15,
+      "s02": 25,
+      "s03": 35,
+      "s04": 45,
+      "s05": 55,
+      "s06": 65,
+      "s07": 75,
+      "s08": 85,
+      "s09": 95,
+      "s10": 100
+    },
+    "format-s00": "󰂎",
+    "format-s01": "󰁺",
+    "format-s02": "󰁻",
+    "format-s03": "󰁼",
+    "format-s04": "󰁽",
+    "format-s05": "󰁾",
+    "format-s06": "󰁿",
+    "format-s07": "󰂀",
+    "format-s08": "󰂁",
+    "format-s09": "󰂂",
+    "format-s10": "󰁹",
+    "format-charging-s00": "󰢟",
+    "format-charging-s01": "󰢜",
+    "format-charging-s02": "󰂆",
+    "format-charging-s03": "󰂇",
+    "format-charging-s04": "󰂈",
+    "format-charging-s05": "󰢝",
+    "format-charging-s06": "󰂉",
+    "format-charging-s07": "󰢞",
+    "format-charging-s08": "󰂊",
+    "format-charging-s09": "󰂋",
+    "format-charging-s10": "󰂅",
+    "tooltip-format": "{capacity}% ({timeTo})",
+    "max-length": 25
+  },
+  "custom/notification": {
+    "escape": true,
+    "exec": "swaync-client -swb",
+    "format": "{icon}",
+    "format-icons": {
+      "dnd-inhibited-none": "",
+      "dnd-inhibited-notification": "",
+      "dnd-none": "",
+      "dnd-notification": "",
+      "inhibited-none": "",
+      "inhibited-notification": "",
+      "none": "",
+      "notification": ""
+    },
+    "on-click": "sleep 0.1 && swaync-client -d -sw",
+    "on-click-right": "sleep 0.1 && swaync-client -t -sw",
+    "return-type": "json",
+    "tooltip": false
   }
-]
+}

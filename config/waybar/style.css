@@ -17,10 +17,82 @@
   color: @fg0;
 }
 
-@import "./styles/workspace.css";
+.modules-left {
+  border-radius: 0px 0px 0px 8px;
+  background-color: @bg2;
+}
 
-@import "./styles/tray.css";
+#workspaces {
+  padding: 8px 0px 8px 0px;
+}
 
-@import "./styles/clock.css";
+#workspaces button {
+  padding-left: 6px;
+  padding-right: 7px;
+}
 
-@import "./styles/tooltip.css";
+#group-tray {
+  padding: 6px 0px 6px 0px;
+}
+
+#tray {
+  padding: 0px 2px;
+  margin-bottom: 6px;
+}
+
+#tray menu {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid @fg0;
+  background-color: @bg2;
+}
+
+#tray menu :hover {
+  background-color: @blue;
+}
+
+#backlight,
+#pulseaudio,
+#power-profiles-daemon,
+#battery,
+#systemd-failed-units,
+#custom-notification {
+  color: @fg1;
+  font-size: 16px;
+}
+
+#backlight,
+#pulseaudio,
+#power-profiles-daemon,
+#battery,
+#systemd-failed-units {
+  padding-bottom: 8px;
+}
+
+#custom-notification {
+  padding: 0px 2px;
+}
+
+#battery.discharging.s02 {
+  color: @yellow;
+}
+
+#battery.discharging.s01 {
+  color: @orange;
+}
+
+#battery.discharging.s00 {
+  color: @red;
+}
+
+
+#clock {
+  padding: 8px 0px 8px 0px;
+}
+
+tooltip {
+  font-size: 20px;
+  border-radius: 8px;
+  border: 1px solid @fg0;
+  background-color: @bg2;
+}
