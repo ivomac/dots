@@ -26,21 +26,40 @@ line-length = 88
 
 [tool.ruff.lint]
 select = [
-    "E",      # pycodestyle errors
-    "F",      # pyflakes
-    "W",      # pycodestyle warnings
-    "I",      # isort
-    "UP",     # pyupgrade
-    "B",      # flake8-bugbear
-    "SIM",    # flake8-simplify
-    "C4",     # flake8-comprehensions
-    "PTH",    # flake8-use-pathlib
-    "NPY201", # numpy 2.0 rules
-    "RET",    # flake8-return
+  "A",      # flake8-builtins (prevent shadowing Python built-ins)
+  "ARG",    # flake8-unused-arguments (detect unused function arguments)
+  "B",      # flake8-bugbear (common logic bugs, bad practices)
+  "C4",     # flake8-comprehensions (improve comprehension efficiency)
+  "E",      # pycodestyle errors
+  "ERA",    # eradicate (remove commented-out code)
+  "F",      # pyflakes (undefined names, unused imports)
+  "I",      # isort (import sorting)
+  "NPY201", # numpy 2.0 migration rules
+  "PIE",    # flake8-pie (misc correctness and performance improvements)
+  "PTH",    # flake8-use-pathlib (prefer pathlib over os.path)
+  "RET",    # flake8-return (consistent return statements)
+  "RUF",    # ruff-specific rules (extra correctness and consistency)
+  "S",      # flake8-bandit (basic security checks)
+  "SIM",    # flake8-simplify (simpler Pythonic constructs)
+  "T20",    # flake8-print (disallow print statements)
+  "UP",     # pyupgrade (modernize syntax)
+  "W",      # pycodestyle warnings
 ]
-ignore = ["D203", "D213"]
+
+ignore = [
+  "B905",   # flake8-bugbear: zip(strict=True) enforcement, too strict for most code
+  "D203",   # pydocstyle: conflicts with D211 (one-blank-line-before-class)
+  "D213",   # pydocstyle: conflicts with D212 (multi-line docstring summary)
+  "E501",   # pycodestyle: line length (handled by formatter)
+  "S101",   # bandit: allows assert statements (useful in tests)
+  "T201",   # flake8-print: allow print() in CLI or debug scripts
+]
+
 fixable = ["ALL"]
 unfixable = []
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.format]
 quote-style = "double"
