@@ -46,7 +46,7 @@ return {
         -- a regular search with `/` or `?`
         search = {
           labels = "DJFHSKEIALWOCVBNGMRU",
-          enabled = true,
+          enabled = false,
           search = {
             mode = "search",
             multi_window = true,
