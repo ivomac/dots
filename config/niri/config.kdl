@@ -90,19 +90,15 @@ output "Chimei Innolux Corporation 0x1249 Unknown" {
 layout {
   gaps 16
 
-  empty-workspace-above-first
-
-  always-center-single-column
-
   preset-column-widths {
     proportion 0.5;
     proportion 1.0;
   }
 
-  default-column-width { proportion 1.0; }
+  default-column-width { proportion 0.5; }
 
   focus-ring {
-    width 4
+    width 3
     inactive-color "#00000000"
     active-color "#d65d0eF2"
   }
@@ -120,8 +116,8 @@ layout {
   }
 
   struts {
-    left 15
-    right 15
+    left -8
+    right 16
     top -10
     bottom -10
   }
@@ -136,44 +132,7 @@ gestures {
 }
 
 animations {
-
-  slowdown 0.4
-
-  workspace-switch {
-    spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
-  }
-
-  window-open {
-    duration-ms 300
-    curve "ease-out-quad"
-  }
-
-  window-close {
-    duration-ms 300
-    curve "ease-out-quad"
-  }
-
-  horizontal-view-movement {
-    spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
-  }
-
-  window-movement {
-		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
-  }
-
-  window-resize {
-		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
-  }
-
-  config-notification-open-close {
-		spring damping-ratio=1.0 stiffness=500 epsilon=0.00005
-  }
-
-  screenshot-ui-open {
-    duration-ms 300
-    curve "ease-out-quad"
-  }
-
+  off
 }
 
 overview {
