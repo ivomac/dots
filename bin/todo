@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
 import subprocess as sp
-import time
 from os import environ
 from pathlib import Path
 from sys import argv
 
 import filelock
-import psutil
 import pyperclip as clip
 
 
@@ -28,10 +26,6 @@ class Todo:
         self.filepath = Path("/tmp/todo")
         self.lock = filelock.FileLock("/tmp/todo.lock", timeout=0.1)
 
-        DOCS = environ["DOCS"]
-        today = get_boot_date()
-        self.diary = Path(DOCS) / "Diary" / (today + ".txt")
-
         return
 
     def main(self):
@@ -46,11 +40,6 @@ class Todo:
 
             cmd = ["nohup", "gist", "-u", self.gist, str(self.filepath)]
             sp.Popen(cmd, stdin=sp.DEVNULL, stdout=sp.DEVNULL, stderr=sp.DEVNULL)
-
-            with self.filepath.open("rt") as file:
-                new_todo = file.read()
-
-            self.update_diary(current_todo, new_todo)
         return
 
     def edit(self, file, todolist):
@@ -81,39 +70,6 @@ class Todo:
         file.write(todolist)
         file.flush()
         return
-
-    def update_diary(self, old, new):
-        diff = diff_strings(old, new)
-        if diff:
-            if self.diary.is_file():
-                diary_lines = self.diary.read_text().splitlines()
-            else:
-                diary_lines = ["", "", "TODO:"]
-
-            self.diary.write_text("\n".join(diary_lines + diff))
-        return
-
-
-def get_boot_date():
-    boot_timestamp = psutil.boot_time()
-    return time.strftime("%y.%m.%d", time.localtime(boot_timestamp))
-
-
-def diff_strings(str1, str2):
-    lines1 = str1.splitlines()
-    lines2 = str2.splitlines()
-
-    result = []
-
-    for line in lines1:
-        if line not in lines2:
-            result.append(f"- {line}")
-
-    for line in lines2:
-        if line not in lines1:
-            result.append(f"+ {line}")
-
-    return result
 
 
 if __name__ == "__main__":
