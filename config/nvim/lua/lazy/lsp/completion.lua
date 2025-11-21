@@ -97,7 +97,7 @@ return {
           provider_options = {
             gemini = {
               stream = true,
-              model = "gemini-2.5-flash-preview-05-20",
+              model = "gemini-2.5-flash-lite",
               api_key = "GEMINI_API_KEY",
               optional = {
                 generationConfig = {
