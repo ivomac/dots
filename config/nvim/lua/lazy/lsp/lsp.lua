@@ -163,7 +163,7 @@ return {
         "jsonls",
         "lua_ls",
         "marksman",
-        -- "ty",
+        "ty",
         "pyright",
         "ruff",
         "rust_analyzer",
