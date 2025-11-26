@@ -1,0 +1,14 @@
+[Unit]
+Description=Add SSH key to agent using askpass
+After=ssh-agent.service graphical-session.target
+Requires=ssh-agent.service
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+Environment=DISPLAY=:0
+Environment=SSH_ASKPASS=$HOME/.local/bin/ssh-pass
+ExecStart=/usr/bin/setsid /usr/bin/ssh-add </dev/null
+
+[Install]
+WantedBy=graphical-session.target
