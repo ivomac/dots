@@ -2,7 +2,6 @@
 Description=Run Virtual Keyboard
 PartOf=graphical-session.target
 After=graphical-session.target
-Requisite=graphical-session.target
 
 [Service]
 Type=simple
@@ -11,14 +10,3 @@ Restart=on-failure
 
 [Install]
 WantedBy=graphical-session.target
-
-# --bg [rrggbb|aa]       - Set color of background
-# --fg [rrggbb|aa]       - Set color of keys
-# --fg-sp [rrggbb|aa]    - Set color of special keys
-# --press [rrggbb|aa]     - Set color of pressed keys
-# --press-sp [rrggbb|aa]  - Set color of pressed special keys
-# --swipe [rrggbb|aa]    - Set color of swiped keys
-# --swipe-sp [rrggbb|aa] - Set color of swiped special keys
-# --text [rrggbb|aa]     - Set color of text on keys
-# --text-sp [rrggbb|aa]  - Set color of text on special keys
-
