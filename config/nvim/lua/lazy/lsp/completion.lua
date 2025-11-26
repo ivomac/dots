@@ -84,7 +84,7 @@ return {
               dismiss = nil,
             },
           },
-          provider = "gemini",
+          provider = "openai_fim_compatible",
           context_window = 8000,
           context_ratio = 0.75,
           throttle = 1000,
@@ -97,8 +97,8 @@ return {
           provider_options = {
             gemini = {
               stream = true,
-              model = "gemini-2.5-flash-lite",
-              api_key = "GEMINI_API_KEY",
+              model = "deepseek-chat",
+              api_key = "DEEPSEEK_API_KEY",
               optional = {
                 generationConfig = {
                   maxOutputTokens = 256,

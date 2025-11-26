@@ -1,5 +1,5 @@
 llm:
-  model: "deepseek/deepseek-reasoner"
+  model: "deepseek/deepseek-chat"
   temperature: 0
 
 computer:
