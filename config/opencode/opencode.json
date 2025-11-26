@@ -60,20 +60,7 @@
     "webfetch": true,
     "write": true
   },
-  "command": {
-    "testcov": {
-      "template": "Run the full test suite with coverage report and show any failures.\nFocus on the failing tests and suggest fixes.",
-      "description": "Run tests with coverage",
-      "agent": "build",
-      "model": "deepseek/deepseek-chat",
-    },
-    "commit": {
-      "template": "Commit the staged changes with a concise git commit message following the Conventional Commits specification.\nEnsure the message is clear, descriptive, and accurately reflects the changes made.",
-      "description": "Commit the staged changes following Conventional Commits",
-      "agent": "build",
-      "model": "deepseek/deepseek-chat",
-    },
-  },
+  "command": {},
   "watcher": {
     "ignore": []
   },
