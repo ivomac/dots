@@ -1,4 +1,3 @@
 #!/usr/bin/env zsh
 
-key=$(echo $@ | awk -F'/' '{print $5}' | awk -F':' '{print $1}')
-exec pass show "ssh_key/$key/password"
+exec pass show "ssh_key/id_ed25519/password"
