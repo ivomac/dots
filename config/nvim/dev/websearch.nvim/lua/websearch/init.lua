@@ -20,7 +20,7 @@ function M.search(url)
   end
   local cmd = vim.deepcopy(M.opts.browser, true)
   table.insert(cmd, url)
-  vim.fn.jobstart(cmd, { detach = true })
+  vim.system(cmd, { detach = true })
 end
 
 function M.search_word()

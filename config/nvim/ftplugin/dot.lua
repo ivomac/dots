@@ -2,13 +2,13 @@ local function create_graph()
   local dot_file = vim.fn.expand("%:t:r") .. ".dot"
   local png_file = vim.fn.expand("%:t:r") .. ".png"
   local cmd = { "dot", "-Tpng", dot_file, "-o", png_file }
-  vim.fn.jobstart(cmd, { type = "pty" })
+  vim.system(cmd, { type = "pty" })
 end
 
 local function open_graph()
   local png_file = vim.fn.expand("%:t:r") .. ".png"
   local cmd = { "xdg-open", png_file }
-  vim.fn.jobstart(cmd, { type = "pty" })
+  vim.system(cmd, { type = "pty", detach = true })
 end
 
 local function toggle_build_on_save()
