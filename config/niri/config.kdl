@@ -245,3 +245,5 @@ spawn-at-startup "mpd-reset"
 
 spawn-at-startup "niri-switch-daemon"
 spawn-at-startup "niri-float-sticky"
+
+spawn-at-startup "ssh-add-startup"

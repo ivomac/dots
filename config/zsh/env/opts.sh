@@ -45,6 +45,7 @@ export VISUAL="nvim"
 
 export SUDO_ASKPASS="$BIN/sudo-pass"
 export SSH_ASKPASS="$BIN/ssh-pass"
+export SSH_ASKPASS_REQUIRE="prefer"
 
 # HISTORY
 

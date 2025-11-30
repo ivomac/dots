@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+SSH_ASKPASS_REQUIRE="force" /usr/bin/ssh-add
+
+
