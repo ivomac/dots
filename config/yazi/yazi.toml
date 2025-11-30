@@ -28,6 +28,7 @@ browser = [{ run = 'firefox "$1"', desc = "Browser", orphan = true, for = "unix"
 extract = [
   { run = 'ya pub extract --list "$@"', desc = "Extract", for = "unix" },
 ]
+reader = [{ run = 'zathura "$1"', desc = "Reader", orphan = true, for = "unix" }]
 
 [open]
 rules = [
@@ -36,6 +37,8 @@ rules = [
     "edit",
     "open",
     "viewer",
+    "reader",
+    "browser",
   ] },
   # Empty file
   { mime = "inode/empty", use = [
@@ -73,6 +76,7 @@ rules = [
     "open",
     "edit",
     "viewer",
+    "reader",
     "browser",
   ] },
 ]
