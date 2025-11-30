@@ -52,7 +52,7 @@
 * NEVER type hint a None return value of a function
 * NEVER import Dict, Set, List, Union, Optional, from typing, use the built-ins.
 
-## DOCSTRINGS
+# DOCSTRINGS
 
 * DEFAULT: ONLY write a single text-line docstring.
 * Write full docstrings ONLY for complex functions.
@@ -62,7 +62,7 @@
 * Multi-line docstring summary line should start at the second line.
 * Summary line of functions and methods should be in imperative mood.
 
-## STRUCTURE
+# STRUCTURE
 
 ```
 project/
@@ -74,13 +74,11 @@ project/
 └── pyproject.toml
 ```
 
-## Tools
+# RECOMMENDED TOOLS
 
-Recommended tools:
 * uv
 * ruff
 * mypy
 * pytest
   - Coverage
 * pre-commit
-
