@@ -33,7 +33,7 @@ return {
       "ivomac/workout.nvim",
     },
     config = function()
-      vim.lsp.set_log_level("debug")
+      vim.lsp.log.set_level(vim.log.levels.OFF)
 
       vim.lsp.config["marksman"] = {
         root_markers = {},
