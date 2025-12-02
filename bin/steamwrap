@@ -3,4 +3,4 @@
 FAKEHOME="$HOME/.config/steam"
 mkdir -p "$FAKEHOME"
 
-exec env HOME="$FAKEHOME" /usr/bin/steam "$@"
+exec env HOME="$FAKEHOME" /usr/lib/steam/steam -silent "$@"
