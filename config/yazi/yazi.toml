@@ -21,7 +21,7 @@ image_quality = 65
 edit = [
   { run = 'nvimwrapper "$@"', desc = "EDITOR", block = true, for = "unix" },
 ]
-csv = [{ run = 'visidata "$@"', desc = "visidata", block = true, for = "unix" }]
+tabular = [{ run = 'visidata "$@"', desc = "tabular", block = true, for = "unix" }]
 open = [{ run = 'xdg-open "$1"', desc = "Open", orphan = true, for = "unix" }]
 viewer = [{ run = 'qimgv "$1"', desc = "Qimgv", orphan = true, for = "unix" }]
 browser = [{ run = 'firefox "$1"', desc = "Browser", orphan = true, for = "unix" }]
@@ -51,8 +51,8 @@ rules = [
     "open",
   ] },
   # Table
-  { mime = "*/{csv,tab,tsv,ssv,octet-stream}", use = [
-    "csv",
+  { mime = "*/{csv,tsv,ssv}", use = [
+    "tabular",
     "edit",
     "open",
   ] },
@@ -78,5 +78,6 @@ rules = [
     "viewer",
     "reader",
     "browser",
+    "tabular",
   ] },
 ]
