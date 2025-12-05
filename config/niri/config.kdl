@@ -196,7 +196,7 @@ binds {
 
   Super+Backslash  { consume-or-expel-window-left; }
 
-  Print { screenshot; }
+  Print { screenshot  show-pointer=false; }
   Shift+Print { screenshot-window; }
   Ctrl+Print { screenshot-screen; }
 
