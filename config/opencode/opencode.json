@@ -22,7 +22,6 @@
     "history_next": "down",
     "history_previous": "up",
     "input_clear": "none",
-    "input_forward_delete": "none",
     "input_newline": "shift+enter",
     "input_paste": "ctrl+v",
     "input_submit": "enter",
@@ -55,8 +54,20 @@
   },
   "agent": {},
   "permission": {
-    "edit": "ask",
-    "bash": "ask",
+    "edit": "allow",
+    "bash": {
+      "find *": "allow",
+      "grep *": "allow",
+      "ls *": "allow",
+      "git status *": "allow",
+      "git diff *": "allow",
+      "git log *": "allow",
+      "python -m unittest *": "allow",
+      "uv run python -m unittest *": "allow",
+      "pytest *": "allow",
+      "uv run pytest *": "allow",
+      "*": "ask",
+    },
     "webfetch": "allow"
   },
   "tools": {
