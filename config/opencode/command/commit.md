@@ -1,5 +1,6 @@
 ---
-description: Commit staged changes
+description: "Commit staged changes"
+agent: "commit"
 subtask: true
 ---
 
@@ -11,7 +12,3 @@ git diff:
 
 git log:
 !`git log --oneline -5`
-
-Based on the information above, commit the staged changes with a concise git commit message following the Conventional Commits specification.
-Ensure the message is clear, descriptive, and accurately reflects the changes made.
-Do not verify if commit was successful.
