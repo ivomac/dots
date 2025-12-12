@@ -22,7 +22,6 @@
     "history_next": "down",
     "history_previous": "up",
     "input_clear": "none",
-    "input_forward_delete": "none",
     "input_newline": "shift+enter",
     "input_paste": "ctrl+v",
     "input_submit": "enter",
@@ -55,7 +54,7 @@
   },
   "agent": {},
   "permission": {
-    "edit": "ask",
+    "edit": "allow",
     "bash": "ask",
     "webfetch": "allow"
   },
