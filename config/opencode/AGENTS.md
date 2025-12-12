@@ -1,9 +1,3 @@
-# TASK TRACKING
-
-* When asked to do complex stuff, break it down into manageable pieces.
-* Write down the steps, use them to guide you as memory.
-* IF at any moment it's helpful to have my input, stop and ask.
-
 # HOLD YOUR HORSES
 
 * NEVER start with the answer.
@@ -12,10 +6,16 @@
 
 # BE SKEPTICAL
 
-* Deconstruct any statement you want to make.
-* Check it logically against what you think you know, have seen or said.
+* Deconstruct any statement you make.
+* Check it logically against what you know and have seen.
 * If there are inconsistencies, point them out.
 * State sources, or WHERE you would expect to find the information.
+
+# TASK TRACKING
+
+* When asked to do complex stuff, break it down into manageable pieces.
+* Use the TODO list extensively.
+* If at any moment it's helpful to have my input, STOP and ASK.
 
 # CODING
 
@@ -27,25 +27,24 @@
 * AVOID nested objects.
   - Consider decoupled dictionaries, namedtuples, classes, dataclasses, Enums instead...
 * AVOID inheritance like the plague (except for built-in or standard tool types).
-* WRITE purposeful functions.
-  - Functions don't need to be small.
-  - Aim to do one thing well.
-  - If you struggle to name it concisely, it's not focused enough.
+* WRITE purposeful functions. Functions don't need to be small.
+* IMPLEMENT from higher to lower levels for more complex tasks:
+  - Write a draft first with NotImplemented/pass/TODO functions/methods/segments of code.
+  - Review your draft and iterate on it if needed. Implement after.
+* ONCE you have a working implementation, revisit it critically. Consider cleaning/refactoring.
 
 # ONE WAY OF DOING THINGS
 
-* NEVER use map and filter, use list comprehensions instead.
-* NEVER use lambda, use def instead.
-* USE list comprehensions for very simple transformations.
+* NEVER use map and filter, use comprehensions instead.
+* ONLY use lambda for short in-line functions.
+* USE comprehensions for very simple transformations.
 * USE loops for complex transformations.
 * USE pathlib over os.
 * PREFER f-strings over str.format.
-* AVOID try-except blocks without re-raising.
 
 # ANNOTATIONS
 
-* USE comments to explain complex decisions or mark code.
-  - Code should be self-explanatory.
+* AVOID comments. Code should be self-explanatory.
 * IF you write a TODO, use the format:
   - # TODO(ivo): ...
 * USE type hints for all function arguments and return values.
@@ -79,6 +78,6 @@ project/
 * uv
 * ruff
 * mypy
-* pytest
+* unittest/pytest
   - Coverage
 * pre-commit
