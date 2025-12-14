@@ -1,7 +1,7 @@
 
 prefer-no-csd
 
-screenshot-path "~/Media/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
+screenshot-path "~/Media/Screenshots/%Y-%m-%d_%H-%M-%S.png"
 
 environment {
   CALIBRE_USE_SYSTEM_THEME "1"
