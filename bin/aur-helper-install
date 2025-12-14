@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -e
+
+force=0
+helper=paru
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -f)
+      force=1
+      shift
+      ;;
+    paru|yay)
+      helper="$1"
+      shift
+      ;;
+    *)
+      echo "usage: $0 [-f] [paru|yay]"
+      exit 1
+      ;;
+  esac
+done
+
+if [[ $force -eq 0 ]] && type "$helper" > /dev/null 2>&1; then
+  echo "$helper is already installed. Skipping..."
+  exit 0
+fi
+
+echo "Installing $helper..."
+
+workdir="$(mktemp -d)"
+
+cleanup() {
+  rm -rf "$workdir"
+}
+trap cleanup EXIT
+
+sudo pacman -S --needed base-devel
+git clone "https://aur.archlinux.org/$helper.git" "$workdir"
+cd "$workdir"
+makepkg -si
