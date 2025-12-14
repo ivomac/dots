@@ -1,6 +1,6 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-if [[ -z "$NVIM" || "${1}" =~ "^/tmp/" ]]; then
+if [[ -z "$NVIM" || "${1}" =~ ^/tmp/ ]]; then
   exec nvim "${@}"
 else
   nohup nvim-remote "${@}" &>/dev/null &

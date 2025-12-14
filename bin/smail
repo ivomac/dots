@@ -1,10 +1,9 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 SEFF=@bindir@/seff
 
-IFS=","
-array=($2)
-IFS=" "
+IFS=',' read -ra array <<< "$2"
+IFS=' '
 
 JOB_COMPLETION_TIME=5
 
@@ -15,14 +14,14 @@ recipient=$3
 
 status=$(echo "${array[2]}" | tr -d ' ')
 if [ -n "$status" ]; then
-  sarray=(${array[0]})
-  IFS="="
+  IFS=' ' read -ra sarray <<< "${array[0]}"
+  IFS='='
   if [ "${sarray[1]}" = "Array" ]; then
-    sarray=(${sarray[3]})
+    IFS=' ' read -ra sarray <<< "${sarray[3]}"
   else
-    sarray=(${sarray[1]})
+    IFS=' ' read -ra sarray <<< "${sarray[1]}"
   fi
-  IFS=" "
+  IFS=' '
   jobid="${sarray[1]}"
   # Remove the trailing "_*" until seff supports array jobs fully
   jobid=${jobid%"_*"}

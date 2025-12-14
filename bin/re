@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 time="1s"
 while getopts t: opt; do
@@ -8,7 +8,7 @@ while getopts t: opt; do
     ;;
   esac
 done
-shift "$(($OPTIND - 1))"
+shift "$((OPTIND - 1))"
 
 HOME=$(tput cup 0 0)
 ED=$(tput ed)

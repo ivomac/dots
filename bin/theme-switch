@@ -1,12 +1,13 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-setopt errexit nounset pipefail err_return no_nomatch noclobber
+set -euo pipefail
+shopt -s failglob
 
 COLORS="$HOME/.local/colors"
 
 WALLPAPERS="$MEDIA/Pictures/Wallpapers"
 
-function notify {
+notify() {
   echo "$1"
   icon="/usr/share/icons/Papirus/64x64/categories/org.gnome.design.Palette.svg"
   notify-send --icon "$icon" "ThemeSwitch" "$1"
@@ -24,12 +25,12 @@ else
 	choice=$1
 fi
 
-for folder in $COLORS/*; do
+for folder in "$COLORS"/*; do
   if [[ ! -d "$folder" ]]; then
     continue
   fi
-	random_file="$(ls -1 $folder | head -n 1)"
-	extension="${random_file:e}"
+	random_file="$(find "$folder" -type f,l | head -n 1)"
+	extension="${random_file##*.}"
 
 	theme_file="$folder/$choice${extension:+.$extension}"
 	symlink_file="$folder/default${extension:+.$extension}"
@@ -61,16 +62,16 @@ sed --follow-symlinks -i -e "s/.*--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HO
 
 if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "swww-daemon.service" > /dev/null; then
   echo "Changing wallpaper"
-	wallpapers=("${(@f)$(ls "$wallpaper_path" | sort -R)}")
+	mapfile -t wallpapers < <(find "$wallpaper_path" -type f,l | sort -R)
 
-	outputs=("${(@f)$(swww query)}")
+	mapfile -t outputs < <(swww query)
 
-	for i in {1..${#outputs[@]}}; do
+	for ((i=0; i<${#outputs[@]}; i++)); do
 	  output_line="${outputs[i]}"
 	  output_name="${output_line%%:*}"
 	  wallpaper="${wallpapers[i]}"
     echo "  output:$output_name"
-	  swww img -o "$output_name" "$wallpaper_path/$wallpaper"
+	  swww img -o "$output_name" "$wallpaper"
 	done
 fi
 
@@ -81,7 +82,7 @@ ulauncher-start &>/dev/null & disown
 
 services=( "waybar" "swaync" "swayosd" "qbittorrent" )
 
-for service in ${services[@]}; do
+for service in "${services[@]}"; do
 	if systemctl --user is-active --quiet "$service.service" > /dev/null; then
     echo "  service:$service"
 		systemctl --user restart "$service.service" &>/dev/null & disown
@@ -107,7 +108,7 @@ for pts in /dev/pts/[0-9]*; do
 done
 
 echo "Updating nvim"
-for nvimserver in $XDG_RUNTIME_DIR/nvim.*; do
+for nvimserver in "$XDG_RUNTIME_DIR"/nvim.*; do
   if [[ ! -S "$nvimserver" ]]; then
     continue
   fi

@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 color_scheme=$(gsettings get org.gnome.desktop.interface color-scheme)
 

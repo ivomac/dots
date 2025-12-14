@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 ICON=/usr/share/icons/Papirus/128x128/apps/youtube-dl.svg
 
@@ -7,7 +7,7 @@ DL_HOME="/tmp/yt-dlp"
 rm -rf "$DL_HOME"
 mkdir -p "$DL_HOME"
 
-function notify() {
+notify() {
   notify-send --icon "$ICON" "YT-DLP: $1" "$2"
 }
 
@@ -28,7 +28,7 @@ if [[ "$1" == "song" ]]; then
 fi
 
 notify "Downloading $typ" "$url"
-yt-dlp --remote-components ejs:github --paths "temp:/tmp" --paths "home:$DL_HOME" --output "%(title)s.%(ext)s" ${=opts} "$url" &>/dev/null
+  yt-dlp --remote-components ejs:github --paths "temp:/tmp" --paths "home:$DL_HOME" --output "%(title)s.%(ext)s" $opts "$url" &>/dev/null
 
 if [[ $? -ne 0 ]]; then
   notify "Download Failed" "$url"

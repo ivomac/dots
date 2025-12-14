@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 folder="/home/ivo/Projects/25.03-job_applications_CV_CL/CL"
 

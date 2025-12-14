@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 head -n1 "$XDG_STATE_HOME/yazi/.dds" \
 | cut -d, -f4- \
