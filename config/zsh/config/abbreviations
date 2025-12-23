@@ -3,6 +3,8 @@ abbr -g "E"="| $EDITOR"
 abbr -g "G"="| grep"
 abbr -g "L"="| $PAGER"
 abbr -g "S"="| sort -n"
+abbr -g "H"="| head -n 10"
+abbr -g "T"="| tail -n 10"
 
 abbr "s"="sudo"
 
