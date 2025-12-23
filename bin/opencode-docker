@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <project-path>"
+    echo "Example: $0 ~/projects/myproject"
+    exit 1
+fi
+
+PROJECT_PATH=$(realpath "$1")
+SECRETS_FILE="$HOME/Projects/00.00-dotfiles/secret-dots/env/ALL/secrets.sh"
+OPENCODE_CONFIG="$HOME/Projects/00.00-dotfiles/dots/config/opencode-docker"
+
+if [ ! -d "$PROJECT_PATH" ]; then
+    echo "Error: Project directory does not exist: $PROJECT_PATH"
+    exit 1
+fi
+
+if [ ! -f "$SECRETS_FILE" ]; then
+    echo "Error: Secrets file does not exist: $SECRETS_FILE"
+    exit 1
+fi
+
+if [ ! -d "$OPENCODE_CONFIG" ]; then
+    echo "Error: OpenCode config directory does not exist: $OPENCODE_CONFIG"
+    exit 1
+fi
+
+echo "Setting up Docker environment..."
+
+BUILD_DIR=$(mktemp -d)
+trap "rm -rf $BUILD_DIR" EXIT
+
+cd "$BUILD_DIR"
+
+echo "Converting secrets to .env format..."
+grep -E '^export [A-Z_]+=' "$SECRETS_FILE" | \
+    sed 's/^export //' | \
+    sed 's/"\(.*\)"/\1/' > .env
+
+echo "Copying opencode config (resolving symlinks)..."
+mkdir -p .config
+cp -rL "$OPENCODE_CONFIG" .config/opencode
+
+cat > Dockerfile << 'EOF'
+FROM archlinux:latest
+
+RUN groupadd --gid 1000 ivo && \
+    useradd --uid 1000 --gid 1000 -m -s /bin/bash ivo
+
+USER ivo
+WORKDIR /home/ivo
+
+RUN curl -fsSL https://opencode.ai/install | bash
+
+ENV PATH="/home/ivo/.opencode/bin:${PATH}"
+
+COPY --chown=ivo:ivo .config/opencode /home/ivo/.config/opencode
+
+CMD ["/bin/bash"]
+EOF
+
+echo "Building Docker image..."
+sudo docker build -t opencode .
+
+echo "Starting container..."
+echo "Project mounted at: /home/ivo/project"
+sudo docker run -it \
+    -v "$PROJECT_PATH:/home/ivo/project" \
+    --env-file .env \
+    opencode
