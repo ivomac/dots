@@ -2,10 +2,8 @@
 
 ICON=/usr/share/icons/Papirus/128x128/apps/youtube-dl.svg
 
-DL_HOME="/tmp/yt-dlp"
-
-rm -rf "$DL_HOME"
-mkdir -p "$DL_HOME"
+DL_TEMP=$(mktemp -d)
+trap 'rm -rf "$DL_TEMP"' EXIT
 
 notify() {
   notify-send --icon "$ICON" "YT-DLP: $1" "$2"
@@ -18,38 +16,19 @@ if ! echo "$url" | grep -q "^https\?://"; then
   exit 1
 fi
 
-opts=""
-dest="$HOME/Downloads/"
-typ="Clip"
+base_opts=(--remote-components ejs:github --paths "temp:$HOME/yt-dlp-parts" --output "%(title)s.%(ext)s")
 if [[ "$1" == "song" ]]; then
   typ="Song"
-  opts="--extract-audio --audio-quality 2"
-  dest="$MEDIA/Music/"
+  opts=(--paths "home:$MEDIA/Music" --extract-audio --audio-quality 2 --audio-format mp3 --format 'ba[acodec^=mp3]/ba/b')
+else
+  opts=(--paths "home:$HOME/Downloads" --write-subs --embed-subs --concurrent-fragments 4 --remux-video "mkv>mp4/webm>mp4" --merge-output-format mp4/mkv/webm --format "best[height=720]/bestvideo[height=720]+bestaudio/best[height=1080]/bestvideo[height=1080]+bestaudio/best" --format-sort "res:720,fps:60,ext:mp4:m4a")
+  typ="Clip"
 fi
 
 notify "Downloading $typ" "$url"
-  yt-dlp --remote-components ejs:github --paths "temp:/tmp" --paths "home:$DL_HOME" --output "%(title)s.%(ext)s" $opts "$url" &>/dev/null
 
-if [[ $? -ne 0 ]]; then
+if ! yt-dlp "${base_opts[@]}" "${opts[@]}" "$url"; then
   notify "Download Failed" "$url"
 else
   notify "Download Finished" "$url"
-  tmp_path="$(fd --type file . "$DL_HOME" | head -n 1)"
-  base=$(basename "$tmp_path")
-  short_base=$(echo "$base" \
-    | sed -E -e 's/\[[^]]*\]//g' \
-      -e 's/\([^)]*\)//g' \
-      -e 's/\{[^}]*\}//g' \
-    | sed -E -e 's/\s\s+/ /g' \
-    | sed -E -e 's/\s\././g'
-  )
-  if [[ "$short_base" == *.webm ]]; then
-    mp4_name="${short_base%.webm}.mp4"
-    ffmpeg -i "$tmp_path" "$dest/$mp4_name" &>/dev/null
-    rm "$tmp_path"
-    notify "Move Success" "Converted $short_base to .mp4 and moved to $dest"
-  else
-    mv "$tmp_path" "$dest/$short_base"
-    notify "Move Success" "$short_base moved to $dest"
-  fi
 fi
