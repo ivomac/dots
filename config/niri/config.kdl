@@ -55,6 +55,13 @@ input {
 
   // focus-follows-mouse max-scroll-amount="0%"
   warp-mouse-to-focus
+
+  touchpad {
+    tap
+    natural-scroll
+    disabled-on-external-mouse
+  }
+
 }
 
 output "ASUSTek COMPUTER INC VG249Q3R T3LMDW007766" {
