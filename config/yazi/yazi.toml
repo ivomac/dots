@@ -21,19 +21,25 @@ image_quality = 65
 edit = [
   { run = 'nvimwrapper "$@"', desc = "EDITOR", block = true, for = "unix" },
 ]
-tabular = [{ run = 'visidata "$@"', desc = "tabular", block = true, for = "unix" }]
+tabular = [
+  { run = 'visidata "$@"', desc = "tabular", block = true, for = "unix" },
+]
 open = [{ run = 'xdg-open "$1"', desc = "Open", orphan = true, for = "unix" }]
 viewer = [{ run = 'qimgv "$1"', desc = "Qimgv", orphan = true, for = "unix" }]
-browser = [{ run = 'firefox "$1"', desc = "Browser", orphan = true, for = "unix" }]
+browser = [
+  { run = 'firefox "$1"', desc = "Browser", orphan = true, for = "unix" },
+]
 extract = [
   { run = 'ya pub extract --list "$@"', desc = "Extract", for = "unix" },
 ]
-reader = [{ run = 'zathura "$1"', desc = "Reader", orphan = true, for = "unix" }]
+reader = [
+  { run = 'zathura "$1"', desc = "Reader", orphan = true, for = "unix" },
+]
 
 [open]
 rules = [
   # Folder
-  { name = "*/", use = [
+  { mime = "inode/directory", use = [
     "edit",
     "open",
     "viewer",
