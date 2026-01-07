@@ -1,6 +1,6 @@
 
 [[mgr.prepend_keymap]]
-on = ["f"]
+on = ["F"]
 run = "filter --smart"
 desc = "Smart filter"
 
@@ -25,24 +25,24 @@ run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"'
 desc = "cd to git root"
 
 [[mgr.prepend_keymap]]
-on = ["g", "h"]
-run = "plugin vcs-files"
-desc = "Show Git file changes"
-
-[[mgr.prepend_keymap]]
 on = ["g", "l"]
 run = "shell --block lazygit"
-desc = "run lazygit in current dir"
+desc = "run lazygit"
 
 [[mgr.prepend_keymap]]
-on = ["*"]
+on   = "f"
+run  = "plugin jump-to-char"
+desc = "Jump to char"
+
+[[mgr.prepend_keymap]]
+on = ["c", "h"]
 run = "plugin chmod"
-desc = "Chmod selected files"
+desc = "Chmod selected"
 
 [[mgr.prepend_keymap]]
-on = ["<C-y>"]
-run = "plugin wl-clipboard"
-desc = "Copy file to clipboard"
+on = ["c", "y"]
+run = ["plugin wl-copy"]
+desc = "Copy to clipboard"
 
 [[mgr.prepend_keymap]]
 on = ["m"]

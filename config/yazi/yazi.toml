@@ -78,7 +78,7 @@ rules = [
     "viewer",
   ] },
   # Fallback
-  { name = "*", use = [
+  { url = "*", use = [
     "open",
     "edit",
     "viewer",

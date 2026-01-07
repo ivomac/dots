@@ -1,32 +1,27 @@
 [[plugin.deps]]
 use = "Rolv-Apneseth/starship"
-rev = "6a0f3f7"
-hash = "d5a74d95c2e8194ac352c5e10e81e64f"
-
-[[plugin.deps]]
-use = "yazi-rs/plugins:vcs-files"
-rev = "c648526"
-hash = "70898957e9e4c1ca291ff26e8fdc434"
+rev = "eca1861"
+hash = "e519d894e94ded741e06aae4d4775981"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "c648526"
-hash = "d0ad0c1946b46a30c8489735fe8de41c"
+rev = "4e55902"
+hash = "8da0b15a97b5dfd13941d1ecc617ac7c"
 
 [[plugin.deps]]
 use = "dedukun/bookmarks"
-rev = "fbb7c00"
-hash = "1d231a808d3344546380df33daf43e91"
+rev = "9ef1254"
+hash = "92fbb5483657fa7976cdf4e0104e18e0"
+
+[[plugin.deps]]
+use = "ivomac/wl-copy"
+rev = "a6b223c"
+hash = "6c6089ca31656ffbc301bf47276a7181"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:jump-to-char"
-rev = "c648526"
-hash = "30fc0b37f03a597b92d387268319450f"
-
-[[plugin.deps]]
-use = "ivomac/wl-clipboard"
-rev = "60594f2"
-hash = "51ff959c3c26cb3889589a0f8d394f14"
+rev = "4e55902"
+hash = "ce67445ebb1bf3d97b8e44f50904b2c5"
 
 [flavor]
 deps = []
