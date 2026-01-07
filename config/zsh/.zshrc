@@ -70,6 +70,15 @@ for plug in "${plugs[@]}"; do
   source $(get_plug "$plug")
 done
 
+function update_plugins() {
+  for plug in "${plugs[@]}"; do
+    name=${plug:t}
+    folder="$ZDOTDIR/plugins/$name"
+    echo "Updating $name"
+    git -C "$folder" pull --recurse-submodules
+  done
+}
+
 # PLUGIN CONFIG
 
 zstyle ':completion:*' regular true
