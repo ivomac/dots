@@ -89,6 +89,12 @@ output "Seiko Epson Corporation EPSON PJ 0x01010101" {
   background-color "#000000"
 }
 
+output "PNP(BNQ) BenQ BL2480T M1M0691701Q" {
+  position x=0 y=0
+  mode "1920x1080@60.000"
+  background-color "#000000"
+}
+
 output "Chimei Innolux Corporation 0x1249 Unknown" {
   position x=0 y=0
   mode "1920x1280@60.001"
