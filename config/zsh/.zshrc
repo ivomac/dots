@@ -192,7 +192,7 @@ function venv() {
   fi
 
   local env_path="$1/.venv"
-  local python_version="${2:-3.13}"
+  local python_version="${2:-3.14}"
 
   local python_path="$(which "python$python_version" )"
 
