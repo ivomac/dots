@@ -2,10 +2,13 @@ llm:
   model: "deepseek/deepseek-chat"
   temperature: 0
 
+custom_instructions: "Don't use sudo or try to run commands that require root privilege"
+
 computer:
   import_computer_api: True
 
 safe_mode: "ask"
+disable_telemetry: True
 offline: False
 
 version: 0.2.5
