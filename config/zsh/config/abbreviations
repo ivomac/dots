@@ -17,8 +17,6 @@ abbr "sp"="sudo pacman"
 abbr "pac"="sudo paccache -rk1"
 abbr "au"="paru"
 
-abbr "refl"="systemctl start reflector.service"
-
 abbr "i"="interpreter"
 
 abbr "g"="git"
@@ -26,6 +24,8 @@ abbr "g"="git"
 abbr "o"="\$OPEN"
 abbr "e"="\$EXPLORER"
 abbr "n"="\$EDITOR"
+
+abbr "oc"="XDG_DATA_HOME=\"\$DOCS/.local\" opencode"
 
 abbr "ns"="\$EDITOR '+Session load'"
 abbr "ne"="\$EDITOR +Explorer"
