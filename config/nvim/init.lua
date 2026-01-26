@@ -20,12 +20,8 @@ vim.opt.runtimepath:prepend(lazypath)
 
 local imports = { { import = "lazy/base" } }
 
-if vim.g.started_by_firenvim then
-  table.insert(imports, { import = "lazy/firenvim" })
-else
-  table.insert(imports, { import = "lazy/dev" })
-  table.insert(imports, { import = "lazy/lsp" })
-end
+table.insert(imports, { import = "lazy/dev" })
+table.insert(imports, { import = "lazy/lsp" })
 
 require("lazy").setup(
   imports,

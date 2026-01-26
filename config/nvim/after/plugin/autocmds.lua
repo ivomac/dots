@@ -100,11 +100,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
   {
     group = vim.api.nvim_create_augroup("WRITE_ESC", { clear = true }),
     callback = function()
-      if vim.g.started_by_firenvim then
-        -- save with <Esc> in firenvim
-        vim.keymap.set({ "i", "v" }, "<Esc>", "<Esc>:silent write<CR>", { noremap = true, silent = true })
-        vim.keymap.set({ "n" }, "<Esc>", "<Esc>:silent write<CR>:quit<CR>", { noremap = true, silent = true })
-      elseif not vim.bo.readonly and not vim.b[0].was_readonly then
+      if not vim.bo.readonly and not vim.b[0].was_readonly then
         -- save with <Esc> in normal mode (if not read-only)
         vim.keymap.set("n", "<Esc>",
           function()

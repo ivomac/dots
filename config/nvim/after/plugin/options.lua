@@ -73,7 +73,3 @@ vim.highlight.priorities = {
   diagnostics = 200,
   user = 250
 }
-
-if vim.g.started_by_firenvim then
-  vim.opt.laststatus = 0
-end
