@@ -54,6 +54,7 @@
       "pulseaudio",
       "backlight",
       "battery",
+      "custom/conduit",
       "custom/notification"
     ]
   },
@@ -139,6 +140,15 @@
     "format-charging-s10": "󰂅",
     "tooltip-format": "{capacity}% ({timeTo})",
     "max-length": 25
+  },
+  "custom/conduit": {
+    "escape": true,
+    "exec": "waybar-conduit",
+    "interval": 3,
+    "format": "{}",
+    "on-click": "systemctl --user start conduit.service",
+    "on-click-right": "systemctl --user stop conduit.service",
+    "tooltip": false
   },
   "custom/notification": {
     "escape": true,
