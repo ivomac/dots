@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Run Conduit proxy server
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/zsh -c 'conduit --verbose --data-dir ~/.cache/conduit start --bandwidth 100 --max-clients 100'
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
