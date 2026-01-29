@@ -54,8 +54,9 @@
   },
   "agent": {},
   "permission": {
-    "edit": "allow",
     "bash": "ask",
+    "edit": "allow",
+    "question": "allow",
     "webfetch": "allow"
   },
   "tools": {
@@ -64,6 +65,7 @@
     "grep": true,
     "list": true,
     "patch": true,
+    "question": true,
     "read": true,
     "todoread": true,
     "todowrite": true,
