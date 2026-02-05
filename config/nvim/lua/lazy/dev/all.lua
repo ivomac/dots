@@ -271,7 +271,7 @@ return {
       "ivomac/timesaver.nvim",
     },
     opts = {
-      folder = vim.fn.expand("~") .. "/Docs/.nvim/sessions",
+      folder = vim.fn.expand("~") .. "/Docs/.local/nvim/sessions",
     },
     cmd = { "Session" },
     keys = {
