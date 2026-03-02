@@ -16,7 +16,7 @@ if ! echo "$url" | grep -q "^https\?://"; then
   exit 1
 fi
 
-base_opts=(--remote-components ejs:github --paths "temp:$HOME/yt-dlp-parts" --output "%(title)s.%(ext)s")
+base_opts=(--remote-components ejs:github --paths "temp:$HOME/.cache/tmp/yt-dlp/parts" --output "%(uploader)s - %(title)s.%(ext)s")
 if [[ "$1" == "song" ]]; then
   typ="Song"
   opts=(--paths "home:$MEDIA/Music" --extract-audio --audio-quality 2 --audio-format mp3 --format 'ba[acodec^=mp3]/ba/b')
