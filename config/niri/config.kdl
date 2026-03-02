@@ -200,7 +200,7 @@ binds {
   Super+Shift+G { focus-column-last; }
 
   MouseForward  { toggle-window-floating; }
-  MouseBack    { close-window; }
+  // MouseBack    { close-window; }
 
   Super+M { switch-preset-window-width; }
   Super+Space { fullscreen-window; }
