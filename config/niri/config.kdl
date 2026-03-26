@@ -235,7 +235,7 @@ binds {
 
   Super+Tab { spawn "niri-switch"; }
 
-  Super+T { spawn "transcribe"; }
+  Super+T { spawn "transcribe" "--copy"; }
   Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
 
   Super+Y { spawn "yt-dlp-clip"; }
