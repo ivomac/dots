@@ -60,18 +60,18 @@ fi
 
 sed --follow-symlinks -i -e "s/.*--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
 
-if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "swww-daemon.service" > /dev/null; then
+if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "awww-daemon.service" > /dev/null; then
   echo "Changing wallpaper"
 	mapfile -t wallpapers < <(find "$wallpaper_path" -type f,l | sort -R)
 
-	mapfile -t outputs < <(swww query)
+	mapfile -t outputs < <(awww query)
 
 	for ((i=0; i<${#outputs[@]}; i++)); do
 	  output_line="${outputs[i]}"
 	  output_name="${output_line%%:*}"
 	  wallpaper="${wallpapers[i]}"
     echo "  output:$output_name"
-	  swww img -o "$output_name" "$wallpaper"
+	  awww img -o "$output_name" "$wallpaper"
 	done
 fi
 
