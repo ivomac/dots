@@ -1,20 +1,19 @@
 # LOAD THEME
 
 function load_theme() {
-	TERMCOLORS="$COLORS/OSC/default.ini"
-	while IFS='=' read -r key value; do
-		if [[ "$key" == "fg" ]]; then
-			printf "\033]10;%s\033\\" "$value"
-		elif [[ "$key" == "bg" ]]; then
-			printf "\033]11;%s\033\\" "$value"
-		else
-			printf "\033]4;%s;%s\033\\" "$key" "$value"
-		fi
-	done < "$TERMCOLORS"
+  TERMCOLORS="$COLORS/OSC/default.ini"
+  while IFS='=' read -r key value; do
+    if [[ "$key" == "fg" ]]; then
+      printf "\033]10;%s\033\\" "$value"
+    elif [[ "$key" == "bg" ]]; then
+      printf "\033]11;%s\033\\" "$value"
+    else
+      printf "\033]4;%s;%s\033\\" "$key" "$value"
+    fi
+  done <"$TERMCOLORS"
 }
 
 load_theme
-
 
 # ZSH OPTIONS
 
@@ -91,78 +90,76 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # MARK PROMPTS
 
 function precmd {
-    if ! builtin zle; then
-        print -n "\e]133;D\e\\"
-    fi
-	print -Pn "\e]133;A\e\\"
+  if ! builtin zle; then
+    print -n "\e]133;D\e\\"
+  fi
+  print -Pn "\e]133;A\e\\"
 }
 
 function preexec {
-    print -n "\e]133;C\e\\"
+  print -n "\e]133;C\e\\"
 }
 
 # REPORT DIRECTORY CHANGES TO FOOT TERMINAL
 ## https://codeberg.org/dnkl/foot/wiki#spawning-new-terminal-instances-in-the-current-working-directory
 
 function osc7-pwd() {
-    emulate -L zsh # also sets localoptions for us
-    setopt extendedglob
-    local LC_ALL=C
-    printf '\e]7;file://%s%s\e\' $HOST ${PWD//(#m)([^@-Za-z&-;_~])/%${(l:2::0:)$(([##16]#MATCH))}}
+  ((ZSH_SUBSHELL)) && return
+  emulate -L zsh # also sets localoptions for us
+  setopt extendedglob
+  local LC_ALL=C
+  printf '\e]7;file://%s%s\e\' $HOST ${PWD//(#m)([^@-Za-z&-;_~])/%${(l:2::0:)$( ([##16]#MATCH))}}
 }
 
-function chpwd() {
-    (( ZSH_SUBSHELL )) || osc7-pwd
-    auto_venv
-}
+add-zsh-hook chpwd osc7-pwd
 
 # AUTOCD ON YAZI EXIT
 
 function yazi_cwd() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
 }
 
 # PRINT THE CURRENT DIRECTORY CONTENTS ON CD
 
 function cd() {
-	builtin cd "$@" || return
-	eza --icons=auto
+  builtin cd "$@" || return
+  eza --icons=auto
 }
 
 # FUNCTION: cd ..
 
 function _cd-up() {
-	if [[ -z "$BUFFER" ]]; then
-		BUFFER="cd .."
-		zle accept-line
-	fi
+  if [[ -z "$BUFFER" ]]; then
+    BUFFER="cd .."
+    zle accept-line
+  fi
 }
 zle -N _cd-up
 
 # FUNCTION: cd - binding
 
 function _cd-back-and-forth() {
-	if [[ -z "$BUFFER" ]]; then
-		BUFFER="cd -"
-		zle accept-line
-	else
-		zle fzf-tab-complete
-	fi
+  if [[ -z "$BUFFER" ]]; then
+    BUFFER="cd -"
+    zle accept-line
+  else
+    zle fzf-tab-complete
+  fi
 }
 zle -N _cd-back-and-forth
 
 # FUNCTION: toggle foreground/background
 
 function _foreground() {
-	if [[ -z "$BUFFER" ]]; then
-		BUFFER="fg"
-		zle accept-line
-	fi
+  if [[ -z "$BUFFER" ]]; then
+    BUFFER="fg"
+    zle accept-line
+  fi
 }
 zle -N _foreground
 
@@ -180,13 +177,12 @@ zle -N fzf-nav
 
 function nav-edit() {
   tmpfile="$(mktemp -t "fzf-nav-edit.XXXXXX")"
-  echo 'nvim $1 +$2' > "$tmpfile"
+  echo 'nvim $1 +$2' >"$tmpfile"
   chmod +x "$tmpfile"
   FZF_NAV_USER_OPEN="$tmpfile" _fzf-nav
 }
 
-# Python Env
-function venv() {
+function activate_venv() {
   if [[ -z "$1" ]]; then
     return 0
   fi
@@ -194,46 +190,51 @@ function venv() {
   local env_path="$1/.venv"
   local python_version="${2:-3.14}"
 
-  local python_path="$(which "python$python_version" )"
+  local python_path="$(which "python$python_version")"
 
   if [[ ! -d "$env_path" ]]; then
-    echo "Creating virtual env:  ${env_path:h}"
+    echo "Creating virtual env:  ${env_path}"
     "$python_path" -m venv "$env_path"
   fi
 
-  echo "Activating virtual env:  ${env_path:h}"
+  echo "Activating virtual env:  ${env_path}"
   source "$env_path/bin/activate"
 }
 
-function auto_venv() {
+function auto_activate_venv() {
   local current_path="$PWD"
   local env_path=""
 
-  while [[ "$current_path" == "${PROJECTS}"* ]]; do
+  while [[ "$current_path" == "${PROJECTS:-$HOME}"* ]]; do
     if [[ -d "$current_path/.venv" ]]; then
       env_path="$current_path"
       break
     fi
-
     current_path="${current_path:h}"
   done
 
-  if [[ -n "$env_path" ]] && [[ -z "$VIRTUAL_ENV" ]]; then
-    venv "$env_path"
+  if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" != "$env_path/.venv" ]]; then
+    echo "Deactivating virtual env:  $VIRTUAL_ENV"
+    deactivate
+  fi
+
+  if [[ -z "$VIRTUAL_ENV" && -n "$env_path" ]]; then
+    activate_venv "$env_path"
   fi
 }
-auto_venv
+auto_activate_venv
 
-bindkey '^[[A' history-substring-search-up    # Up arrow
-bindkey '^[[B' history-substring-search-down  # Down arrow
-bindkey '^P' history-substring-search-up      # Ctrl+P
-bindkey '^N' history-substring-search-down    # Ctrl+N
-bindkey '^I' fzf-nav                          # Tab
-bindkey '^[[Z' _cd-back-and-forth             # Shift+Tab
-bindkey '^[[27;5;46~' _cd-up                  # Ctrl+.
-bindkey '^Z' _foreground                      # Ctrl+Z
+add-zsh-hook chpwd auto_activate_venv
+
+bindkey '^[[A' history-substring-search-up   # Up arrow
+bindkey '^[[B' history-substring-search-down # Down arrow
+bindkey '^P' history-substring-search-up     # Ctrl+P
+bindkey '^N' history-substring-search-down   # Ctrl+N
+bindkey '^I' fzf-nav                         # Tab
+bindkey '^[[Z' _cd-back-and-forth            # Shift+Tab
+bindkey '^[[27;5;46~' _cd-up                 # Ctrl+.
+bindkey '^Z' _foreground                     # Ctrl+Z
 
 # LOAD STARSHIP PROMPT
 
 eval "$(starship init zsh)"
-
