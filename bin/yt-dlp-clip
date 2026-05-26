@@ -21,7 +21,7 @@ if [[ "$1" == "song" ]]; then
   typ="Song"
   opts=(--paths "home:$MEDIA/Music" --extract-audio --audio-quality 2 --audio-format mp3 --format 'ba[acodec^=mp3]/ba/b')
 else
-  opts=(--paths "home:$HOME/Downloads" --write-subs --embed-subs --concurrent-fragments 4 --remux-video "mkv>mp4/webm>mp4" --merge-output-format mp4/mkv/webm --format "best[height=720]/bestvideo[height=720]+bestaudio/best[height=1080]/bestvideo[height=1080]+bestaudio/best" --format-sort "res:720,fps:60,ext:mp4:m4a")
+  opts=(--paths "home:$HOME/Downloads" --write-subs --embed-subs --concurrent-fragments 4 --remux-video "mkv>mp4/webm>mp4" --merge-output-format mp4/mkv/webm --format "best[height=720]/best[width=720]/bestvideo[height=720]+bestaudio/bestvideo[width=720]+bestaudio/best[height=1080]/best[width=1080]/bestvideo[height=1080]+bestaudio/bestvideo[width=1080]+bestaudio/best" --format-sort "res:720,fps:60,ext:mp4:m4a")
   typ="Clip"
 fi
 
