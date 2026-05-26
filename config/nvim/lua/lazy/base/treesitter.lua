@@ -1,101 +1,35 @@
+vim.treesitter.language.register("bash", "zsh")
+vim.treesitter.language.register("bash", "sh")
+
 return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    lazy = false,
     event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
-      vim.treesitter.language.register("bash", "zsh")
-      vim.treesitter.language.register("bash", "sh")
-
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "bash", "lua", "python" },
-        auto_install = false,
-        sync_install = false,
-        ignore_install = {},
-        modules = {},
-        highlight = {
-          enable = true,
-          disable = function(_, buf)
-            local max_filesize = 400 * 1024 -- 400 KB
-            local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(buf))
-            if stats and stats.size > max_filesize then
-              return true
-            end
-          end,
-        },
-        incremental_selection = {
-          enable = false,
-        },
-        matchup = {
-          enable = true,
-        },
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            selection_modes = {
-              ["@function.outer"]    = "V",
-              ["@conditional.outer"] = "V",
-              ["@class.outer"]       = "V",
-              ["@loop.outer"]        = "V",
-              ["@comment.outer"]     = "V",
-            },
-            keymaps = {
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["ai"] = "@conditional.outer",
-              ["ii"] = "@conditional.inner",
-              ["al"] = "@loop.outer",
-              ["il"] = "@loop.inner",
-              ["ar"] = "@return.outer",
-              ["ir"] = "@return.inner",
-              ["ae"] = "@assignment.outer",
-              ["ie"] = "@assignment.inner",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              ["]a"] = "@parameter.outer",
-              ["]c"] = "@class.outer",
-              ["]f"] = "@function.outer",
-              ["]i"] = "@conditional.outer",
-              ["]l"] = "@loop.outer",
-              ["]o"] = "@comment.outer",
-              ["]r"] = "@return.outer",
-              ["]e"] = "@assignment.outer",
-            },
-            goto_next_end = {
-              ["]C"] = "@class.outer",
-              ["]F"] = "@function.outer",
-              ["]I"] = "@conditional.outer",
-              ["]R"] = "@return.outer",
-            },
-            goto_previous_start = {
-              ["[a"] = "@parameter.outer",
-              ["[c"] = "@class.outer",
-              ["[f"] = "@function.outer",
-              ["[i"] = "@conditional.outer",
-              ["[l"] = "@loop.outer",
-              ["[o"] = "@comment.outer",
-              ["[r"] = "@return.outer",
-              ["[e"] = "@assignment.outer",
-            },
-            goto_previous_end = {
-              ["[C"] = "@class.outer",
-              ["[F"] = "@function.outer",
-              ["[I"] = "@conditional.outer",
-              ["[R"] = "@return.outer",
-            },
-          },
-        },
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local buf = args.buf
+          local max_filesize = 400 * 1024
+          local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(buf))
+          if stats and stats.size < max_filesize then
+            pcall(vim.treesitter.start, buf)
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
       })
+
+      local ensureInstalled = { "bash", "lua", "python" }
+      local alreadyInstalled = require('nvim-treesitter.config').get_installed()
+      local parsersToInstall = vim.iter(ensureInstalled)
+          :filter(function(parser)
+            return not vim.tbl_contains(alreadyInstalled, parser)
+          end)
+          :totable()
+      require('nvim-treesitter').install(parsersToInstall)
     end,
   },
 
@@ -118,7 +52,71 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
+    lazy = false,
     event = "VeryLazy",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+    init = function()
+      vim.g.no_plugin_maps = true
+    end,
+    config = function()
+      require("nvim-treesitter-textobjects").setup({
+        select = {
+          enable = true,
+          lookahead = true,
+          selection_modes = {
+            ["@function.outer"]    = "V",
+            ["@conditional.outer"] = "V",
+            ["@class.outer"]       = "V",
+            ["@loop.outer"]        = "V",
+            ["@comment.outer"]     = "V",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+        },
+      })
+      local ts_select = require("nvim-treesitter-textobjects.select")
+      local ts_move = require("nvim-treesitter-textobjects.move")
+
+      local select_maps = {
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ai"] = "@conditional.outer",
+        ["ii"] = "@conditional.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["ar"] = "@return.outer",
+        ["ir"] = "@return.inner",
+        ["a="] = "@assignment.outer",
+        ["i="] = "@assignment.inner",
+      }
+
+      for lhs, query in pairs(select_maps) do
+        vim.keymap.set({ "x", "o" }, lhs, function()
+          ts_select.select_textobject(query, "textobjects")
+        end)
+      end
+
+      local move_configs = {
+        { fn = ts_move.goto_next_start,     keys = { ["]a"] = "@parameter.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]i"] = "@conditional.outer", ["]l"] = "@loop.outer", ["]o"] = "@comment.outer", ["]r"] = "@return.outer", ["]="] = "@assignment.outer" } },
+        { fn = ts_move.goto_next_end,       keys = { ["]C"] = "@class.outer", ["]F"] = "@function.outer", ["]I"] = "@conditional.outer", ["]R"] = "@return.outer" } },
+        { fn = ts_move.goto_previous_start, keys = { ["[a"] = "@parameter.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[i"] = "@conditional.outer", ["[l"] = "@loop.outer", ["[o"] = "@comment.outer", ["[r"] = "@return.outer", ["[="] = "@assignment.outer" } },
+        { fn = ts_move.goto_previous_end,   keys = { ["[C"] = "@class.outer", ["[F"] = "@function.outer", ["[I"] = "@conditional.outer", ["[R"] = "@return.outer" } },
+      }
+
+      for _, config in ipairs(move_configs) do
+        for lhs, query in pairs(config.keys) do
+          vim.keymap.set("n", lhs, function()
+            config.fn(query, "textobjects")
+          end)
+        end
+      end
+    end,
   },
 }

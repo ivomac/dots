@@ -92,12 +92,6 @@ return {
 
   {
     "kylechui/nvim-surround",
-    opts = {
-      keymaps = {
-        insert = false,
-        insert_line = false,
-      },
-    },
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-treesitter/nvim-treesitter-textobjects",
