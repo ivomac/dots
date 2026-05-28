@@ -5,7 +5,7 @@ hash = "635b0feb9215772d22020eb0abf0bb34"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "5d5c480"
+rev = "c2c16c8"
 hash = "f0c8c378184d5f8abd1b095a443d336d"
 
 [[plugin.deps]]
@@ -20,7 +20,7 @@ hash = "6c6089ca31656ffbc301bf47276a7181"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:jump-to-char"
-rev = "5d5c480"
+rev = "c2c16c8"
 hash = "7a4b4237223aaa94e589d1c01a23542a"
 
 [flavor]
