@@ -54,7 +54,16 @@
   },
   "agent": {},
   "permission": {
-    "bash": "ask",
+    "bash": {
+      "*": "ask",
+      "ls *": "allow",
+      "ls": "allow",
+      "find *": "allow",
+      "fd *": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+      "echo *": "allow"
+    },
     "edit": "allow",
     "question": "allow",
     "webfetch": "allow"
