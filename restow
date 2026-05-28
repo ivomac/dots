@@ -17,3 +17,5 @@ for fprofile in $HOME/.mozilla/firefox/*.default-release; do
   stow_cmd "$fprofile" "firefox-css"
 done
 
+cd "$HOME/Docs/.local"
+stow --dir="." --restow --target="$HOME/.local/share" "share"

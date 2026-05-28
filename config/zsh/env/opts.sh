@@ -26,8 +26,6 @@ export PROJECTS="$HOME/Projects"
 export MEDIA="$HOME/Media"
 export BIB="$DOCS/.bib"
 
-export OPENCODE_DATA_DIR="$DOCS/.opencode"
-
 export COLORS="$HOME/.local/colors"
 
 export RUSTUP_HOME="$HOME/.cache"
