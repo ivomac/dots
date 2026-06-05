@@ -1,12 +1,13 @@
 ---
-description: "Commit staged changes"
-mode: "subagent"
+description: Commit staged changes
+mode: subagent
 permission:
-  edit: "deny"
+  edit: deny
   bash:
-    "git commit -m *": "allow"
-    "*": "deny"
-  webfetch: "deny"
+    "git commit -m *": allow
+    "*": deny
+  webfetch: deny
+  websearch: deny
 ---
 
 - You will receive information about the current git state.
