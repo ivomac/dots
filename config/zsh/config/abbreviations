@@ -25,7 +25,7 @@ abbr "o"="\$OPEN"
 abbr "e"="\$EXPLORER"
 abbr "n"="\$EDITOR"
 
-abbr "oc"="XDG_DATA_HOME=\"\$DOCS/.local\" opencode"
+abbr "oc"="opencode"
 
 abbr "ns"="\$EDITOR '+Session load'"
 abbr "ne"="\$EDITOR +Explorer"

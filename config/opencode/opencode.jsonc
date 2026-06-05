@@ -1,16 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "deepseek/deepseek-chat",
-  "small_model": "deepseek/deepseek-chat",
+  "model": "deepseek/deepseek-v4-pro",
+  "small_model": "deepseek/deepseek-v4-flash",
+  "default_agent": "plan",
   "autoupdate": false,
   "share": "manual",
   "snapshot": false,
   "username": "Ivo",
   "disabled_providers": [],
-  "agent": {},
   "permission": {
+    "read": {
+      "**/*.ipynb": "deny"
+    },
     "bash": {
       "*": "ask",
+      "nb run *": "ask",
+      "nb *": "allow",
+      "nb": "allow",
+      "git log": "allow",
+      "git log *": "allow",
       "ls": "allow",
       "ls *": "allow",
       "find": "allow",
@@ -30,24 +38,26 @@
       "sort": "allow",
       "sort *": "allow",
       "mkdir": "allow",
-      "mkdir *": "allow"
+      "mkdir *": "allow",
+      "wc": "allow",
+      "wc *": "allow",
+      "tr": "allow",
+      "tr *": "allow",
+      "sed": "allow",
+      "sed *": "allow",
+      "stat": "allow",
+      "stat *": "allow",
+      "jq": "allow",
+      "jq *": "allow",
+      "jupytext": "allow",
+      "jupytext *": "allow",
+      "cat *.ipynb": "deny"
     },
     "edit": "allow",
     "question": "allow",
-    "webfetch": "allow"
-  },
-  "tools": {
-    "bash": true,
-    "glob": true,
-    "grep": true,
-    "list": true,
-    "patch": true,
-    "question": true,
-    "read": true,
-    "todoread": true,
-    "todowrite": true,
-    "webfetch": true,
-    "write": true
+    "webfetch": "allow",
+    "websearch": "allow",
+    "lsp": "allow"
   },
   "command": {},
   "watcher": {
@@ -57,8 +67,8 @@
   "instructions": [],
   "provider": {},
   "mcp": {},
-  "formatter": {},
-  "lsp": {},
+  "formatter": true,
+  "lsp": true,
   "experimental": {
     "disable_paste_summary": false
   }

@@ -1,6 +1,6 @@
 ---
-description: "Commit staged changes"
-agent: "commit"
+description: Commit staged changes
+agent: commit
 subtask: true
 ---
 
