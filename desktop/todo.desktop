@@ -1,5 +1,5 @@
 [Desktop Entry]
-Exec=${TERMCMD} --maximized zsh -c 'source $ZDOTDIR/.zshrc; todo'
+Exec=footclient --maximized zsh -c 'source ~/.config/zsh/.zshrc; todo'
 Name=Todo
 Icon=/usr/share/icons/Adwaita/symbolic/legacy/text-editor-symbolic.svg
 StartupNotify=false

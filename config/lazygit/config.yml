@@ -104,4 +104,5 @@ customCommands:
   - key: "O"
     context: commits
     description: open files in commit
-    command: "git diff -z --name-only {{.SelectedLocalCommit.ParentRefName}} {{.SelectedLocalCommit.Sha}} | xargs -0 nvimwrapper"
+    output: terminal
+    command: "git diff -z --name-only {{.SelectedCommit.Sha}}^ {{.SelectedCommit.Sha}} | xargs -0 -r nvimwrapper"

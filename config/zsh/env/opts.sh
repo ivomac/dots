@@ -8,8 +8,10 @@ export LC_COLLATE="C"
 
 export NO_AT_BRIDGE=1
 
-GPG_TTY=$(tty)
-export GPG_TTY
+if [[ -t 0 ]]; then
+	GPG_TTY=$(tty)
+	export GPG_TTY
+fi
 
 # DIRECTORIES
 
@@ -40,8 +42,8 @@ export EXPLORER="yazi_cwd"
 export PICKER="yazi --chooser-file"
 export PAGER="pager"
 export MANPAGER="pager"
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="nvimwrapper"
+export VISUAL="nvimwrapper"
 
 export SUDO_ASKPASS="$BIN/sudo-pass"
 export SSH_ASKPASS="$BIN/ssh-pass"
@@ -62,9 +64,6 @@ export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
 export RIPGREP_CONFIG_PATH="$ZDOTDIR/config/rg"
 export ABBR_USER_ABBREVIATIONS_FILE="$ZDOTDIR/config/abbreviations"
 export STARSHIP_CONFIG="$ZDOTDIR/config/starship.toml"
-
-export AIDER_CONFIG="$XDG_CONFIG_HOME/aider/config.yml"
-export AIDER_CONVENTIONS="/home/ivo/.config/aider/CONVENTIONS.md"
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
@@ -88,10 +87,10 @@ export NOTIFY_SOCKET="$XDG_RUNTIME_DIR/systemd/notify"
 
 color_str="--color=16,fg+:0,bg+:15,hl+:3,gutter:-1,pointer:4,marker:6"
 for region in "input" "header" "preview"; do
-  color_str+=",$region-fg:-1"
-  color_str+=",$region-bg:-1"
-  color_str+=",$region-border:3"
-  color_str+=",$region-label:4"
+	color_str+=",$region-fg:-1"
+	color_str+=",$region-bg:-1"
+	color_str+=",$region-border:3"
+	color_str+=",$region-label:4"
 done
 
 export FZF_DEFAULT_OPTS="\
@@ -117,8 +116,6 @@ $color_str \
 --bind='ctrl-\\:toggle-preview' \
 "
 
-export FZF_DEFAULT_COMMAND="fd ${FZF_NAV_FD_OPTS[*]}"
-
 # fzf nav plugin
 
 export FZF_NAV_SEPARATOR=◇
@@ -129,61 +126,65 @@ export FZF_NAV_USER_MODE="bookmarks"
 export FZF_NAV_USER_OPEN="lg-open"
 
 export FZF_NAV_FD_OPTS=(
-  "--color=always"
-  "--follow"
-  "--hidden"
-  "--no-ignore"
-  "--exclude='**/.git/**'"
-  "--exclude='**/.parallel/**'"
-  "--exclude='**/.cargo/**'"
-  "--exclude='**/.npm/**'"
-  "--exclude='**/.pki/**'"
-  "--exclude='**/.venv**/**'"
-  "--exclude='**/__pycache__/**'"
-  "--exclude='**/.ipython/**'"
-  "--exclude='**/cache/**'"
-  "--exclude='**/.cache/**'"
-  "--exclude='**/.nvim/**'"
-  "--exclude='**/nvim/undo/**'"
-  "--exclude='**/.android/**'"
-  "--exclude='**/.mozilla/firefox/*/**'"
-  "--exclude='**/.stfolder/**'"
-  "--exclude='**/.steam/**'"
-  "--exclude='**/.aider*/**'"
-  "--exclude='**/.local/share/*/**'"
-  "--exclude='**/yazi/packages/**'"
+	"--color=always"
+	"--follow"
+	"--hidden"
+	"--no-ignore"
+	"--exclude='**/.git/**'"
+	"--exclude='**/.parallel/**'"
+	"--exclude='**/.cargo/**'"
+	"--exclude='**/.npm/**'"
+	"--exclude='**/.pki/**'"
+	"--exclude='**/.venv/**'"
+	"--exclude='**/__pycache__/**'"
+	"--exclude='**/.ipython/**'"
+	"--exclude='**/cache/**'"
+	"--exclude='**/.cache/**'"
+	"--exclude='**/.nvim/**'"
+	"--exclude='**/nvim/undo/**'"
+	"--exclude='**/.android/**'"
+	"--exclude='**/.mozilla/firefox/*/**'"
+	"--exclude='**/.stfolder/**'"
+	"--exclude='**/.steam/**'"
+	"--exclude='**/.aider*/**'"
+	"--exclude='**/.local/share/*/**'"
+	"--exclude='**/yazi/packages/**'"
 )
 
 export FZF_NAV_RG_OPTS=(
-  "--color=always"
-  "--hidden"
-  "--no-ignore"
-  "--line-number"
-  "--with-filename"
-  "--smart-case"
-  "--glob=!'**/.git/**'"
-  "--glob=!'**/.parallel/**'"
-  "--glob=!'**/.cargo/**'"
-  "--glob=!'**/.npm/**'"
-  "--glob=!'**/.pki/**'"
-  "--glob=!'**/.venv**/**'"
-  "--glob=!'**/__pycache__/**'"
-  "--glob=!'**/.ipython/**'"
-  "--glob=!'**/cache/**'"
-  "--glob=!'**/.cache/**'"
-  "--glob=!'**/.nvim/**'"
-  "--glob=!'**/nvim/undo/**'"
-  "--glob=!'**/.android/**'"
-  "--glob=!'**/.mozilla/firefox/*/**'"
-  "--glob=!'**/.stfolder/**'"
-  "--glob=!'**/.steam/**'"
-  "--glob=!'**/.aider*/**'"
-  "--glob=!'**/.local/share/*/**'"
-  "--glob=!'**/yazi/packages/**'"
+	"--color=always"
+	"--hidden"
+	"--no-ignore"
+	"--line-number"
+	"--with-filename"
+	"--smart-case"
+	"--glob=!'**/.git/**'"
+	"--glob=!'**/.parallel/**'"
+	"--glob=!'**/.cargo/**'"
+	"--glob=!'**/.npm/**'"
+	"--glob=!'**/.pki/**'"
+	"--glob=!'**/.venv/**'"
+	"--glob=!'**/__pycache__/**'"
+	"--glob=!'**/.ipython/**'"
+	"--glob=!'**/cache/**'"
+	"--glob=!'**/.cache/**'"
+	"--glob=!'**/.nvim/**'"
+	"--glob=!'**/nvim/undo/**'"
+	"--glob=!'**/.android/**'"
+	"--glob=!'**/.mozilla/firefox/*/**'"
+	"--glob=!'**/.stfolder/**'"
+	"--glob=!'**/.steam/**'"
+	"--glob=!'**/.aider*/**'"
+	"--glob=!'**/.local/share/*/**'"
+	"--glob=!'**/yazi/packages/**'"
 )
+
+export FZF_DEFAULT_COMMAND="fd ${FZF_NAV_FD_OPTS[*]}"
+export FZF_NAV_FD_COMMAND="fd ${FZF_NAV_FD_OPTS[*]}"
+export FZF_NAV_RG_COMMAND="rg ${FZF_NAV_RG_OPTS[*]}"
 
 # ADD TO PATH
 
 if [[ ":$PATH:" != *":$BIN:"* ]]; then
-  export PATH="${PATH:+"$PATH:"}$BIN"
+	export PATH="${PATH:+"$PATH:"}$BIN"
 fi

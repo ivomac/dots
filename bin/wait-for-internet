@@ -6,6 +6,7 @@ WAITED=0
 while ! ping -c1 8.8.8.8 &>/dev/null; do
   sleep 2
   WAITED=$((WAITED + 2))
+  [[ $WAITED -ge $MAX_WAIT ]] && break
 done
 
 exec "$@"

@@ -10,10 +10,10 @@ while getopts t: opt; do
 done
 shift "$((OPTIND - 1))"
 
-HOME=$(tput cup 0 0)
+home_pos=$(tput cup 0 0)
 ED=$(tput ed)
 EL=$(tput el)
-printf '%s%s' "$HOME" "$ED"
+printf '%s%s' "$home_pos" "$ED"
 while true; do
   ROWS=$(tput lines)
   COLS=$(tput cols)
@@ -21,6 +21,6 @@ while true; do
   ${SHELL:=sh} -c "$CMD" | head -n $ROWS | while IFS= read LINE; do
     printf '%-*.*s%s\n' $COLS $COLS "$LINE" "$EL"
   done
-  printf '%s%s' "$ED" "$HOME"
+  printf '%s%s' "$ED" "$home_pos"
   sleep "$time"
 done

@@ -2,8 +2,13 @@
 
 mkdir -p "$XDG_CACHE_HOME/mpd/playlists"
 
+MAX_WAIT=60
+WAITED=0
+
 while ! pgrep mpd >/dev/null; do
   sleep 2
+  WAITED=$((WAITED + 2))
+  [[ $WAITED -ge $MAX_WAIT ]] && break
 done
 
 if [[ -z "$(mpc current)" ]]; then

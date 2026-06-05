@@ -8,7 +8,7 @@ if [[ "$1" == \+* ]]; then
   shift
 fi
 
-nvim --server "$NVIM" --remote-send "<cmd>lua require('floatterm').close_all()<CR>" &&
+nvim --server "$NVIM" --remote-send "<cmd>lua local ft = require('floatterm'); if ft.last_term and pcall(ft.last_term.close, ft.last_term) then end<CR>" &&
   sleep 0.01 &&
   nvim --server "$NVIM" --remote "${@}"
 

@@ -33,8 +33,6 @@ setopt notify
 setopt hash_list_all
 setopt glob_dots
 
-unalias run-help && autoload run-help
-
 stty -ixon
 
 bindkey -e
@@ -128,7 +126,7 @@ function yazi_cwd() {
 
 function cd() {
   builtin cd "$@" || return
-  eza --icons=auto
+  [[ -o interactive ]] && eza --icons=auto
 }
 
 # FUNCTION: cd ..
@@ -176,7 +174,7 @@ function fzf-nav() {
 zle -N fzf-nav
 
 function nav-edit() {
-  tmpfile="$(mktemp -t "fzf-nav-edit.XXXXXX")"
+  local tmpfile="$(mktemp -t "fzf-nav-edit.XXXXXX")"
   echo 'nvim $1 +$2' >"$tmpfile"
   chmod +x "$tmpfile"
   FZF_NAV_USER_OPEN="$tmpfile" _fzf-nav
@@ -190,7 +188,11 @@ function activate_venv() {
   local env_path="$1/.venv"
   local python_version="${2:-3.14}"
 
-  local python_path="$(which "python$python_version")"
+  local python_path
+  python_path="$(command -v "python$python_version")" || {
+    echo "Error: python$python_version not found" >&2
+    return 1
+  }
 
   if [[ ! -d "$env_path" ]]; then
     echo "Creating virtual env:  ${env_path}"

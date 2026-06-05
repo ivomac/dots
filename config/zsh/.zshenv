@@ -1,5 +1,5 @@
 for file in "$ZDOTDIR"/env/*.sh; do
-  if [[ "$file" == "*wayland.sh" && -z "$WAYLAND_DISPLAY" ]]; then
+  if [[ "$file" == *wayland.sh && -z "$WAYLAND_DISPLAY" ]]; then
     continue
   fi
   source "$file"

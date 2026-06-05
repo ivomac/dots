@@ -1,4 +1,4 @@
-abbr -g "D"="& disown &> /dev/null"
+abbr -g "D"="&> /dev/null & disown"
 abbr -g "E"="| $EDITOR"
 abbr -g "G"="| grep"
 abbr -g "L"="| $PAGER"

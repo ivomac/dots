@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+setopt nullglob
+
 stow_cmd() {
   mkdir -p "$1"
   stow --dir="." --restow --no-folding --target="$1" "$2"

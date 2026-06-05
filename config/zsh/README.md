@@ -6,19 +6,12 @@ Set additional local variables in `env/secrets.sh`.
 
 ## Plugins
 
-### My own
+Plugins are cloned on-demand via `get_plug()` from `.zshrc` and live in `$ZDOTDIR/plugins/`.
 
-`fzf-nav`: A plugin to navigate the filesystem with fzf.
-
-### As submodules
-
-Run `git submodule update --init --recursive` to fetch the submodules:
-
-```sh
-fast-syntax-highlighting
-fzf-tab
-zsh-abbr
-zsh-autosuggestions
-zsh-completions
-zsh-history-substring-search
-```
+- `zsh-completions`
+- `zsh-users/zsh-history-substring-search`
+- `zsh-users/zsh-autosuggestions`
+- `zdharma-continuum/fast-syntax-highlighting`
+- `olets/zsh-abbr`
+- `Aloxaf/fzf-tab`
+- `ivomac/zsh-fzf-nav`

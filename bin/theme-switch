@@ -58,7 +58,7 @@ else
 	bat_theme="light"
 fi
 
-sed --follow-symlinks -i -e "s/.*--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
+sed --follow-symlinks -i -e "s/^--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
 
 if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "awww-daemon.service" > /dev/null; then
   echo "Changing wallpaper"
@@ -91,6 +91,7 @@ done
 
 echo "Updating terminals"
 TERMCOLORS="$COLORS/OSC/default.ini"
+shopt -u failglob
 for pts in /dev/pts/[0-9]*; do
   if [[ ! -c "$pts" ]]; then
     continue
@@ -106,8 +107,10 @@ for pts in /dev/pts/[0-9]*; do
 		fi
 	done < "$TERMCOLORS"
 done
+shopt -s failglob
 
 echo "Updating nvim"
+shopt -u failglob
 for nvimserver in "$XDG_RUNTIME_DIR"/nvim.*; do
   if [[ ! -S "$nvimserver" ]]; then
     continue
@@ -115,6 +118,7 @@ for nvimserver in "$XDG_RUNTIME_DIR"/nvim.*; do
   echo "  instance:$(basename "$nvimserver")"
 	nvim --server "$nvimserver" --remote-send '<cmd>lua dofile(os.getenv("HOME") .. "/.local/colors/nvim/default.lua")<CR>' &>/dev/null & disown
 done
+shopt -s failglob
 
 notify "New theme: $choice"
 
