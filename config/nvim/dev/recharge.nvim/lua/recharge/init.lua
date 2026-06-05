@@ -57,7 +57,9 @@ local function load_session(session)
   end
 
   -- Load the session
+  vim.g.SessionLoad = 1
   vim.cmd("silent! source " .. vim.fn.fnameescape(session.path))
+  vim.g.SessionLoad = 0
 
   -- Update global
   vim.g.session_info = session

@@ -63,19 +63,12 @@ vim.api.nvim_create_autocmd({ "BufReadPre" },
         end
         if stats.size > 1 * 1024 * 1024 then -- 1 MB
           vim.notify("Large file detected. Disabling syntax…")
-          vim.schedule(
-            function()
-              vim.api.nvim_buf_call(ev.buf,
-                function()
-                  vim.bo[ev.buf].syntax = "none"
-                  vim.opt_local.syntax = "off"
-                  vim.opt_local.statuscolumn = ""
-                  vim.opt_local.conceallevel = 0
-                  vim.opt_local.foldmethod = "manual"
-                end
-              )
-            end
-          )
+          vim.schedule(function()
+            vim.bo[ev.buf].syntax = "off"
+            vim.bo[ev.buf].statuscolumn = ""
+            vim.bo[ev.buf].conceallevel = 0
+            vim.bo[ev.buf].foldmethod = "manual"
+          end)
         end
       end
     end
@@ -118,10 +111,9 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
               return vim.cmd('silent quit')
             end
           end,
-          { noremap = true, silent = true }
+          { noremap = true, silent = true, buffer = 0 }
         )
       else
-        -- save with :SW in readonly
         vim.api.nvim_create_user_command('SW',
           function()
             vim.cmd("silent! write !sudo -A tee % > /dev/null")
@@ -130,7 +122,14 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
           { bang = true }
         )
 
-        -- remove readonly
+        vim.keymap.set("n", "<Esc>", function()
+          if #vim.fn.getbufinfo({ buflisted = 1 }) == 1 then
+            vim.cmd("quit")
+          else
+            vim.cmd("bdelete!")
+          end
+        end, { noremap = true, silent = true, buffer = 0 })
+
         vim.opt_local.readonly = false
         vim.opt_local.autoread = true
         vim.b[0].was_readonly = true
@@ -138,6 +137,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" },
     end,
   }
 )
+
 
 -- Highlight yank
 vim.api.nvim_create_autocmd({ "TextYankPost" },

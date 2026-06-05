@@ -8,7 +8,7 @@ end
 local function open_graph()
   local png_file = vim.fn.expand("%:t:r") .. ".png"
   local cmd = { "xdg-open", png_file }
-  vim.system(cmd, { type = "pty", detach = true })
+  vim.system(cmd, { detach = true })
 end
 
 local function toggle_build_on_save()
