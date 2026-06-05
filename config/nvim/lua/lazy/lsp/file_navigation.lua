@@ -68,9 +68,6 @@ return {
 
       { mode = { "n" }, "<leader>fK",       function() require("fzf-lua").helptags() end,                   silent = true, desc = "Help Tags" },
       { mode = { "n" }, "<leader>fu",       function() require("fzf-lua").changes() end,                    silent = true, desc = "Changes" },
-
-      { mode = { "n" }, "<leader>db",       function() require("fzf-lua").dap_breakpoints() end,            silent = true, desc = "List Breakpoints" },
-      { mode = { "n" }, "<leader>dv",       function() require("fzf-lua").dap_variables() end,              silent = true, desc = "List Variables" },
     },
 
   },
