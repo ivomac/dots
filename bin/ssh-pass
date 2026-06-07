@@ -1,3 +1,32 @@
 #!/usr/bin/env bash
+# Routes SSH_ASKPASS prompts to the right handler.
+# - Host verification → interactive terminal prompt
+# - Passphrase for ~/.ssh/<name> → looks up pass show "ssh_key/<name>/password"
+# - Anything else → interactive terminal prompt
 
-exec pass show "ssh_key/id_ed25519/password"
+prompt="${1:-}"
+
+prompt_interactive() {
+    local answer
+    read -rsp "$1" answer < /dev/tty
+    echo "$answer"
+}
+
+prompt_interactive_yn() {
+    local answer
+    read -rp "$1" answer < /dev/tty
+    echo "$answer"
+}
+
+if [[ "$prompt" == *"Are you sure you want to continue connecting"* ]]; then
+    prompt_interactive_yn "$prompt"
+    exit 0
+fi
+
+if [[ "$prompt" =~ Enter\ passphrase\ for.*\'([^\']+)\' ]]; then
+    key_path="${BASH_REMATCH[1]}"
+    key_name=$(basename "$key_path")
+    exec pass show "ssh_key/${key_name}/password"
+fi
+
+prompt_interactive "$prompt"
