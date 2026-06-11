@@ -102,14 +102,15 @@ output "Chimei Innolux Corporation 0x1249 Unknown" {
 }
 
 layout {
-  gaps 16
+  gaps 3
 
   preset-column-widths {
+    proportion 0.33333333;
     proportion 0.5;
     proportion 1.0;
   }
 
-  default-column-width { proportion 0.5; }
+  default-column-width { proportion 0.33333333; }
 
   focus-ring {
     width 3
@@ -130,10 +131,10 @@ layout {
   }
 
   struts {
-    left -8
-    right 16
-    top -10
-    bottom -10
+    left -1
+    right 23
+    top 0
+    bottom 0
   }
 }
 
