@@ -17,9 +17,7 @@ return {
         rg_opts = fzf_rg_command,
       },
       winopts = {
-        width = 0.95,
-        height = 0.95,
-        row = 1.01,
+        fullscreen = true,
         backdrop = 100,
         preview = {
           wrap = true,
