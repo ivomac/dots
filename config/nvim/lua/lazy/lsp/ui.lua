@@ -18,14 +18,7 @@ return {
       insert_mappings = false,
       terminal_mappings = false,
       close_on_exit = true,
-      direction = "float",
-      float_opts = {
-        border = "rounded",
-        width = function() return math.floor(0.92 * vim.o.columns) end,
-        height = function() return math.floor(0.92 * vim.o.lines) end,
-        row = 1,
-        title_pos = "center",
-      },
+      direction = "tab",
     },
   },
 
