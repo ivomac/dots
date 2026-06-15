@@ -16,6 +16,7 @@ gui:
   sidePanelWidth: 0.5
   expandFocusedSidePanel: true
   expandedSidePanelWeight: 2
+  enlargedSideViewLocation: top
   screenMode: half
   mainPanelSplitMode: vertical
   portraitMode: never
