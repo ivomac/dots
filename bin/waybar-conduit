@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-systemctl --user status conduit.service | grep inactive &> /dev/null && echo '󰁵' || echo '󰗹'
