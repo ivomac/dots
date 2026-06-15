@@ -56,7 +56,6 @@
 #power-profiles-daemon,
 #battery,
 #systemd-failed-units,
-#custom-conduit,
 #custom-notification {
   color: @fg1;
   font-size: 16px;
@@ -66,8 +65,7 @@
 #pulseaudio,
 #power-profiles-daemon,
 #battery,
-#systemd-failed-units,
-#custom-conduit {
+#systemd-failed-units {
   padding-bottom: 8px;
 }
 
