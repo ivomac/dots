@@ -215,7 +215,7 @@ function auto_activate_venv() {
     current_path="${current_path:h}"
   done
 
-  if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" != "$env_path/.venv" ]]; then
+  if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" != "${env_path:P}/.venv" ]]; then
     echo "Deactivating virtual env:  $VIRTUAL_ENV"
     deactivate
   fi
