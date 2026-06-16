@@ -149,3 +149,16 @@ vim.api.nvim_create_autocmd({ "TextYankPost" },
   }
 )
 
+-- Auto-reload buffers changed externally
+vim.api.nvim_create_autocmd(
+  { "BufEnter", "FocusGained", "CursorHold", "CursorHoldI" },
+  {
+    group = vim.api.nvim_create_augroup("autoread", { clear = true }),
+    callback = function()
+      if vim.fn.getcmdwintype() == "" then
+        vim.cmd("silent! checktime")
+      end
+    end,
+  }
+)
+

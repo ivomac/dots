@@ -31,6 +31,7 @@ vim.opt.matchpairs:append("<:>")
 vim.opt.swapfile = false
 
 vim.opt.updatetime = 500
+vim.opt.autoread = true
 
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
