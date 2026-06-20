@@ -3,7 +3,7 @@ name: python-style
 description: Python coding style guidelines - comprehensions, type hints, structure and design patterns
 ---
 
-## Style
+# Style
 
 - NEVER use `map`/`filter`: use comprehensions.
 - USE comprehensions for simple transformations; loops for complex ones.
@@ -15,7 +15,7 @@ description: Python coding style guidelines - comprehensions, type hints, struct
 - ONLY use ascii characters.
 - NEVER call `tight_layout()` for plots.
 
-## Design
+# Design
 
 - SEPARATE policy from logic, data from behavior, configuration from implementation.
 - Favor data-driven solutions: use dicts, mappings, lookup tables over long if/elif chains.
