@@ -204,7 +204,7 @@ return {
               languageId = filetype
             }
           }
-          client.notify("textDocument/didOpen", params)
+          client:notify("textDocument/didOpen", params)
         end
       end
 
