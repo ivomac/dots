@@ -22,19 +22,6 @@ return {
     },
   },
 
-  -- {
-  -- 	{
-  -- 		"mattn/libcallex-vim",
-  -- 		ft = { "markdown.graphics" },
-  -- 		build = "make -C autoload",
-  -- 	},
-  -- 	{
-  -- 		"gzqx/vim-graphical-preview",
-  -- 		ft = { "markdown.graphics" },
-  -- 		build = "cargo build --release"
-  -- 	}
-  -- },
-
   {
     "shellRaining/hlchunk.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -68,8 +55,6 @@ return {
         { "<leader>ga", group = "FZF Lsp Actions" },
         { "<leader>gs", group = "FZF Lsp Symbols" },
         { "<leader>s", group = "Session" },
-        { "<leader>t", group = "Terminal" },
-        { "<leader>tl", group = "LazyGit" },
         { "[", group = "Previous…" },
         { "]", group = "Next…" },
         { "g", group = "GO!" },
@@ -130,11 +115,6 @@ return {
           },
         },
         lualine_c = {
-          -- {
-          --   function()
-          --     return "%="
-          --   end,
-          -- },
           {
             "diagnostics",
             sources = { "nvim_diagnostic" },
@@ -176,7 +156,6 @@ return {
           },
           { "filesize", padding = { left = 1, right = 0 } },
           { "location", padding = { left = 1, right = 1 } },
-          -- { "progress", padding = { left = 1, right = 1 } },
         },
         lualine_z = {},
       },

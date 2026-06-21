@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# Hooks disabled. Remove "exit 0" to re-enable.
 
 exit 0
 

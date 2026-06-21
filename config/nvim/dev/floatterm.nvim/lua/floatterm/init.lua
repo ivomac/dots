@@ -107,6 +107,7 @@ function M.open(opts)
           { buffer = nt.bufnr, noremap = true, silent = true, desc = "Close" })
         vim.bo[nt.bufnr].bufhidden = term.mode
       end
+      term.created = true
     end
 
     newterm:open()

@@ -97,7 +97,6 @@
     "tooltip": false,
     "on-scroll-up": "swayosd-client-backlight +10",
     "on-scroll-down": "swayosd-client-backlight -10",
-    "on-click-right": "wdisplays",
     "on-click-middle": "notify-send 'Backlight Search' 'Updating' && backlight-search && notify-send 'Backlight Search' 'Updated'"
   },
   "battery": {

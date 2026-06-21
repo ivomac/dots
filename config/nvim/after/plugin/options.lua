@@ -1,5 +1,3 @@
-HOME = os.getenv("HOME")
-
 vim.opt.wrap = false
 
 vim.opt.path:append("**")

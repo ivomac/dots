@@ -7,7 +7,7 @@ vim.opt_local.wrap = true
 
 vim.api.nvim_create_autocmd({ "BufUnload" },
   {
-    group = vim.api.nvim_create_augroup("LSP_TEX_CLEAN", { clear = true }),
+    group = vim.api.nvim_create_augroup("LSP_TEX_CLEAN", {}),
     buffer = 0,
     callback = function(ev)
       local clients = vim.lsp.get_clients({ buf = ev.buf })

@@ -5,7 +5,6 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "NPY201", "RET"]
-ignore = ["D203", "D213"]
 
 fixable = ["ALL"]
 unfixable = []

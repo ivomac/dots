@@ -14,10 +14,7 @@ abbr "ssc"="sudo systemctl"
 
 abbr "p"="pacman"
 abbr "sp"="sudo pacman"
-abbr "pac"="sudo paccache -rk1"
 abbr "au"="yay"
-
-abbr "i"="interpreter"
 
 abbr "g"="git"
 

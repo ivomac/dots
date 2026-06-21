@@ -10,8 +10,6 @@ wrap: no
 wrap_code: false
 
 clients:
-  - type: claude
-  - type: openai
   - type: openai-compatible
     name: deepseek
     api_base: https://api.deepseek.com

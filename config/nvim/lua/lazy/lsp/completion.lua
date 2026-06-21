@@ -95,17 +95,13 @@ return {
           n_completions = 3,
           after_cursor_filter_length = 15,
           provider_options = {
-            gemini = {
+            openai_fim_compatible = {
               stream = true,
-              model = "deepseek-chat",
+              model = "deepseek-v4-flash",
               api_key = "DEEPSEEK_API_KEY",
               optional = {
-                generationConfig = {
-                  maxOutputTokens = 256,
-                  thinkingConfig = {
-                    thinkingBudget = 0,
-                  },
-                },
+                stop = { "\n\n", "\t" },
+                max_tokens = 256,
               },
             },
           }

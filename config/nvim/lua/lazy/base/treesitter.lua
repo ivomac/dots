@@ -1,5 +1,5 @@
-vim.treesitter.language.register("bash", "zsh")
-vim.treesitter.language.register("bash", "sh")
+vim.treesitter.language.add("zsh", "bash")
+vim.treesitter.language.add("sh", "bash")
 
 return {
 
@@ -7,7 +7,6 @@ return {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
     lazy = false,
-    event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
       vim.api.nvim_create_autocmd('FileType', {
@@ -54,7 +53,6 @@ return {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
     lazy = false,
-    event = "VeryLazy",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     init = function()
       vim.g.no_plugin_maps = true

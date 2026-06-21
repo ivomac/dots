@@ -1,9 +1,0 @@
--- vim.filetype.add({
---   extension = {
---     zsh = "zsh",
---     jsonc = "jsonc"
---   },
---   pattern = {
---     ["Diary/.*txt"] = "diary",
---   },
--- })

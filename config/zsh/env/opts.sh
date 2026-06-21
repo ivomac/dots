@@ -34,8 +34,6 @@ export RUSTUP_HOME="$HOME/.cache"
 
 # EXECUTABLES
 
-export MENU="menu"
-
 export TERMCMD="footclient"
 export OPEN="yazi_cwd"
 export EXPLORER="yazi_cwd"

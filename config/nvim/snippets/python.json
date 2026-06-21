@@ -63,7 +63,7 @@
     ]
   },
   "else": {
-    "prefix": "elif",
+    "prefix": "else",
     "body": [
       "else:",
       "    ${0}"

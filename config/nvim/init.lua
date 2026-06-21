@@ -65,4 +65,4 @@ require("lazy").setup(
   }
 )
 
-dofile(os.getenv("HOME") .. "/.local/colors/nvim/default.lua")
+pcall(dofile, os.getenv("HOME") .. "/.local/colors/nvim/default.lua")

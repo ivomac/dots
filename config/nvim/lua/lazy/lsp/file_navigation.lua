@@ -1,10 +1,8 @@
-local fzf_fd_command = os.getenv("FZF_NAV_FD_COMMAND") or "fd "
-local fzf_rg_command = os.getenv("FZF_NAV_RG_COMMAND") or "rg "
+local fzf_fd_command = os.getenv("FZF_NAV_FD_COMMAND") or "fd"
+local fzf_rg_command = os.getenv("FZF_NAV_RG_COMMAND") or "rg"
 
--- remove "fd" and "rg" from beginning of the commands
-
-fzf_fd_command = fzf_fd_command:gsub("^fd ", "") .. " --type f"
-fzf_rg_command = fzf_rg_command:gsub("^rg ", "") .. " --files"
+fzf_fd_command = vim.fn.matchstr(fzf_fd_command, '^%S+') .. " --type f"
+fzf_rg_command = vim.fn.matchstr(fzf_rg_command, '^%S+') .. " --files"
 
 return {
 

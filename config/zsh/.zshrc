@@ -55,6 +55,7 @@ fpath=("$ZDOTDIR/completions/" "$ZDOTDIR/plugins/zsh-completions/src" $fpath)
 autoload -Uz compinit && compinit -d "$ZDOTDIR/cache/completions"
 
 plugs=(
+  "zsh-users/zsh-completions"
   "ivomac/zsh-fzf-nav"
   "Aloxaf/fzf-tab"
   "olets/zsh-abbr"

@@ -4,7 +4,7 @@ Description=Clean firefox profile at shutdown
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/true
-ExecStop=/usr/bin/zsh -c 'if pgrep firefox > /dev/null; then echo "Firefox running, cannot run"; else echo "Cleaning profile"; profile-cleaner f; fi'
+ExecStop=/usr/bin/zsh -c 'if pgrep firefox > /dev/null; then echo "Firefox running, cannot run"; else echo "Cleaning profile"; /usr/bin/profile-cleaner f; fi'
 RemainAfterExit=yes
 
 [Install]
