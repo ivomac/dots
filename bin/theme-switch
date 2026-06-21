@@ -13,34 +13,43 @@ notify() {
   notify-send --icon "$icon" "ThemeSwitch" "$1"
 }
 
-if [[ "$1" == "toggle" ]]; then
-	current=$(gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null)
+set_symlinks() {
+  local choice="$1"
 
-	if [[ "$current" == *dark* ]]; then
-		choice="gruvbox_light_soft"
-	else
-		choice="gruvbox_dark"
-	fi
-else
-	choice=$1
+  for folder in "$COLORS"/*; do
+    if [[ ! -d "$folder" ]]; then
+      continue
+    fi
+    random_file="$(find "$folder" -type f,l | head -n 1)"
+    extension="${random_file##*.}"
+
+    theme_file="$folder/$choice${extension:+.$extension}"
+    symlink_file="$folder/default${extension:+.$extension}"
+
+    if [[ ! -f "$theme_file" ]]; then
+      notify "Error - Source file does not exist: $theme_file"
+      exit 1
+    fi
+    ln -f -s "$theme_file" "$symlink_file"
+  done
+}
+
+if [[ ! -L "$COLORS/css/default.css" ]]; then
+  set_symlinks "gruvbox_dark"
 fi
 
-for folder in "$COLORS"/*; do
-  if [[ ! -d "$folder" ]]; then
-    continue
+if [[ "$1" == "toggle" ]]; then
+  current=$(readlink "$COLORS/css/default.css" 2>/dev/null | xargs basename | sed 's/\.[^.]*$//')
+  if [[ "$current" == *dark* ]]; then
+    choice="gruvbox_light_soft"
+  else
+    choice="gruvbox_dark"
   fi
-	random_file="$(find "$folder" -type f,l | head -n 1)"
-	extension="${random_file##*.}"
+else
+  choice=$1
+fi
 
-	theme_file="$folder/$choice${extension:+.$extension}"
-	symlink_file="$folder/default${extension:+.$extension}"
-
-	if [[ ! -f "$theme_file" ]]; then
-		notify "Error - Source file does not exist: $theme_file"
-    exit 1
-	fi
-	ln -f -s "$theme_file" "$symlink_file"
-done
+set_symlinks "$choice"
 
 if [[ $choice == *dark* ]]; then
 	gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark &>/dev/null & disown
@@ -76,9 +85,6 @@ if [[ -d "$WALLPAPERS" ]] && systemctl --user is-active --quiet "awww-daemon.ser
 fi
 
 echo "Restarting apps"
-
-echo "  app:ulauncher"
-ulauncher-start &>/dev/null & disown
 
 services=( "waybar" "swaync" "swayosd" "qbittorrent" )
 
