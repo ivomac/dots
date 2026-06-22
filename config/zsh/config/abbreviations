@@ -16,6 +16,7 @@ abbr "p"="pacman"
 abbr "sp"="sudo pacman"
 abbr "au"="yay"
 
+abbr "t"="tmux"
 abbr "g"="git"
 
 abbr "o"="\$OPEN"

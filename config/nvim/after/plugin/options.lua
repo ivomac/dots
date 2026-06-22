@@ -2,9 +2,7 @@ vim.opt.wrap = false
 
 vim.opt.path:append("**")
 vim.opt.nrformats = { "bin", "hex", "alpha" }
-vim.opt.ttimeoutlen = 9999
-vim.opt.timeout = true
-vim.opt.timeoutlen = 9999
+vim.opt.ttimeout = false
 vim.opt.virtualedit = "block"
 
 vim.opt.winborder = "rounded"

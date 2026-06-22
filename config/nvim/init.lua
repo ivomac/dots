@@ -66,3 +66,12 @@ require("lazy").setup(
 )
 
 pcall(dofile, os.getenv("HOME") .. "/.local/colors/nvim/default.lua")
+
+if vim.env.TMUX and vim.v.servername then
+  pcall(vim.fn.system, { "tmux", "set-environment", "NVIM_SERVER", vim.v.servername })
+  vim.api.nvim_create_autocmd("VimLeave", {
+    callback = function()
+      pcall(vim.fn.system, { "tmux", "set-environment", "-u", "NVIM_SERVER" })
+    end,
+  })
+end
