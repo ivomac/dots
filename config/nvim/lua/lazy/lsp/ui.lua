@@ -55,6 +55,7 @@ return {
         { "<leader>ga", group = "FZF Lsp Actions" },
         { "<leader>gs", group = "FZF Lsp Symbols" },
         { "<leader>s", group = "Session" },
+        { "<leader>t", group = "Test" },
         { "[", group = "Previous…" },
         { "]", group = "Next…" },
         { "g", group = "GO!" },
