@@ -39,11 +39,11 @@ return {
         root_markers = {},
       }
 
-      vim.lsp.config["pyright"] = {
+      vim.lsp.config["basedpyright"] = {
         settings = {
-          python = {
+          basedpyright = {
             analysis = {
-              typeCheckingMode = "workspace",
+              typeCheckingMode = "standard",
               diagnosticMode = "openFilesOnly",
               autoSearchPaths = true,
               autoImportCompletions = true,
@@ -51,11 +51,8 @@ return {
               diagnosticSeverityOverrides = {
                 reportUnusedImport = "none",
                 reportUnusedVariable = "none",
-                reportMissingImports = "none",
               },
             },
-          },
-          pyright = {
             disableOrganizeImports = true,
           },
         },
@@ -159,7 +156,7 @@ return {
         "lua_ls",
         "marksman",
         -- "ty",
-        "pyright",
+        "basedpyright",
         "ruff",
         "rust_analyzer",
         "taplo",
