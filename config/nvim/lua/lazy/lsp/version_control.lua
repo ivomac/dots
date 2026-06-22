@@ -61,28 +61,32 @@ return {
       vim.keymap.set("n", "ghw", signs.toggle_word_diff, { silent = true, desc = "Word diff" })
       vim.keymap.set("n", "ghd", signs.diffthis, { silent = true, desc = "Diff file" })
       vim.keymap.set("n", "ghc", function()
-        local obj = vim.system(
+        vim.system(
           { "git", "log", "--oneline", "--", vim.api.nvim_buf_get_name(0) },
-          { cwd = vim.fn.getcwd(), text = true }):wait()
+          { cwd = vim.fn.getcwd(), text = true },
+          function(obj)
+            local info_table = {}
+            for line in string.gmatch(obj.stdout, "[^\n]+") do
+              local hash, desc = string.match(line, "(%S+)%s+(.*)")
+              if hash and desc then
+                table.insert(info_table, { hash = hash, desc = desc })
+              end
+            end
 
-        local info_table = {}
-        for line in string.gmatch(obj.stdout, "[^\n]+") do
-          local hash, desc = string.match(line, "(%S+)%s+(.*)")
-          if hash and desc then
-            table.insert(info_table, { hash = hash, desc = desc })
-          end
-        end
-
-        vim.ui.select(
-          info_table,
-          {
-            format_item = function(commit)
-              return string.format("%s", commit.desc)
-            end,
-          },
-          function(commit, _)
-            if not commit then return end
-            require("gitsigns").change_base(commit.hash, false)
+            vim.schedule(function()
+              vim.ui.select(
+                info_table,
+                {
+                  format_item = function(commit)
+                    return string.format("%s", commit.desc)
+                  end,
+                },
+                function(commit, _)
+                  if not commit then return end
+                  require("gitsigns").change_base(commit.hash, false)
+                end
+              )
+            end)
           end
         )
       end, { silent = true, desc = "Change base" })

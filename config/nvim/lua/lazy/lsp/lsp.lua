@@ -1,4 +1,4 @@
-LOADED_CLIENTS = {}
+local LOADED_CLIENTS = {}
 
 return {
 
@@ -122,11 +122,6 @@ return {
         }
       }
 
-      -- vim.lsp.config.ty = {
-      --   cmd = { "ty", "server" },
-      --   workspace_required = true,
-      --   root_markers = { "requirements.txt", ".venv", "pyproject.toml", "ty.toml" },
-      -- }
 
       vim.lsp.config.texlab = {
         settings = {
@@ -187,13 +182,13 @@ return {
 
         for _, path in ipairs(workspace_files) do
           if path == vim.api.nvim_buf_get_name(bufnr) then
-            return
+            goto continue
           end
 
           local filetype = vim.filetype.match({ filename = path })
 
           if not vim.tbl_contains(client.config.filetypes, filetype) then
-            return
+            goto continue
           end
 
           local params = {
@@ -205,6 +200,7 @@ return {
             }
           }
           client:notify("textDocument/didOpen", params)
+          ::continue::
         end
       end
 
