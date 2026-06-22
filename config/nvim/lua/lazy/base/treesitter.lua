@@ -2,40 +2,43 @@ vim.treesitter.language.add("zsh", "bash")
 vim.treesitter.language.add("sh", "bash")
 
 return {
-
   {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "main",
+    "romus204/tree-sitter-manager.nvim",
     lazy = false,
-    build = ":TSUpdate",
     config = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        callback = function(args)
-          local buf = args.buf
-          local max_filesize = 400 * 1024
-          local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(buf))
-          if stats and stats.size < max_filesize then
-            pcall(vim.treesitter.start, buf)
-            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-          end
-        end,
+      require("tree-sitter-manager").setup({
+        ensure_installed = {
+          "bash",
+          "c",
+          "cpp",
+          "css",
+          "go",
+          "html",
+          "javascript",
+          "json",
+          "latex",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "query",
+          "rust",
+          "toml",
+          "typescript",
+          "typst",
+          "vim",
+          "vimdoc",
+          "yaml",
+        },
+        auto_install = true,
+        highlight = true,
       })
-
-      local ensureInstalled = { "bash", "lua", "python" }
-      local alreadyInstalled = require('nvim-treesitter.config').get_installed()
-      local parsersToInstall = vim.iter(ensureInstalled)
-          :filter(function(parser)
-            return not vim.tbl_contains(alreadyInstalled, parser)
-          end)
-          :totable()
-      require('nvim-treesitter').install(parsersToInstall)
     end,
   },
 
   {
     "nvim-treesitter/nvim-treesitter-context",
-    event = "VeryLazy",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    lazy = false,
     opts = {
       enable = true,
       multiwindow = false,
@@ -46,14 +49,13 @@ return {
       trim_scope = 'outer',
       mode = 'cursor',
       zindex = 10,
-    }
+    },
   },
 
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
     lazy = false,
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
     init = function()
       vim.g.no_plugin_maps = true
     end,

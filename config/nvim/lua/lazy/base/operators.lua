@@ -1,7 +1,6 @@
 return {
   {
     'Wansmer/treesj',
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = { use_default_keymaps = false },
     keys = {
       { "<leader>aj", function() require('treesj').toggle({ split = { recursive = true } }) end, mode = { "n", "x" }, desc = "Join/Break" },
@@ -79,6 +78,8 @@ return {
             vim.api.nvim_feedkeys('"+y', "nt", false)
           elseif char == "p" then
             vim.api.nvim_feedkeys('"_dP', "nt", false)
+          else
+            require('substitute').visual()
           end
         end,
         mode = "x",
@@ -92,10 +93,6 @@ return {
 
   {
     "kylechui/nvim-surround",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
     keys = {
       { mode = { "n" }, "ys" },
       { mode = { "n" }, "yS" },
