@@ -12,12 +12,8 @@ vim.keymap.set({ "o", "x" }, "ic", function() require("various-textobjs").mdFenc
 vim.keymap.set({ "o", "x" }, "ac", function() require("various-textobjs").mdFencedCodeBlock("outer") end, { buffer = 0 })
 
 local OpenMarkdown = function()
-  local peek = require("peek")
-  if peek.is_open() then
-    peek.close()
-  else
-    peek.open()
-  end
+  local rm = require("render-markdown")
+  rm.toggle()
 end
 
 vim.keymap.set("n", "<leader>m", OpenMarkdown, { buffer = 0, desc = "Open Markdown" })
