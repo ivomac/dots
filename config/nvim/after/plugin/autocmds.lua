@@ -1,17 +1,3 @@
--- Open folders in terminal explorer
-vim.api.nvim_create_autocmd({ "VimEnter", "BufAdd" },
-  {
-    group = vim.api.nvim_create_augroup("EXPLORER", { clear = true }),
-    pattern = "*",
-    callback = function(ev)
-      if vim.g.SessionLoad ~= 1 and vim.fn.isdirectory(ev.file) == 1 then
-        require("floatterm").open({choice="Yazi"})
-        vim.api.nvim_buf_delete(ev.buf, { force = true })
-      end
-    end
-  }
-)
-
 -- Read templates onto new files
 vim.api.nvim_create_autocmd({ "BufNewFile" }, {
   group = vim.api.nvim_create_augroup("TEMPLATES", { clear = true }),

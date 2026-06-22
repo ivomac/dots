@@ -8,19 +8,7 @@ return {
     },
   },
 
-  {
-    "akinsho/toggleterm.nvim",
-    opts = {
-      open_mapping = nil,
-      shade_terminals = false,
-      start_in_insert = false,
-      persist_mode = false,
-      insert_mappings = false,
-      terminal_mappings = false,
-      close_on_exit = true,
-      direction = "tab",
-    },
-  },
+
 
   {
     "shellRaining/hlchunk.nvim",

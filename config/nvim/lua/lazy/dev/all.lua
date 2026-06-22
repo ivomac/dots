@@ -170,60 +170,6 @@ return {
     opts = {},
   },
 
-  {
-    "ivomac/floatterm.nvim",
-    dev = true,
-    dependencies = {
-      "akinsho/toggleterm.nvim",
-      "ivomac/toothpick.nvim",
-    },
-    keys = {
-      {
-        mode = { "x" },
-        "<C-h>",
-        function()
-          require("toggleterm").send_lines_to_terminal(
-            "visual_lines",
-            false,
-            { args = require("toggleterm.terminal").get_last_focused().id }
-          )
-        end,
-        silent = true,
-        noremap = true,
-        desc = "Send visual selection to last terminal"
-      },
-      {
-        mode = { "n" },
-        "<C-l>",
-        function()
-          local term = require("floatterm").last_term
-          if term then
-            term:open()
-            term:set_mode("i")
-          end
-        end,
-        silent = true,
-        noremap = true,
-        desc = "Toggle last term",
-      },
-      {
-        mode = { "n" },
-        "<C-k>",
-        function() require("floatterm").select() end,
-        silent = true,
-        noremap = true,
-        desc = "Select terminal",
-      },
-      {
-        mode = { "n" },
-        "<C-j>",
-        function() require("floatterm").open() end,
-        silent = true,
-        noremap = true,
-        desc = "Open terminal",
-      },
-    },
-  },
 
 
 
