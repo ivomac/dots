@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+session_id=$(opencode session list --format json -n 1 2>/dev/null \
+  | jq -r '.[0].id // empty' 2>/dev/null)
+
+if [[ -n "$session_id" && "$session_id" != "null" ]]; then
+  exec opencode -s "$session_id"
+else
+  exec opencode
+fi

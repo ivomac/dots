@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SESSIONS_DIR="$HOME/Docs/.local/nvim/sessions"
+
+choose_session() {
+  local tmux_sessions
+  tmux_sessions=$(tmux list-sessions -F '#S' 2>/dev/null || true)
+
+  local nvim_sessions=()
+  for f in "$SESSIONS_DIR"/*.vim; do
+    [[ -f "$f" ]] || continue
+    nvim_sessions+=("$(basename "$f" .vim)")
+  done
+
+  local items=()
+  declare -A seen
+
+  while IFS= read -r name; do
+    [[ -z "$name" ]] && continue
+    items+=("$name (active)")
+    seen["$name"]=1
+  done <<<"$tmux_sessions"
+
+  for name in "${nvim_sessions[@]}"; do
+    if [[ -z "${seen[$name]+_}" ]]; then
+      items+=("$name")
+    fi
+  done
+
+  local actions=("NEW: create session")
+  if [[ -n "${TMUX:-}" ]]; then
+    actions+=("RESTART: restart current")
+    actions+=("CLEAR: kill all sessions")
+  fi
+
+  printf "%s\n" "${items[@]}" "${actions[@]}" | fzf --prompt="session: "
+}
+
+session_root() {
+  local name="$1"
+  local f="$SESSIONS_DIR/$name.vim"
+  if [[ -f "$f" ]]; then
+    local cd_line
+    cd_line=$(grep -m1 "^cd " "$f" 2>/dev/null || true)
+    if [[ -n "$cd_line" ]]; then
+      local path="${cd_line#cd }"
+      echo "${path/#\~/$HOME}"
+      return
+    fi
+  fi
+  git rev-parse --show-toplevel 2>/dev/null || pwd
+}
+
+setup_layout() {
+  local name="$1"
+  local root="$2"
+
+  tmux new-session -d -s "$name" -c "$root" -n nvim \
+    "nvim -c 'Session load'; exec $SHELL"
+  tmux new-window -t "$name":2 -c "$root" -n yazi \
+    "yazi; exec $SHELL"
+  tmux new-window -t "$name":3 -c "$root" -n lazygit \
+    "lazygit; exec $SHELL"
+  tmux new-window -t "$name":4 -c "$root" -n opencode \
+    "opencode-session; exec $SHELL"
+  tmux new-window -t "$name":5 -c "$root" -n zsh \
+    "exec $SHELL"
+
+  tmux set-option -t "$name" renumber-windows off
+  tmux set-window-option -t "$name":zsh remain-on-exit on
+  tmux select-window -t "$name":nvim
+}
+
+launch() {
+  local name="$1"
+  local root
+  root="$(session_root "$name")"
+
+  if tmux has-session -t "$name" 2>/dev/null; then
+    if [[ -n "${TMUX:-}" ]]; then
+      tmux switch-client -t "$name"
+    else
+      tmux attach-session -t "$name"
+    fi
+    return
+  fi
+
+  setup_layout "$name" "$root"
+
+  if [[ -n "${TMUX:-}" ]]; then
+    tmux switch-client -t "$name"
+  else
+    tmux attach-session -t "$name"
+  fi
+}
+
+# Subcommand: restart session (called via run-shell, detached from popup)
+cmd_restart() {
+  local name="$1"
+  local root="$2"
+
+  # Create temp session with full layout
+  local tmp="${name}_restart"
+  setup_layout "$tmp" "$root"
+
+  # Switch client to new session
+  tmux switch-client -t "$tmp"
+
+  # Kill old session
+  tmux kill-session -t "$name" 2>/dev/null || true
+
+  # Rename temp to original
+  tmux rename-session -t "$tmp" "$name"
+}
+
+if [[ $# -gt 0 ]]; then
+  case "$1" in
+  _restart)
+    cmd_restart "$2" "$3"
+    ;;
+  _clear)
+    while IFS= read -r name; do
+      [[ -z "$name" ]] && continue
+      tmux kill-session -t "$name" 2>/dev/null || true
+    done <<<"$(tmux list-sessions -F '#S' 2>/dev/null || true)"
+    ;;
+  *)
+    launch "$1"
+    ;;
+  esac
+  exit 0
+fi
+
+choice=$(choose_session) || true
+[[ -z "$choice" ]] && exit 0
+
+case "$choice" in
+"NEW: create session")
+  launch "$(basename "$(pwd)")"
+  ;;
+"RESTART: restart current")
+  name="$(tmux display -p '#S')"
+  root="$(tmux display -p '#{pane_current_path}')"
+  script="$(readlink -f "$(command -v "$0")")"
+  tmux run-shell -b "$script _restart $(printf '%q' "$name") $(printf '%q' "$root")"
+  ;;
+"CLEAR: kill all sessions")
+  script="$(readlink -f "$(command -v "$0")")"
+  tmux run-shell -b "$script _clear"
+  ;;
+*)
+  launch "${choice% (active)}"
+  ;;
+esac

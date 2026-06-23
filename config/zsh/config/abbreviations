@@ -29,6 +29,7 @@ abbr "ns"="\$EDITOR \"+Session load\""
 abbr "ne"="\$EDITOR +Explorer"
 abbr "nl"="\$EDITOR +LazyGit"
 abbr "lg"="lazygit"
+abbr "ts"="tmux-session"
 
 abbr "py"="python"
 abbr "ipy"="ipython"
