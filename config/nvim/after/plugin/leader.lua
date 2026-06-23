@@ -21,6 +21,9 @@ vim.keymap.set("n", "<leader>a ", ":setlocal expandtab<CR>:retab!<CR>", { desc =
 
 vim.keymap.set("n", "<leader>m", function() vim.cmd("make") end, { desc = "Make" })
 
+vim.cmd.packadd("nvim.undotree")
+vim.keymap.set("n", "<leader>u", "<Cmd>Undotree<CR>", { desc = "UndoTree" })
+
 vim.keymap.set("n", "<C-CR>",
   function()
     local current_dir = vim.fn.expand("%:p:h")

@@ -1,14 +1,6 @@
 return {
 
   {
-    "simnalamburt/vim-mundo",
-    cmd = { "MundoToggle" },
-    keys = {
-      { "<leader>u", function() vim.cmd("MundoToggle") end, desc = "UndoTree" },
-    },
-  },
-
-  {
     "lewis6991/gitsigns.nvim",
     event = { "VeryLazy" },
     cmd = { "Gitsigns" },
