@@ -25,7 +25,7 @@ abbr "n"="\$EDITOR"
 
 abbr "oc"="opencode"
 
-abbr "ns"="\$EDITOR '+Session load'"
+abbr "ns"="\$EDITOR \"+Session load\""
 abbr "ne"="\$EDITOR +Explorer"
 abbr "nl"="\$EDITOR +LazyGit"
 abbr "lg"="lazygit"

@@ -41,6 +41,18 @@ local function save_session(session)
   end
 end
 
+-- Trim stale buffers: no file, deleted, or empty
+local function trim_buffers()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      local fname = vim.api.nvim_buf_get_name(buf)
+      if fname == "" or vim.fn.filereadable(fname) == 0 or vim.fn.getfsize(fname) <= 0 then
+        pcall(vim.api.nvim_buf_delete, buf, { force = true })
+      end
+    end
+  end
+end
+
 -- Unload current session
 local function unload_current_session()
   vim.g.session_info = nil
@@ -60,6 +72,9 @@ local function load_session(session)
   vim.g.SessionLoad = 1
   vim.cmd("silent! source " .. vim.fn.fnameescape(session.path))
   vim.g.SessionLoad = 0
+
+  -- Trim stale buffers: no file, deleted, or empty
+  trim_buffers()
 
   -- Update global
   vim.g.session_info = session
@@ -176,7 +191,7 @@ function M.delete()
 end
 
 -- Search and load a session
-function M.load()
+function M.find()
   local sessions = list_sessions()
   if not sessions then
     vim.notify("No sessions found.", vim.log.levels.INFO)
@@ -198,12 +213,98 @@ function M.load()
   )
 end
 
+-- Load project session (match by cwd) or create new one
+function M.load()
+  local cwd = vim.fn.getcwd()
+  local session_files = vim.fn.glob(M.opts.folder .. "/*.vim", false, true)
+
+  local function load_git_files(opts)
+    opts = opts or {}
+    local text_only = opts.text_only ~= false -- default true
+    local files = vim.fn.systemlist("git ls-files --full-name")
+    local readable = {}
+    for _, file in ipairs(files) do
+      if vim.fn.filereadable(file) == 1 then
+        table.insert(readable, file)
+      end
+    end
+
+    local mime = {}
+    if text_only and #readable > 0 then
+      local input = table.concat(readable, "\n")
+      local output = vim.fn.system("file -b --mime-type -f -", input)
+      local i = 1
+      for line in output:gmatch("[^\n]+") do
+        if i <= #readable then
+          mime[readable[i]] = vim.trim(line)
+          i = i + 1
+        end
+      end
+    end
+
+    local first
+    for _, file in ipairs(readable) do
+      local abspath = vim.fn.fnamemodify(file, ":p")
+      if text_only then
+        local mt = mime[file]
+        if not mt or not mt:match("^text/") then
+          goto continue
+        end
+      end
+      vim.bo[vim.fn.bufadd(abspath)].buflisted = true
+      first = first or abspath
+      ::continue::
+    end
+    return first
+  end
+
+  for _, file_path in ipairs(session_files) do
+    for line in io.lines(file_path) do
+      if line:match("^cd ") then
+        local cd_path = vim.fn.expand(line:sub(4))
+        if cd_path == cwd then
+          local session = {
+            name = vim.fn.fnamemodify(file_path, ":t:r"),
+            path = file_path,
+          }
+          load_session(session)
+          vim.notify("Session loaded: " .. session.name, vim.log.levels.INFO)
+          load_git_files() -- register any new files
+          return
+        end
+        break
+      end
+    end
+  end
+
+  -- No session found: load git files, prompt to create
+  local first_file = load_git_files()
+  if first_file then
+    vim.cmd("edit " .. vim.fn.fnameescape(first_file))
+    trim_buffers()
+  end
+  local default_name = vim.fn.fnamemodify(cwd, ":t")
+  vim.ui.input(
+    { prompt = "New project session: ", default = default_name },
+    function(name)
+      if name and name ~= "" then
+        local session = {
+          name = name,
+          path = string.format("%s/%s.vim", M.opts.folder, name),
+        }
+        save_session(session)
+        vim.notify("Session created: " .. name, vim.log.levels.INFO)
+      end
+    end
+  )
+end
+
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend("force",
     {
       folder = vim.fn.stdpath("data") .. "/sessions",
       autosave = true,
-      savevartype = {"string", "number"},
+      savevartype = { "string", "number" },
     },
     opts or {}
   )
@@ -214,13 +315,18 @@ function M.setup(opts)
   -- Create user command
   vim.api.nvim_create_user_command("Session",
     function(cmd)
-      M[cmd.fargs[1]]()
+      local action = cmd.fargs[1]
+      if action == "load" then
+        M.load()
+      else
+        M[action]()
+      end
     end,
     {
       nargs = 1,
       complete = function(arg, _)
         local matches = {}
-        for _, func in ipairs({ "save", "load", "unload", "delete" }) do
+        for _, func in ipairs({ "save", "load", "find", "unload", "delete" }) do
           if vim.startswith(func, arg) then
             table.insert(matches, func)
           end
@@ -247,3 +353,4 @@ function M.setup(opts)
 end
 
 return M
+

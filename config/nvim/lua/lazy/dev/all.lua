@@ -221,9 +221,10 @@ return {
     },
     cmd = { "Session" },
     keys = {
-      { mode = { "n" }, "<leader>sf", function() require("recharge").load() end,   silent = true, noremap = true, desc = "Load" },
+      { mode = { "n" }, "<leader>sf", function() require("recharge").find() end,   silent = true, noremap = true, desc = "Find" },
       { mode = { "n" }, "<leader>sd", function() require("recharge").delete() end, silent = true, noremap = true, desc = "Delete" },
       { mode = { "n" }, "<leader>ss", function() require("recharge").save() end,   silent = true, noremap = true, desc = "Save" },
+      { mode = { "n" }, "<leader>sr", function() require("recharge").load() end,   silent = true, noremap = true, desc = "Resume" },
     },
   },
 
