@@ -13,12 +13,8 @@ return {
       { "av",     function() require("various-textobjs").value("outer") end,                desc = "A value",          mode = { "o", "x" } },
       { "ik",     function() require("various-textobjs").key("inner") end,                  desc = "In key",           mode = { "o", "x" } },
       { "ak",     function() require("various-textobjs").key("outer") end,                  desc = "A key",            mode = { "o", "x" } },
-      { "in",     function() require("various-textobjs").number("inner") end,               desc = "In number",        mode = { "o", "x" } },
-      { "an",     function() require("various-textobjs").number("outer") end,               desc = "A number",         mode = { "o", "x" } },
       { "im",     function() require("various-textobjs").chainMember("inner") end,          desc = "In method",        mode = { "o", "x" } },
       { "am",     function() require("various-textobjs").chainMember("outer") end,          desc = "A method",         mode = { "o", "x" } },
-      { "iS",     function() require("various-textobjs").pyTripleQuotes("inner") end,       desc = "In triple quotes", mode = { "o", "x" } },
-      { "aS",     function() require("various-textobjs").pyTripleQuotes("outer") end,       desc = "A triple quotes",  mode = { "o", "x" } },
     },
   },
 

@@ -81,8 +81,10 @@ return {
       local ts_move = require("nvim-treesitter-textobjects.move")
 
       local select_maps = {
-        ["aa"] = "@parameter.outer",
-        ["ia"] = "@parameter.inner",
+        ["a,"] = "@parameter.outer",
+        ["i,"] = "@parameter.inner",
+        ["ao"] = "@comment.outer",
+        ["io"] = "@comment.inner",
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
         ["af"] = "@function.outer",
@@ -104,9 +106,9 @@ return {
       end
 
       local move_configs = {
-        { fn = ts_move.goto_next_start,     keys = { ["]a"] = "@parameter.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]i"] = "@conditional.outer", ["]l"] = "@loop.outer", ["]o"] = "@comment.outer", ["]r"] = "@return.outer", ["]="] = "@assignment.outer" } },
+        { fn = ts_move.goto_next_start,     keys = { ["],"] = "@parameter.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]i"] = "@conditional.outer", ["]l"] = "@loop.outer", ["]o"] = "@comment.outer", ["]r"] = "@return.outer", ["]="] = "@assignment.outer" } },
         { fn = ts_move.goto_next_end,       keys = { ["]C"] = "@class.outer", ["]F"] = "@function.outer", ["]I"] = "@conditional.outer", ["]R"] = "@return.outer" } },
-        { fn = ts_move.goto_previous_start, keys = { ["[a"] = "@parameter.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[i"] = "@conditional.outer", ["[l"] = "@loop.outer", ["[o"] = "@comment.outer", ["[r"] = "@return.outer", ["[="] = "@assignment.outer" } },
+        { fn = ts_move.goto_previous_start, keys = { ["[,"] = "@parameter.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[i"] = "@conditional.outer", ["[l"] = "@loop.outer", ["[o"] = "@comment.outer", ["[r"] = "@return.outer", ["[="] = "@assignment.outer" } },
         { fn = ts_move.goto_previous_end,   keys = { ["[C"] = "@class.outer", ["[F"] = "@function.outer", ["[I"] = "@conditional.outer", ["[R"] = "@return.outer" } },
       }
 
