@@ -1,0 +1,201 @@
+# Noctalia v5 — hand-written base config
+# GUI overrides: ~/.local/state/noctalia/settings.toml (wins over this file)
+# Deployed via stow: config/noctalia/ → ~/.config/noctalia/
+
+# ── Shell ─────────────────────────────────────────────────────────────────────
+
+[shell]
+font_family                            = "Firosevka"
+corner_radius_scale                    = 1.0               # 0=square, 1=default, 2=extra rounded
+telemetry_enabled                      = false
+settings_show_advanced                 = false
+show_location                          = false           # hide weather location text in UI
+clipboard_enabled                      = true
+clipboard_auto_paste                   = "off"
+shared_gl_context                      = true
+niri_overview_type_to_launch_enabled   = false
+polkit_agent                           = false
+password_style                         = "default"
+middle_click_opens_widget_settings     = true
+
+[shell.animation]
+enabled = false
+speed   = 0
+
+[shell.shadow]
+# v4: general.enableShadows=false, shadowDirection="bottom_right"
+direction = "down_right"
+alpha     = 0.55
+
+[shell.panel]
+transparency_mode          = "solid"
+borders                    = true
+shadow                     = true
+launcher_placement         = "floating"
+clipboard_placement        = "floating"
+control_center_placement   = "attached"
+wallpaper_placement        = "attached"
+session_placement          = "attached"
+
+[shell.launcher]
+categories      = true
+show_icons      = true
+sort_by_usage   = true
+session_search  = true
+
+# ── Wallpaper ─────────────────────────────────────────────────────────────────
+
+[wallpaper]
+enabled                  = true
+fill_mode                = "crop"
+fill_color               = "#000000"
+transition               = ["fade", "disc", "stripes", "wipe", "pixelate", "honeycomb"]
+transition_duration      = 1500
+edge_smoothness          = 0.05
+transition_on_startup    = false
+directory                = false
+directory_dark           = "/home/ivo/Media/Pictures/Wallpapers/dark"
+directory_light          = "/home/ivo/Media/Pictures/Wallpapers/light"
+
+[wallpaper.automation]
+enabled          = false
+order            = "random"
+
+# ── Theme ─────────────────────────────────────────────────────────────────────
+# v5: custom palette at palettes/gruv.json (migrated from v4 colorschemes/gruv/)
+
+[theme]
+mode           = "dark"
+source         = "custom"
+custom_palette = "gruv"
+
+[theme.templates]
+enable_builtin_templates   = false
+enable_community_templates = false
+
+# ── Lock Screen ───────────────────────────────────────────────────────────────
+# v4: general.lockScreenBlur=0, lockScreenTint=0, compactLockScreen=false
+
+[lockscreen]
+enabled           = true
+blurred_desktop   = false
+blur_intensity    = 0
+tint_intensity    = 0
+
+# ── Idle ──────────────────────────────────────────────────────────────────────
+# v5: native lock action, screen-off handled via hooks (no lockScreenOffTimeout yet)
+
+[idle.behavior.lock]
+timeout = 600
+action  = "lock"
+enabled = true
+
+# ── Keybinds ──────────────────────────────────────────────────────────────────
+# v4: general.keybinds.keyEnter=["Return","Enter"]  (numpad Enter still broken)
+
+[keybinds]
+validate = ["return", "kp_enter"]
+cancel   = ["escape"]
+left     = ["left"]
+right    = ["right"]
+up       = ["up"]
+down     = ["down"]
+
+# ── Screenshots ──────────────────────────────────────────────────────────────
+
+[shell.screenshot]
+save_to_file      = true
+directory         = "~/Media/Screenshots"
+filename_pattern  = "%Y-%m-%d_%H-%M-%S"          # strftime, .png appended
+copy_to_clipboard = false
+
+# ── Screen Corners ────────────────────────────────────────────────────────────
+
+[shell.screen_corners]
+enabled = true
+size    = 18            # corner radius in logical pixels (1–100)
+
+# ── Bar ───────────────────────────────────────────────────────────────────────
+# Widget layout: start=old-left, end=old-right (vertical bar: top→bottom)
+
+
+[bar.main]
+position           = "right"
+background_opacity = 0.93
+radius             = 0
+radius_top_right    = 0
+radius_bottom_right = 0
+radius_top_left     = -10
+radius_bottom_left  = -10
+margin_ends        = 0                  # flush to top/bottom
+margin_edge        = 0                  # flush to right edge
+padding            = 2                  # v4: contentPadding=2
+widget_spacing     = 5                  # v4: widgetSpacing=5
+scale              = 1.0
+shadow             = true
+auto_hide          = false
+reserve_space      = true
+capsule            = true               # v4: showCapsule=true
+capsule_radius     = 8.0
+
+# Widget sections (v4 left→start, center, right→end)
+start  = ["launcher", "media", "workspaces"]
+end    = ["tray", "battery", "volume", "brightness", "notifications", "clock", "control-center"]
+
+# ── Widget Configs ────────────────────────────────────────────────────────────
+
+[widget.workspaces]
+display = "id"
+
+[widget.launcher]
+glyph = "rocket"
+
+[widget.clock]
+format          = "{:%H:%M  %a, %b %d}"
+vertical_format = "{:%H\n%M}"
+
+[widget.media]
+album_art_only = false
+
+# ── Hooks ─────────────────────────────────────────────────────────────────────
+# v4: screenLock hook (sleep 10 + power-off-monitors), screenUnlock (power-on)
+# v5: session_locked / session_unlocked with $NOCTALIA_LOCK_STATE env
+
+[hooks]
+theme_mode_changed = "noctalia msg wallpaper-random"
+session_locked     = "(sleep 5 && noctalia msg dpms-off) &"
+session_unlocked = "noctalia msg dpms-on"
+
+# ── Notifications ─────────────────────────────────────────────────────────────
+# v4: notifications.enabled=true, location="bottom", overlayLayer=true
+
+[notification]
+enable_daemon      = true
+show_app_name      = true
+show_actions       = true
+layer              = "overlay"
+scale              = 1.0
+background_opacity = 1.0
+
+# ── OSD ───────────────────────────────────────────────────────────────────────
+
+[osd]
+position            = "top_right"
+orientation         = "horizontal"
+scale               = 1.0
+background_opacity  = 1.0
+
+[osd.kinds]
+volume          = true
+volume_output   = true
+volume_input    = true
+brightness      = true
+wifi            = true
+bluetooth       = true
+power_profile   = true
+caffeine        = true
+nightlight      = true
+dnd             = true
+lock_keys       = true
+keyboard_layout = true
+privacy         = true

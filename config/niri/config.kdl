@@ -102,6 +102,8 @@ output "Chimei Innolux Corporation 0x1249 Unknown" {
 }
 
 layout {
+  background-color "transparent"
+
   gaps 3
 
   preset-column-widths {
@@ -131,7 +133,7 @@ layout {
 
   struts {
     left 0
-    right 24
+    right 0
     top 0
     bottom 0
   }
@@ -158,7 +160,23 @@ overview {
 
 }
 
+blur {
+  passes 1        // more passes = stronger blur (default: 3)
+  offset 1.0      // sample distance per pass (default: 3.0)
+  noise 0.01      // grain overlay (default: 0.02)
+  saturation 0.8  // color saturation boost (default: 1.5)
+}
+
+layer-rule {
+  match namespace="^noctalia-wallpaper"
+  place-within-backdrop true
+}
+
 window-rule {
+  background-effect {
+    blur true
+    xray false
+  }
   draw-border-with-background false
   geometry-corner-radius 8
   clip-to-geometry true
@@ -214,26 +232,28 @@ binds {
   Shift+Print { screenshot-window; }
   Ctrl+Print { screenshot-screen; }
 
-  Super+Minus { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
-  Super+Comma { spawn "swayosd-client" "--output-volume" "lower"; }
-  Super+Period { spawn "swayosd-client" "--output-volume" "raise"; }
+  Super+Minus { spawn "noctalia" "msg" "volume-mute"; }
+  Super+Comma { spawn "noctalia" "msg" "volume-down"; }
+  Super+Period { spawn "noctalia" "msg" "volume-up"; }
 
-  Super+Ctrl+Minus { spawn "swayosd-client" "--player" "mpd" "--playerctl" "play-pause"; }
-  Super+Ctrl+Comma { spawn "swayosd-client" "--player" "mpd" "--playerctl" "prev"; }
-  Super+Ctrl+Period { spawn "swayosd-client" "--player" "mpd" "--playerctl" "next"; }
-  Super+Ctrl+Apostrophe { spawn "swayosd-client" "--player" "mpd" "--playerctl" "shuffle"; }
+  Super+Ctrl+Minus { spawn "mpd-control" "playPause"; }
+  Super+Ctrl+Comma { spawn "mpd-control" "previous"; }
+  Super+Ctrl+Period { spawn "mpd-control" "next"; }
+  Super+Ctrl+Apostrophe { spawn "mpc" "shuffle"; }
 
-  Super+Shift+Semicolon { spawn "swayosd-client-backlight" "+10"; }
-  Super+Semicolon { spawn "swayosd-client-backlight" "-10"; }
+  Super+Shift+Semicolon { spawn "noctalia" "msg" "brightness-up"; }
+  Super+Semicolon { spawn "noctalia" "msg" "brightness-down"; }
 
   Super+Return { spawn "footclient"; }
-  Super+E { spawn "thunar"; }
 
   Super+Ctrl+Backslash { spawn "footclient" "--maximized" "zsh" "-c" "source $ZDOTDIR/.zshrc; todo"; }
 
   Super+O { toggle-overview; }
 
-  Super+Tab { spawn "niri-switch"; }
+  Super+Tab { spawn "noctalia" "msg" "window-switcher"; }
+
+  Super+E { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+  Super+W { spawn "noctalia" "msg" "settings-toggle"; }
 
   Super+T { spawn "transcribe" "--copy"; }
   Super+B { spawn "killall" "-SIGUSR1" "waybar"; }
@@ -241,23 +261,25 @@ binds {
   Super+Y { spawn "yt-dlp-clip"; }
   Super+Shift+Y { spawn "yt-dlp-clip" "song"; }
 
-  Super+Backspace { spawn "lock"; }
+  Super+Backspace { spawn "noctalia" "msg" "session" "lock"; }
 
-  Super+Escape { spawn "anyrun"; }
+  Super+Escape { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
 
+  Super+C { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
   Super+Q { close-window; }
   Super+Ctrl+Q { quit; }
 }
 
-spawn-at-startup "nm-applet" "--indicator"
-spawn-at-startup "blueman-applet"
+debug {
+  honor-xdg-activation-with-invalid-serial
+}
+
+spawn-at-startup "noctalia"
+
 spawn-at-startup "udiskie" "-At"
 
-spawn-at-startup "anyrun" "daemon"
+spawn-at-startup "mpd-control" "reset"
 
-spawn-at-startup "mpd-reset"
-
-spawn-at-startup "niri-switch-daemon"
 spawn-at-startup "niri-float-sticky"
 
 spawn-at-startup "ssh-add-startup"
