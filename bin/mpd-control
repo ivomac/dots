@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+action="${1:-}"
+if [[ -z "$action" ]]; then
+  echo "usage: mpd-control playPause|next|previous|reset" >&2
+  exit 1
+fi
+
+if [[ "$action" == "reset" ]]; then
+  mkdir -p "$XDG_CACHE_HOME/mpd/playlists"
+
+  MAX_WAIT=60
+  WAITED=0
+  while ! pgrep mpd >/dev/null; do
+    sleep 2
+    WAITED=$((WAITED + 2))
+    [[ $WAITED -ge $MAX_WAIT ]] && break
+  done
+
+  if [[ -z "$(mpc current)" ]]; then
+    mpc clear
+    mpc add /
+    mpc shuffle
+  fi
+
+  mpc random off
+  mpc consume on
+  mpc crossfade 2
+
+  mpc play 1
+  mpc stop
+  exit 0
+fi
+
+noctalia msg media "$action"
+
+sleep 0.1s
+
+state=$(playerctl -p mpd status 2>/dev/null || true)
+title=$(playerctl -p mpd metadata --format '{{ title }}' 2>/dev/null || true)
+
+title="${title%.*}"
+title="${title##*/}"
+
+case "$action" in
+  playPause)
+    if [[ "$state" == "Playing" ]]; then
+      icon="media-playback-start"
+      summary="Play"
+    else
+      icon="media-playback-pause"
+      summary="Pause"
+    fi
+    ;;
+  next)
+    icon="media-skip-forward"
+    summary="Next"
+    ;;
+  previous)
+    icon="media-skip-backward"
+    summary="Previous"
+    ;;
+  *)
+    exit 0
+    ;;
+esac
+
+if [[ -n "$title" ]]; then
+  notify-send -i "$icon" -a "Music" -t 2000 "$summary" "$title" &
+  disown
+fi

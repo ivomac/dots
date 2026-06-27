@@ -1,0 +1,258 @@
+[bar.main]
+font_family = "Firosevka"
+font_weight = 400
+padding = 10
+thickness = 28
+widget_spacing = 10
+position = "right"
+background_opacity = 0.95
+capsule = false
+radius = 0
+radius_top_right = 0
+radius_bottom_right = 0
+radius_top_left = -10
+radius_bottom_left = -10
+margin_ends = 0 # flush to top/bottom
+margin_edge = 0 # flush to right edge
+scale = 1.0
+shadow = true
+auto_hide = false
+reserve_space = true
+capsule_radius = 8.0
+start = ["workspaces", "sysmon", "ram", "temp"]
+center = ["date", "clock"]
+end = [
+  "tray",
+  "control-center",
+  "launcher",
+  "volume",
+  "input_volume",
+  "brightness",
+  "battery",
+  "notifications"
+]
+
+[brightness]
+enable_ddcutil = true
+minimum_brightness = 0.02
+
+[calendar]
+enabled = true
+
+[calendar.account.ivomaceira]
+name = "Calendar"
+type = "google"
+
+[desktop_widgets]
+enabled = false
+schema_version = 2
+widget_order = []
+
+[desktop_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[desktop_widgets.widget]
+
+[dock]
+auto_hide = true
+background_opacity = 0.95
+enabled = true
+launcher_position = "start"
+magnification = false
+magnification_scale = 1.0
+radius = 8
+reserve_space = false
+shadow = true
+
+[hooks]
+theme_mode_changed = "noctalia msg wallpaper-random"
+session_locked = "(sleep 5 && noctalia msg dpms-off) &"
+session_unlocked = "noctalia msg dpms-on"
+
+[idle.behavior.lock]
+timeout = 600
+action = "lock"
+enabled = true
+
+[keybinds]
+validate = ["return", "kp_enter"]
+cancel = ["escape"]
+left = ["left"]
+right = ["right"]
+up = ["up"]
+down = ["down"]
+
+[location]
+auto_locate = true
+
+[lockscreen]
+enabled = true
+blurred_desktop = false
+blur_intensity = 0
+tint_intensity = 0
+fingerprint = false
+
+[lockscreen_widgets.grid]
+visible = false
+
+[nightlight]
+enabled = true
+temperature_night = 3500
+
+[notification]
+enable_daemon = true
+show_app_name = true
+show_actions = true
+layer = "overlay"
+scale = 1.0
+background_opacity = 1.0
+
+[osd]
+position = "top_right"
+orientation = "horizontal"
+scale = 1.0
+background_opacity = 1.0
+
+[osd.kinds]
+volume = true
+volume_output = true
+volume_input = true
+brightness = true
+wifi = true
+bluetooth = true
+power_profile = true
+caffeine = true
+dnd = true
+lock_keys = true
+keyboard_layout = true
+privacy = true
+media = false
+nightlight = false
+
+[shell]
+avatar_path = "/home/ivo/Media/Pictures/google_profile_monkey.jpg"
+font_family = "Firosevka"
+corner_radius_scale = 1.0
+telemetry_enabled = false
+settings_show_advanced = false
+show_location = false
+clipboard_enabled = true
+clipboard_auto_paste = "off"
+shared_gl_context = true
+niri_overview_type_to_launch_enabled = false
+polkit_agent = false
+password_style = "default"
+middle_click_opens_widget_settings = true
+
+[shell.animation]
+enabled = false
+speed = 0
+
+[shell.launcher]
+categories = false
+compact = true
+show_icons = true
+sort_by_usage = true
+session_search = true
+
+[shell.panel]
+polkit_placement = "attached"
+transparency_mode = "solid"
+borders = true
+shadow = true
+launcher_placement = "floating"
+clipboard_placement = "floating"
+control_center_placement = "attached"
+wallpaper_placement = "attached"
+session_placement = "attached"
+
+[shell.screen_corners]
+enabled = true
+size = 18
+
+[shell.screenshot]
+save_to_file = true
+directory = "~/Media/Screenshots"
+filename_pattern = "%Y-%m-%d_%H-%M-%S"
+copy_to_clipboard = true
+
+[shell.shadow]
+direction = "down_right"
+alpha = 0.55
+
+[theme]
+mode = "dark"
+source = "custom"
+custom_palette = "gruv"
+
+[theme.templates]
+enable_builtin_templates = false
+enable_community_templates = false
+
+[wallpaper]
+transition = ["fade"]
+enabled = true
+fill_mode = "crop"
+fill_color = "#000000"
+transition_duration = 1500
+edge_smoothness = 0.05
+transition_on_startup = false
+directory = false
+directory_dark = "/home/ivo/Media/Pictures/Wallpapers/dark"
+directory_light = "/home/ivo/Media/Pictures/Wallpapers/light"
+
+[wallpaper.automation]
+enabled = false
+order = "random"
+
+[wallpaper.default]
+path = "/home/ivo/Media/Pictures/Wallpapers/dark/1.jpg"
+
+[wallpaper.last]
+path = "/home/ivo/Media/Pictures/Wallpapers/dark/1.jpg"
+
+[wallpaper.monitors.DP-1]
+path = "/home/ivo/Media/Pictures/Wallpapers/dark/2.jpg"
+
+[wallpaper.monitors.DP-2]
+path = "/home/ivo/Media/Pictures/Wallpapers/dark/1.jpg"
+
+[widget.brightness]
+show_label = false
+
+[widget.clock]
+capsule_opacity = 0.5
+capsule_padding = 4.0
+tooltip_format = "{:%H:%M  %a, %b %d}"
+format = "{:%H:%M  %a, %b %d}"
+vertical_format = "{:%H\\n%M\\n%S}"
+
+[widget.input_volume]
+show_label = false
+
+[widget.launcher]
+glyph = "rocket"
+
+[widget.media]
+album_art_only = false
+
+[widget.ram]
+show_label = false
+
+[widget.sysmon]
+show_label = false
+
+[widget.temp]
+show_label = false
+
+[widget.volume]
+show_label = false
+
+[widget.workspaces]
+active_pill_size = 1.5
+empty_color = "on_surface"
+hide_when_empty = true
+occupied_color = "on_surface"
+display = "id"
