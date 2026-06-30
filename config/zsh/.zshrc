@@ -185,23 +185,28 @@ function activate_venv() {
   if [[ -z "$1" ]]; then
     return 0
   fi
-
   local env_path="$1/.venv"
   local python_version="${2:-3.14}"
-
   local python_path
   python_path="$(command -v "python$python_version")" || {
     echo "Error: python$python_version not found" >&2
     return 1
   }
-
   if [[ ! -d "$env_path" ]]; then
-    echo "Creating virtual env:  ${env_path}"
+    echo "Creating virtual env:  ${env_path}"
     "$python_path" -m venv "$env_path"
   fi
-
-  echo "Activating virtual env:  ${env_path}"
+  if [[ ! -f "$env_path/bin/activate" ]]; then
+    echo "Error: no activate script found at $env_path/bin/activate" >&2
+    return 1
+  fi
+  echo "Activating virtual env:  ${env_path}"
   source "$env_path/bin/activate"
+  if [[ "$VIRTUAL_ENV" != "$env_path" ]]; then
+    echo "Stale venv detected: $VIRTUAL_ENV"
+    echo "To recreate: rm -rf "$env_path" && activate_venv ${env_path:h}"
+    export VIRTUAL_ENV="$env_path"
+  fi
 }
 
 function auto_activate_venv() {
@@ -216,8 +221,18 @@ function auto_activate_venv() {
     current_path="${current_path:h}"
   done
 
-  if [[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV" != "${env_path:P}/.venv" ]]; then
-    echo "Deactivating virtual env:  $VIRTUAL_ENV"
+  if [[ -n "$VIRTUAL_ENV" && ! -d "$VIRTUAL_ENV" ]]; then
+    deactivate
+  fi
+
+  if [[ -n "$VIRTUAL_ENV" && -n "$env_path" &&
+        "$VIRTUAL_ENV" != "$env_path/.venv" ]]; then
+    echo "Deactivating virtual env:  $VIRTUAL_ENV"
+    deactivate
+  fi
+
+  if [[ -n "$VIRTUAL_ENV" && -z "$env_path" ]]; then
+    echo "Deactivating virtual env:  $VIRTUAL_ENV"
     deactivate
   fi
 
@@ -226,7 +241,6 @@ function auto_activate_venv() {
   fi
 }
 auto_activate_venv
-
 add-zsh-hook chpwd auto_activate_venv
 
 bindkey '^[[A' history-substring-search-up   # Up arrow
