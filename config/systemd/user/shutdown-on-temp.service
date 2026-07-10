@@ -1,0 +1,9 @@
+[Unit]
+Description=Check CPU temperature and shut down if critical
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/shutdown-on-critical-temp
+
+[Install]
+WantedBy=default.target

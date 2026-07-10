@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+THRESHOLD=90
+COUNTDOWN=10
+LOCK_FILE="/tmp/shutdown-temp.lock"
+
+exec 200>"$LOCK_FILE"
+flock -n 200 || exit 0
+
+cpu_temp=$(sensors -j | jq -r '[to_entries[] | select(.key | test("k10temp|coretemp")) | .value | .. | objects | to_entries[] | select(.key | test("temp[0-9]+_input")) | .value] | max // empty')
+
+if [[ -z "$cpu_temp" || "$cpu_temp" = "null" ]]; then
+    exit 0
+fi
+
+cpu_temp_int=${cpu_temp%.*}
+
+if (( cpu_temp_int < THRESHOLD )); then
+    exit 0
+fi
+
+notify-send -u critical -t 20000 \
+    "CPU at ${cpu_temp_int}°C" \
+    "Shutting down in ${COUNTDOWN}s"
+
+pw-play /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga
+
+sleep "$COUNTDOWN"
+
+poweroff

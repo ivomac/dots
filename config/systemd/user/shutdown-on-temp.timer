@@ -1,0 +1,10 @@
+[Unit]
+Description=Trigger CPU temperature check every 30 seconds
+
+[Timer]
+OnActiveSec=10s
+OnUnitInactiveSec=30s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
