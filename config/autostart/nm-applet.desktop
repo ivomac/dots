@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=NetworkManager Applet
+Exec=nm-applet
+Type=Application
+NoDisplay=true
+Hidden=true
