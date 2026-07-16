@@ -5,7 +5,8 @@ After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/qbittorrent
+ExecStartPre=/usr/bin/sleep 5
+ExecStart=/usr/bin/qbittorrent --no-splash
 Restart=on-failure
 
 [Install]
