@@ -99,6 +99,14 @@ output "Chimei Innolux Corporation 0x1249 Unknown" {
   position x=0 y=0
   mode "1920x1280@60.001"
   background-color "#000000"
+  scale 1.33
+}
+
+output "BOE 0x0A2F Unknown" {
+  position x=0 y=0
+  mode "1920x1200@60.002"
+  background-color "#000000"
+  scale 1.25
 }
 
 layout {
