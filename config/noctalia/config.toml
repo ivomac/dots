@@ -10,8 +10,9 @@ capsule = false
 radius = 0
 radius_top_right = 0
 radius_bottom_right = 0
-radius_top_left = -10
-radius_bottom_left = -10
+radius_top_left = 10
+radius_bottom_left = 10
+concave_edge_corners = true
 margin_ends = 0 # flush to top/bottom
 margin_edge = 0 # flush to right edge
 scale = 1.0
@@ -29,7 +30,7 @@ end = [
   "input_volume",
   "brightness",
   "battery",
-  "notifications"
+  "notifications",
 ]
 
 [brightness]
@@ -94,6 +95,9 @@ blur_intensity = 0
 tint_intensity = 0
 fingerprint = false
 
+[lockscreen_widgets]
+enabled = false
+
 [lockscreen_widgets.grid]
 visible = false
 
@@ -144,7 +148,6 @@ shared_gl_context = true
 niri_overview_type_to_launch_enabled = false
 polkit_agent = false
 password_style = "default"
-middle_click_opens_widget_settings = true
 
 [shell.animation]
 enabled = false
@@ -155,7 +158,9 @@ categories = false
 compact = true
 show_icons = true
 sort_by_usage = true
-session_search = true
+
+[shell.launcher.providers.session]
+global = true
 
 [shell.panel]
 polkit_placement = "attached"
@@ -239,13 +244,13 @@ glyph = "rocket"
 album_art_only = false
 
 [widget.ram]
-show_label = false
+show_value = false
 
 [widget.sysmon]
-show_label = false
+show_value = false
 
 [widget.temp]
-show_label = false
+show_value = false
 
 [widget.volume]
 show_label = false
@@ -255,4 +260,5 @@ active_pill_size = 1.5
 empty_color = "on_surface"
 hide_when_empty = true
 occupied_color = "on_surface"
-display = "id"
+label_source = "id"
+show_labels = true
