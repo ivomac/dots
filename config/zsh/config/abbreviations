@@ -25,6 +25,8 @@ abbr "n"="\$EDITOR"
 
 abbr "oc"="opencode"
 
+abbr "gcloud"="TERM=xterm-256color gcloud"
+
 abbr "ns"="\$EDITOR \"+Session load\""
 abbr "ne"="\$EDITOR +Explorer"
 abbr "nl"="\$EDITOR +LazyGit"

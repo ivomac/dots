@@ -17,6 +17,7 @@ threshold = 0
 disabled = true
 
 [aws]
+disabled = true
 symbol = "  "
 format = '[$symbol($profile)(\($region\)) ($duration)]($style)'
 
@@ -256,6 +257,7 @@ format = ' [$symbol(🎯 $tfm)]($style)'
 format = ' [$symbol]($style)'
 
 [gcloud]
+disabled = true
 format = ' [$symbol$account(@$domain)(\($region\))]($style)'
 
 [git_status]
@@ -271,6 +273,7 @@ format = ' [$symbol$context( \($namespace\))]($style)'
 format = ' [$symbol]($style)'
 
 [openstack]
+disabled = true
 format = ' [$symbol$cloud(\($project\))]($style)'
 
 [pulumi]
