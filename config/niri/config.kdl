@@ -102,6 +102,13 @@ output "Chimei Innolux Corporation 0x1249 Unknown" {
   scale 1.33
 }
 
+output "PNP(AOC) U27P2G6B WZWP4HA006418" {
+  position x=0 y=0
+  mode "3840x2160@60.000"
+  background-color "#000000"
+  scale 2
+}
+
 output "BOE 0x0A2F Unknown" {
   position x=0 y=0
   mode "1920x1200@60.002"
@@ -283,6 +290,8 @@ debug {
 }
 
 spawn-at-startup "noctalia"
+
+spawn-at-startup "kanshi"
 
 spawn-at-startup "udiskie" "-At"
 
