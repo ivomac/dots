@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+LOCATION="europe-west1-d"
+INSTANCE="ima-workbench-01"
+
+state()      { gcloud workbench instances list --location "$LOCATION" --filter "$INSTANCE"; }
+is_stopped() { state | grep -q STOPPED; }
+is_active()  { state | grep -q ACTIVE; }
+
+start_instance() {
+  if is_stopped; then
+    gcloud workbench instances start --location "$LOCATION" "$INSTANCE"
+  fi
+}
+
+wait_active() {
+  while ! is_active; do
+    printf "\rInstance not running, waiting..."
+    sleep 5
+  done
+  echo ""
+}
+
+case "${1:-}" in
+  on)
+    start_instance
+    ;;
+  connect)
+    start_instance
+    wait_active
+    TERM=xterm-256color exec gcloud compute ssh --zone "$LOCATION" "$INSTANCE" --tunnel-through-iap
+    ;;
+  off)
+    gcloud workbench instances stop --location "$LOCATION" "$INSTANCE"
+    ;;
+  *)
+    echo "usage: wokbench {on|connect|off}" >&2
+    exit 1
+    ;;
+esac
