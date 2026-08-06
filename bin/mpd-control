@@ -19,6 +19,7 @@ if [[ "$action" == "reset" ]]; then
   done
 
   if [[ -z "$(mpc current)" ]]; then
+    mpc update
     mpc clear
     mpc add /
     mpc shuffle

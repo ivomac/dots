@@ -254,7 +254,6 @@ binds {
   Super+Ctrl+Minus { spawn "mpd-control" "playPause"; }
   Super+Ctrl+Comma { spawn "mpd-control" "previous"; }
   Super+Ctrl+Period { spawn "mpd-control" "next"; }
-  Super+Ctrl+Apostrophe { spawn "mpc" "shuffle"; }
 
   Super+Shift+Semicolon { spawn "noctalia" "msg" "brightness-up"; }
   Super+Semicolon { spawn "noctalia" "msg" "brightness-down"; }
