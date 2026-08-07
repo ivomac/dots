@@ -39,8 +39,9 @@ gui:
   scrollHeight: 6
 git:
   parseEmoji: true
-  pagers:
+  diffRenderers:
     - colorArg: always
+      type: rawGit
   allBranchesLogCmds:
     - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium --all
   log:
