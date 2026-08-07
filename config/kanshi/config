@@ -3,6 +3,11 @@ profile work_external_monitor {
   output "PNP(AOC) U27P2G6B WZWP4HA006418" enable
 }
 
+profile laya_work_external_monitor {
+  output "BOE 0x0A2F Unknown" disable
+  output "PNP(BNQ) BenQ BL2480T M1M0691701Q" enable
+}
+
 profile work_laptop_only {
   output "BOE 0x0A2F Unknown" enable
 }
