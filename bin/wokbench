@@ -4,18 +4,33 @@ set -euo pipefail
 LOCATION="europe-west1-d"
 INSTANCE="ima-workbench-01"
 
-state()      { gcloud workbench instances list --location "$LOCATION" --filter "$INSTANCE"; }
-is_stopped() { state | grep -q STOPPED; }
-is_active()  { state | grep -q ACTIVE; }
+ensure_auth() {
+  local out
+  if out=$(gcloud auth print-access-token 2>&1); then
+    return 0
+  fi
+  if grep -qiE 'gcloud auth login|reauthenticat|refreshing your current auth tokens|invalid_grant|do not currently have' <<<"$out"; then
+    echo "gcloud session expired, launching login..." >&2
+    gcloud auth login
+  else
+    printf '%s\n' "$out" >&2
+    return 1
+  fi
+}
+
+instance_state() {
+  gcloud workbench instances describe "$INSTANCE" \
+    --location "$LOCATION" --format="value(state)"
+}
 
 start_instance() {
-  if is_stopped; then
+  if [ "$(instance_state)" = "STOPPED" ]; then
     gcloud workbench instances start --location "$LOCATION" "$INSTANCE"
   fi
 }
 
 wait_active() {
-  while ! is_active; do
+  while [ "$(instance_state)" != "ACTIVE" ]; do
     printf "\rInstance not running, waiting..."
     sleep 5
   done
@@ -24,18 +39,39 @@ wait_active() {
 
 case "${1:-}" in
   on)
+    ensure_auth
     start_instance
     ;;
   connect)
+    ensure_auth
     start_instance
     wait_active
     TERM=xterm-256color exec gcloud compute ssh --zone "$LOCATION" "$INSTANCE" --tunnel-through-iap
     ;;
   off)
+    ensure_auth
     gcloud workbench instances stop --location "$LOCATION" "$INSTANCE"
     ;;
+  status)
+    ensure_auth
+    echo "$INSTANCE: $(instance_state)"
+    ;;
+  push)
+    src="${2:?usage: wokbench push LOCAL REMOTE}"
+    dst="${3:?usage: wokbench push LOCAL REMOTE}"
+    ensure_auth
+    scp_args=()
+    [ -d "$src" ] && scp_args+=(--recurse)
+    gcloud compute scp "${scp_args[@]}" --zone "$LOCATION" --tunnel-through-iap "$src" "$INSTANCE:$dst"
+    ;;
+  pull)
+    src="${2:?usage: wokbench pull REMOTE LOCAL}"
+    dst="${3:?usage: wokbench pull REMOTE LOCAL}"
+    ensure_auth
+    gcloud compute scp --recurse --zone "$LOCATION" --tunnel-through-iap "$INSTANCE:$src" "$dst"
+    ;;
   *)
-    echo "usage: wokbench {on|connect|off}" >&2
+    echo "usage: wokbench {on|connect|off|status|push|pull}" >&2
     exit 1
     ;;
 esac
