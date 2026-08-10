@@ -3,6 +3,10 @@ set -euo pipefail
 
 LOCATION="europe-west1-d"
 INSTANCE="ima-workbench-01"
+PROJECT="liom-dev-notebooks-0"
+SSH_USER="ivo_maceira_liom_com"        # from: gcloud compute ssh --dry-run
+MOUNT="$HOME/Projects/Wokbench"
+REMOTE_DIR="Projects"                  # relative to remote home
 
 ensure_auth() {
   local out
@@ -37,6 +41,27 @@ wait_active() {
   echo ""
 }
 
+is_mounted() { mountpoint -q "$MOUNT"; }
+
+mount_remote() {
+  is_mounted && { echo "already mounted at $MOUNT"; return 0; }
+  mkdir -p "$MOUNT"
+  sshfs "${SSH_USER}@${INSTANCE}:${REMOTE_DIR}" "$MOUNT" \
+    -o IdentityFile="$HOME/.ssh/google_compute_engine" \
+    -o IdentitiesOnly=yes \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o ProxyCommand="gcloud compute start-iap-tunnel ${INSTANCE} %p --listen-on-stdin --zone=${LOCATION} --project=${PROJECT} --verbosity=warning" \
+    -o reconnect -o ServerAliveInterval=15 -o ServerAliveCountMax=3
+  echo "mounted ${INSTANCE}:~/${REMOTE_DIR} at $MOUNT"
+}
+
+unmount_remote() {
+  is_mounted || { echo "not mounted"; return 0; }
+  fusermount3 -u "$MOUNT"
+  echo "unmounted $MOUNT"
+}
+
 case "${1:-}" in
   on)
     ensure_auth
@@ -50,11 +75,17 @@ case "${1:-}" in
     ;;
   off)
     ensure_auth
+    unmount_remote
     gcloud workbench instances stop --location "$LOCATION" "$INSTANCE"
     ;;
   status)
     ensure_auth
     echo "$INSTANCE: $(instance_state)"
+    if is_mounted; then
+      echo "mount: $MOUNT (mounted)"
+    else
+      echo "mount: $MOUNT (not mounted)"
+    fi
     ;;
   push)
     src="${2:?usage: wokbench push LOCAL REMOTE}"
@@ -70,8 +101,17 @@ case "${1:-}" in
     ensure_auth
     gcloud compute scp --recurse --zone "$LOCATION" --tunnel-through-iap "$INSTANCE:$src" "$dst"
     ;;
+  mount)
+    ensure_auth
+    start_instance
+    wait_active
+    mount_remote
+    ;;
+  unmount|umount)
+    unmount_remote
+    ;;
   *)
-    echo "usage: wokbench {on|connect|off|status|push|pull}" >&2
+    echo "usage: wokbench {on|connect|off|status|push|pull|mount|unmount}" >&2
     exit 1
     ;;
 esac
