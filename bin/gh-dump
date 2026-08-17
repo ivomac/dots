@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 /path/to/repo" >&2
+    exit 1
+fi
+
+REPO_PATH="$1"
+
+if [[ ! -d "$REPO_PATH" ]]; then
+    echo "Error: directory does not exist: $REPO_PATH" >&2
+    exit 1
+fi
+
+REPO="$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+
+if [[ -z "$REPO" ]]; then
+    echo "Error: could not determine GitHub repository from $REPO_PATH" >&2
+    exit 1
+fi
+
+echo "Repository: $REPO"
+echo
+
+echo "# OPEN ISSUES"
+
+while IFS= read -r number; do
+    echo
+    echo "========================================"
+    echo "ISSUE #$number"
+    echo "========================================"
+
+    gh issue view "$number" \
+        --repo "$REPO" \
+        --comments
+
+done < <(
+    gh issue list \
+        --repo "$REPO" \
+        --state open \
+        --limit 1000 \
+        --json number \
+        --jq '.[].number'
+)
+
+echo
+echo "# OPEN PULL REQUESTS"
+
+while IFS= read -r number; do
+    echo
+    echo "========================================"
+    echo "PR #$number"
+    echo "========================================"
+
+    # PR description + normal conversation
+    gh pr view "$number" \
+        --repo "$REPO" \
+        --comments
+
+    echo
+    echo "---------- REVIEWS ----------"
+
+    gh api \
+        --repo "$REPO" \
+        --paginate \
+        "repos/$REPO/pulls/$number/reviews" \
+        --jq '.[] |
+            "[\(.user.login)] \(.state) (\(.submitted_at))\n\(.body)\n"'
+
+    echo
+    echo "---------- INLINE REVIEW COMMENTS ----------"
+
+    gh api \
+        --repo "$REPO" \
+        --paginate \
+        "repos/$REPO/pulls/$number/comments" \
+        --jq '.[] |
+            "[\(.user.login)] \(.path):\(.line // .original_line) (\(.created_at))\n\(.body)\n"'
+
+done < <(
+    gh pr list \
+        --repo "$REPO" \
+        --state open \
+        --limit 1000 \
+        --json number \
+        --jq '.[].number'
+)
