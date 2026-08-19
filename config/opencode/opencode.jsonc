@@ -73,8 +73,8 @@
   "instructions": [],
   "provider": {},
   "mcp": {},
-  "formatter": true,
-  "lsp": true,
+  "lsp": false,
+  "formatter": false,
   "experimental": {
     "disable_paste_summary": false
   }

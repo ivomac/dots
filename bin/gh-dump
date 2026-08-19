@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+export GH_PAGER=cat
+export PAGER=cat
+
 if [[ $# -ne 1 ]]; then
     echo "Usage: $0 /path/to/repo" >&2
     exit 1
@@ -20,6 +23,8 @@ if [[ -z "$REPO" ]]; then
     echo "Error: could not determine GitHub repository from $REPO_PATH" >&2
     exit 1
 fi
+
+exec > gh_dump.txt
 
 echo "Repository: $REPO"
 echo
@@ -63,7 +68,6 @@ while IFS= read -r number; do
     echo "---------- REVIEWS ----------"
 
     gh api \
-        --repo "$REPO" \
         --paginate \
         "repos/$REPO/pulls/$number/reviews" \
         --jq '.[] |
@@ -73,7 +77,6 @@ while IFS= read -r number; do
     echo "---------- INLINE REVIEW COMMENTS ----------"
 
     gh api \
-        --repo "$REPO" \
         --paginate \
         "repos/$REPO/pulls/$number/comments" \
         --jq '.[] |
