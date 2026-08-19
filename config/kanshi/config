@@ -1,6 +1,6 @@
 profile work_external_monitor {
   output "BOE 0x0A2F Unknown" disable
-  output "PNP(AOC) U27P2G6B WZWP4HA006418" enable
+  output "PNP(AOC) U27P2G6B WZWP4HA006418" enable scale 2.0
 }
 
 profile laya_work_external_monitor {
@@ -9,7 +9,7 @@ profile laya_work_external_monitor {
 }
 
 profile work_laptop_only {
-  output "BOE 0x0A2F Unknown" enable
+  output "BOE 0x0A2F Unknown" enable scale 1.25
 }
 
 profile external_monitor {
@@ -18,5 +18,5 @@ profile external_monitor {
 }
 
 profile laptop_only {
-  output "Chimei Innolux Corporation 0x1249 Unknown" enable
+  output "Chimei Innolux Corporation 0x1249 Unknown" enable scale 1.33
 }
