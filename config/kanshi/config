@@ -17,6 +17,16 @@ profile external_monitor {
   output "ASUSTek COMPUTER INC VG249Q3R T3LMDW007766" enable
 }
 
+profile laya_external_monitor {
+  output "Chimei Innolux Corporation 0x1249 Unknown" disable
+  output "PNP(BNQ) BenQ BL2480T M1M0691701Q" enable
+}
+
+profile projector {
+  output "Chimei Innolux Corporation 0x1249 Unknown" disable
+  output "Seiko Epson Corporation EPSON PJ 0x01010101" enable
+}
+
 profile laptop_only {
   output "Chimei Innolux Corporation 0x1249 Unknown" enable scale 1.33
 }
