@@ -4,6 +4,8 @@ set -euo pipefail
 shopt -s failglob
 
 COLORS="$HOME/.local/colors"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 
 set_symlinks() {
   local choice="$1"
@@ -53,7 +55,8 @@ if [[ $choice == *dark* ]]; then
   kvantummanager --set KvGnomeDark &>/dev/null &
   disown
   bat_theme="dark"
-  noctalia msg theme-mode-set dark
+  noctalia msg theme-mode-set dark &>/dev/null &
+  disown
 else
   gsettings set org.gnome.desktop.interface gtk-theme adwaita &>/dev/null &
   disown
@@ -64,7 +67,8 @@ else
   kvantummanager --set KvGnome &>/dev/null &
   disown
   bat_theme="light"
-  noctalia msg theme-mode-set light
+  noctalia msg theme-mode-set light &>/dev/null &
+  disown
 fi
 
 sed --follow-symlinks -i -e "s/^--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
@@ -73,7 +77,7 @@ echo "Updating terminals"
 TERMCOLORS="$COLORS/OSC/default.ini"
 shopt -u failglob
 for pts in /dev/pts/[0-9]*; do
-  if [[ ! -c "$pts" ]]; then
+  if [[ ! -c "$pts" ]] || [[ ! -w "$pts" ]]; then
     continue
   fi
   echo "  term:$pts"
