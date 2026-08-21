@@ -34,7 +34,22 @@ sudo apt upgrade -y -qq
 sudo apt install -y -qq \
   build-essential curl unzip xz-utils \
   libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
-  jq tar stow zsh
+  libncurses-dev jq tar stow
+
+if ! command -v zsh &>/dev/null || [[ "$(zsh --version | grep -oP '\d+\.\d+\.\d+')" < "5.9" ]]; then
+  info "Building zsh from source"
+  ZSH_VERSION="5.9.2"
+  ZSH_TMPDIR="$(mktemp -d)"
+  curl -sL "https://sourceforge.net/projects/zsh/files/zsh/${ZSH_VERSION}/zsh-${ZSH_VERSION}.tar.xz" | tar -xJ -C "$ZSH_TMPDIR"
+  (
+    cd "$ZSH_TMPDIR/zsh-${ZSH_VERSION}"
+    ./configure --prefix=/usr/local
+    make -j"$(nproc)"
+    sudo make install
+  )
+  rm -rf "$ZSH_TMPDIR"
+  info "zsh $(zsh --version | awk '{print $2}') installed"
+fi
 
 if ! have cargo; then
   info "Installing Rust via rustup"
