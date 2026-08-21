@@ -32,7 +32,19 @@ info "Installing system packages (may need sudo)"
 sudo apt update -qq
 sudo apt install -y -qq \
   build-essential curl unzip xz-utils \
+  libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
   jq tar stow zsh
+
+if ! command -v git &>/dev/null || [[ "$(git version | grep -oP '\d+\.\d+\.\d+')" < "2.55" ]]; then
+  info "Building git from source"
+  GIT_VERSION="2.55.0"
+  GIT_TMPDIR="$(mktemp -d)"
+  curl -sL "https://kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.xz" | tar -xJ -C "$GIT_TMPDIR"
+  make -C "$GIT_TMPDIR/git-${GIT_VERSION}" -j"$(nproc)" prefix="/usr/local" all
+  sudo make -C "$GIT_TMPDIR/git-${GIT_VERSION}" prefix="/usr/local" install
+  rm -rf "$GIT_TMPDIR"
+  info "git $(git --version | awk '{print $3}') installed"
+fi
 
 
 info "Writing env/local.sh"
