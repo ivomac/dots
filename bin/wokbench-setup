@@ -43,9 +43,9 @@ if ! command -v zsh &>/dev/null || [[ "$(zsh --version | grep -oP '\d+\.\d+\.\d+
   curl -sL "https://sourceforge.net/projects/zsh/files/zsh/${ZSH_VERSION}/zsh-${ZSH_VERSION}.tar.xz" | tar -xJ -C "$ZSH_TMPDIR"
   (
     cd "$ZSH_TMPDIR/zsh-${ZSH_VERSION}"
-    ./configure --prefix=/usr/local
+    ./configure --prefix="$HOME/.local" --enable-etcdir="/etc/zsh"
     make -j"$(nproc)"
-    sudo make install
+    make install
   )
   rm -rf "$ZSH_TMPDIR"
   info "zsh $(zsh --version | awk '{print $2}') installed"
@@ -70,8 +70,8 @@ if ! command -v git &>/dev/null || [[ "$(printf '%s\n2.55.0' "$(git version | gr
   GIT_VERSION="2.55.0"
   GIT_TMPDIR="$(mktemp -d)"
   curl -sL "https://kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.xz" | tar -xJ -C "$GIT_TMPDIR"
-  make -C "$GIT_TMPDIR/git-${GIT_VERSION}" -j"$(nproc)" prefix="/usr/local" all
-  sudo make -C "$GIT_TMPDIR/git-${GIT_VERSION}" prefix="/usr/local" install
+  make -C "$GIT_TMPDIR/git-${GIT_VERSION}" -j"$(nproc)" prefix="$HOME/.local" all
+  make -C "$GIT_TMPDIR/git-${GIT_VERSION}" prefix="$HOME/.local" install
   rm -rf "$GIT_TMPDIR"
   info "git $(git --version | awk '{print $3}') installed"
 fi
@@ -234,8 +234,8 @@ if install_tool yazi; then
   url="$(gh_download_arch "sxyazi/yazi" "yazi-.*x86_64-unknown-linux-gnu.*\.zip")"
   if [[ -n "$url" ]]; then
     TMPDIR_ZIP="$(mktemp -d)"
-    curl -sL "$url" -o "$TMPDIR_ZIP/yazi.zip"
-    unzip -o "$TMPDIR_ZIP/yazi.zip" -d "$TMPDIR_ZIP"
+    curl -sL "$url" -o "$TMPDIR_ZIP/yazi.zip" 2>/dev/null
+    unzip -oq "$TMPDIR_ZIP/yazi.zip" -d "$TMPDIR_ZIP"
     mv "$TMPDIR_ZIP"/yazi-*/yazi "$BIN/yazi"
     chmod +x "$BIN/yazi"
     rm -rf "$TMPDIR_ZIP"
@@ -337,7 +337,7 @@ theme-switch gruvbox_dark 2>/dev/null || warn "theme-switch not available, run m
 info "Setup complete!"
 echo ""
 echo "Next steps:"
-echo "  1. chsh -s /usr/bin/zsh"
-echo "  2. Log out and back in (or run: exec /usr/bin/zsh)"
+echo "  1. chsh -s $BIN/zsh"
+echo "  2. Log out and back in (or run: exec $BIN/zsh)"
 echo "  3. Zsh plugins will auto-clone on first shell launch"
 echo ""

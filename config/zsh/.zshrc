@@ -44,8 +44,8 @@ function get_plug() {
   name=${plug:t}
   folder="$ZDOTDIR/plugins/$name"
   if [[ ! -d "$folder" ]]; then
-    git clone --depth 1 "https://github.com/$plug" "$folder" 2>/dev/null
-    git -C "$folder" submodule update --init --recursive 2>/dev/null
+    git clone --depth 1 "https://github.com/$plug" "$folder" >/dev/null 2>&1
+    git -C "$folder" submodule update --init --recursive >/dev/null 2>&1
   fi
   echo "$folder/$name.plugin.zsh"
 }
