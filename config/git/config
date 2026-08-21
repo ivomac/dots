@@ -1,0 +1,123 @@
+[user]
+	name = Ivo Maceira
+	email = ivomaceira@gmail.com
+	username = ivomac
+	signingkey = 9C3FD9FF001B2055
+
+[credential "https://github.com"]
+	username = ivomac
+
+[core]
+	editor = nvim
+	pager = $PAGER
+	excludesfile = ~/.config/git/ignore
+	fsmonitor = true
+	untrackedCache = true
+
+[init]
+	templatedir = ~/.config/git/templates
+	defaultBranch = main
+
+[help]
+	autocorrect = prompt
+
+[color]
+	pager = no
+	ui = auto
+
+[format]
+	pretty = medium
+
+[column]
+	ui = auto
+
+[web]
+	browser = firefox
+
+[status]
+	submoduleSummary = true
+
+[commit]
+	verbose = true
+
+[tag]
+	sort = version:refname
+
+[branch]
+	autosetuprebase = always
+	sort = -committerdate
+
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+
+[diff]
+	algorithm = histogram
+	colorMoved = default
+	mnemonicPrefix = true
+	renames = true
+	tool = nvimdiff
+
+[merge]
+	conflictstyle = zdiff3
+	tool = nvimdiff2
+
+[rebase]
+	autostash = true
+	autosquash = true
+	updaterefs = true
+
+[rerere]
+	enabled = true
+	autoupdate = true
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = simple
+	followTags = true
+
+[maintenance]
+    auto = true
+    enabled = true
+    strategy = incremental
+
+[maintenance "commit-graph"]
+    enabled = true
+    frequency = daily
+
+[maintenance "prefetch"]
+    enabled = true
+    frequency = daily
+
+[maintenance "loose-objects"]
+    enabled = true
+    frequency = daily
+
+[maintenance "gc"]
+    enabled = true
+    frequency = weekly
+
+[maintenance "incremental-repack"]
+    enabled = true
+    frequency = weekly
+
+[maintenance "pack-refs"]
+	enabled = true
+    frequency = weekly
+
+[alias]
+	br = branch
+	st = status -s
+	ch = checkout
+	ca = commit -a -m
+	dc = diff --check
+	lt = log --pretty=format:"%h %s" --graph
+	tree = log --pretty=format:"%h %cr %s" --graph
+	root = rev-parse --show-toplevel
+	cm = commit -m
+	fp = push --force-with-lease
+

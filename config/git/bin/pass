@@ -1,0 +1,6 @@
+#!/usr/bin/sh
+
+pass=$(pass show "$@")
+
+echo "password=$pass"
+
