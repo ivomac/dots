@@ -5,22 +5,10 @@ set -euo pipefail
 export GH_PAGER=cat
 export PAGER=cat
 
-if [[ $# -ne 1 ]]; then
-    echo "Usage: $0 /path/to/repo" >&2
-    exit 1
-fi
-
-REPO_PATH="$1"
-
-if [[ ! -d "$REPO_PATH" ]]; then
-    echo "Error: directory does not exist: $REPO_PATH" >&2
-    exit 1
-fi
-
-REPO="$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
+REPO="$(git remote get-url origin 2>/dev/null | sed -E 's#.*github\.com[:/]##; s#\.git$##')"
 
 if [[ -z "$REPO" ]]; then
-    echo "Error: could not determine GitHub repository from $REPO_PATH" >&2
+    echo "Error: could not determine GitHub repository" >&2
     exit 1
 fi
 
