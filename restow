@@ -7,6 +7,8 @@ stow_cmd() {
   stow --dir="." --restow --no-folding --target="$1" "$2"
 }
 
+mkdir -p "$HOME/Docs/.local"
+
 stow_cmd "$HOME/.local/bin" "bin"
 stow_cmd "$HOME/.local/colors" "colors"
 stow_cmd "$HOME/.local/share/applications" "desktop"
