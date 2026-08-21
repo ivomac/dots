@@ -275,7 +275,7 @@ binds {
   Super+Y { spawn "yt-dlp-clip"; }
   Super+Shift+Y { spawn "yt-dlp-clip" "song"; }
 
-  Super+Backspace { spawn "noctalia" "msg" "session" "lock"; }
+  Super+Backspace { spawn "niri" "msg" "action" "power-off-monitors"; }
 
   Super+Escape { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
 

@@ -69,13 +69,13 @@ shadow = true
 
 [hooks]
 theme_mode_changed = "noctalia msg wallpaper-random"
-session_locked = "(sleep 5 && noctalia msg dpms-off) &"
-session_unlocked = "noctalia msg dpms-on"
+session_locked = ""
+session_unlocked = ""
 
 [idle.behavior.lock]
-timeout = 600
+timeout = 0
 action = "lock"
-enabled = true
+enabled = false
 
 [keybinds]
 validate = ["return", "kp_enter"]
