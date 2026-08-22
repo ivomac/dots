@@ -237,8 +237,10 @@ if install_tool yazi; then
     curl -sL "$url" -o "$TMPDIR_ZIP/yazi.zip" 2>/dev/null
     unzip -oq "$TMPDIR_ZIP/yazi.zip" -d "$TMPDIR_ZIP"
     mv "$TMPDIR_ZIP"/yazi-*/yazi "$BIN/yazi"
-    chmod +x "$BIN/yazi"
+    mv "$TMPDIR_ZIP"/yazi-*/ya "$BIN/ya"
+    chmod +x "$BIN/yazi" "$BIN/ya"
     rm -rf "$TMPDIR_ZIP"
+    ya pkg upgrade 2>/dev/null || true
   else
     warn "yazi: no binary found, install manually"
   fi
@@ -288,7 +290,7 @@ if install_tool shellcheck; then
 fi
 
 if install_tool opencode; then
-  url="$(gh_download_arch "opencode-ai/opencode" "linux-x64-musl.*\.tar\.gz")"
+  url="$(gh_download_arch "anomalyco/opencode" "opencode-linux-x64-musl.*\.tar\.gz")"
   if [[ -n "$url" ]]; then
     curl -sL "$url" | tar -xz -C "$BIN" opencode
     chmod +x "$BIN/opencode"

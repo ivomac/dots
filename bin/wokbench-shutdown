@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+notify() {
+  notify-send -u critical "Shutdown" "$1"
+  echo "$1"
+}
+
+if wokbench status 2>/dev/null | grep -q "ACTIVE\|mounted"; then
+  notify "Turning off wokbench..."
+  wokbench off
+  notify "Wokbench stopped"
+fi
+
+notify "Shutting down..."
+shutdown now

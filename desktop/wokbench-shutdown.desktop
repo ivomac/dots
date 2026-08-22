@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=wokbench-shutdown
+Name=Shutdown + Wokbench
+Icon=system-shutdown
+StartupNotify=false
+Type=Application
