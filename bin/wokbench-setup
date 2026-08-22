@@ -231,7 +231,7 @@ if install_tool lazygit; then
 fi
 
 if install_tool yazi; then
-  url="$(gh_download_arch "sxyazi/yazi" "yazi-.*x86_64-unknown-linux-gnu.*\.zip")"
+  url="$(gh_download_arch "sxyazi/yazi" "yazi-.*x86_64-unknown-linux-musl.*\.zip")"
   if [[ -n "$url" ]]; then
     TMPDIR_ZIP="$(mktemp -d)"
     curl -sL "$url" -o "$TMPDIR_ZIP/yazi.zip" 2>/dev/null
@@ -288,7 +288,7 @@ if install_tool shellcheck; then
 fi
 
 if install_tool opencode; then
-  url="$(gh_download_arch "opencode-ai/opencode" "linux-x86_64.*\.tar\.gz")"
+  url="$(gh_download_arch "opencode-ai/opencode" "linux-x64-musl.*\.tar\.gz")"
   if [[ -n "$url" ]]; then
     curl -sL "$url" | tar -xz -C "$BIN" opencode
     chmod +x "$BIN/opencode"
