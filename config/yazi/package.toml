@@ -1,12 +1,12 @@
 [[plugin.deps]]
 use = "Rolv-Apneseth/starship"
-rev = "159eaba"
-hash = "7de446280b1ba8c49ffd86dbc24bbbe6"
+rev = "ea92cf4"
+hash = "9776f378459072b6c2875eae5addc49d"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:chmod"
-rev = "b9598e6"
-hash = "5b1c276b75cae91cbbdbe7863f39a540"
+rev = "044c3cc"
+hash = "87472b05a8c420100f6a2b9cde1e7746"
 
 [[plugin.deps]]
 use = "dedukun/bookmarks"
@@ -20,7 +20,7 @@ hash = "6c6089ca31656ffbc301bf47276a7181"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:jump-to-char"
-rev = "b9598e6"
+rev = "044c3cc"
 hash = "7a4b4237223aaa94e589d1c01a23542a"
 
 [flavor]
