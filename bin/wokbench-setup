@@ -34,7 +34,7 @@ sudo apt upgrade -y -qq
 sudo apt install -y -qq \
   build-essential curl unzip xz-utils \
   libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
-  libncurses-dev jq tar stow
+  libncurses-dev ninja-build cmake git jq tar stow
 
 if ! command -v zsh &>/dev/null || [[ "$(zsh --version | grep -oP '\d+\.\d+\.\d+')" < "5.9" ]]; then
   info "Building zsh from source"
@@ -97,10 +97,13 @@ cat > "$HOME/.config/zsh/env/local.sh" << 'ENVEOF'
 ENVEOF
 
 if install_tool nvim; then
-  info "Downloading Neovim stable"
-  NVIM_URL="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
-  curl -sL "$NVIM_URL" | tar -xz -C "$LOCAL"
-  ln -sf "$LOCAL/nvim-linux-x86_64/bin/nvim" "$BIN/nvim"
+  info "Building Neovim from source"
+  NVIM_VERSION="stable"
+  NVIM_TMPDIR="$(mktemp -d)"
+  curl -sL "https://github.com/neovim/neovim/archive/refs/tags/${NVIM_VERSION}.tar.gz" | tar -xz -C "$NVIM_TMPDIR"
+  make -C "$NVIM_TMPDIR/neovim-${NVIM_VERSION}" CMAKE_BUILD_TYPE=RelWithDebInfo
+  make -C "$NVIM_TMPDIR/neovim-${NVIM_VERSION}" install PREFIX="$LOCAL"
+  rm -rf "$NVIM_TMPDIR"
   info "Neovim installed"
 fi
 
@@ -290,7 +293,7 @@ if install_tool shellcheck; then
 fi
 
 if install_tool opencode; then
-  url="$(gh_download_arch "anomalyco/opencode" "opencode-linux-x64-musl.*\.tar\.gz")"
+  url="$(gh_download_arch "anomalyco/opencode" "opencode-linux-x64\.tar\.gz")"
   if [[ -n "$url" ]]; then
     curl -sL "$url" | tar -xz -C "$BIN" opencode
     chmod +x "$BIN/opencode"
