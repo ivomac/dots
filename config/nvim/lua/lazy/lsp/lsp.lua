@@ -177,8 +177,16 @@ return {
           return
         end
 
+        local open_uris = {}
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(buf) then
+            open_uris[vim.uri_from_fname(vim.api.nvim_buf_get_name(buf))] = true
+          end
+        end
+
         for _, path in ipairs(workspace_files) do
-          if path == vim.api.nvim_buf_get_name(bufnr) then
+          local uri = vim.uri_from_fname(vim.fn.fnamemodify(path, ":p"))
+          if open_uris[uri] then
             goto continue
           end
 
@@ -190,7 +198,7 @@ return {
 
           local params = {
             textDocument = {
-              uri = vim.uri_from_fname(vim.fn.fnamemodify(path, ":p")),
+              uri = uri,
               version = 0,
               text = vim.fn.join(vim.fn.readfile(path), "\n"),
               languageId = filetype
