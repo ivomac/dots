@@ -272,7 +272,7 @@ fi
 if install_tool tmux; then
   url="$(gh_download_arch "tmux/tmux-builds" "tmux-.*-linux-x86_64.*\.tar\.gz")"
   if [[ -n "$url" ]]; then
-    curl -sL "$url" | tar -xz -C "$BIN" --strip-components=1
+    curl -sL "$url" | tar -xz -C "$BIN" tmux
     chmod +x "$BIN/tmux"
   else
     warn "tmux: no binary found, install manually"
