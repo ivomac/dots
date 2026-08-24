@@ -35,3 +35,54 @@ I'm Ivo! Let's work together. Here are general guidelines for our collaboration.
   - "thrive"
   - "eager"
   - "gated"
+
+# Code Design
+
+- AVOID over-engineered object-oriented programming: Inheritance is forbidden, use composition and protocols.
+- ADOPT data-driven development: use dicts, mappings, lookup tables over long if/elif chains.
+- ADOPT test-driven development and red-green testing, especially when debugging:
+    For non-obvious bugs, experiment to find the root cause, then write a test that
+    fails exactly for the reason found. Verify it fails, then fix until test passes.
+- AVOID deep nesting: prefer early returns, guard clauses, or `match`, consider `itertools` or restructuring data.
+- NEVER write comments in committed code. When you write comments to help you code, delete them on a second pass.
+- USE module-level constants for application policy, parameters for caller-controlled behavior.
+
+# Python Style
+
+- NEVER use `map`/`filter`: use comprehensions.
+- USE comprehensions for simple transformations; loops for complex ones.
+- USE `lambda` only for short inline functions (e.g., sort keys). Named functions otherwise.
+- USE built-in generics: `list[int]`, `dict[str, int]`, never `List`/`Dict` from `typing`.
+- USE `X | Y` over `Union[X, Y]`; `X | None` over `Optional[X]`.
+- USE `pathlib` over `os` for file system operations.
+- USE f-strings over `str.format`.
+- ONLY use ascii characters.
+- NEVER call `tight_layout()` for plots.
+
+# Type Hints
+
+- Annotate all function arguments and return types, including `-> None`.
+- Use `typing.TypeAlias` for complex type aliases; name them clearly.
+
+# Docstrings
+
+- **Every module, class, public method, and public function** gets a docstring.
+- Write one-line summaries in imperative mood (`"""Return the parsed config."""`).
+
+# Pytest
+
+- NEVER use fixtures. NO exceptions.
+- Use `pytest.mark.parametrize` for data-driven cases.
+- Use marks to separate tests needing setup.
+
+- Use `__main__` files as CLI entry-points if needed.
+
+# Toolchain
+
+- `hatch`: dependency and environment management
+- `ruff`: linting and formatting
+- `mypy --strict`: static type checking
+- `pytest` + `pytest-cov`: testing and coverage
+- Configure all tools in `pyproject.toml`.
+- Do not use separate config files.
+- Use a `src` folder layout.
