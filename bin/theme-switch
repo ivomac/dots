@@ -7,6 +7,16 @@ COLORS="$HOME/.local/colors"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
 
+TERMCOLORS="$COLORS/OSC/default.ini"
+
+current_theme() {
+  if [[ -L "$TERMCOLORS" ]]; then
+    local target
+    target="$(readlink "$TERMCOLORS")"
+    basename "$target" | sed 's/\.[^.]*$//'
+  fi
+}
+
 set_symlinks() {
   local choice="$1"
 
@@ -28,8 +38,13 @@ set_symlinks() {
   done
 }
 
-if [[ ! -L "$COLORS/OSC/default.ini" ]]; then
+if [[ ! -L "$TERMCOLORS" ]]; then
   set_symlinks "gruvbox_dark"
+fi
+
+if [[ $# -eq 0 ]]; then
+  current_theme
+  exit 0
 fi
 
 if [[ "$1" == "toggle" ]]; then
@@ -74,7 +89,6 @@ fi
 sed --follow-symlinks -i -e "s/^--theme=.*/--theme=$bat_theme/" "$XDG_CONFIG_HOME/bat/config"
 
 echo "Updating terminals"
-TERMCOLORS="$COLORS/OSC/default.ini"
 shopt -u failglob
 for pts in /dev/pts/[0-9]*; do
   if [[ ! -c "$pts" ]] || [[ ! -w "$pts" ]]; then

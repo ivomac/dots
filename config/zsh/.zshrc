@@ -13,7 +13,9 @@ function load_theme() {
   done <"$TERMCOLORS"
 }
 
-load_theme
+if [[ -z "${SSH_CONNECTION:-}${SSH_CLIENT:-}" ]]; then
+  load_theme
+fi
 
 # ZSH OPTIONS
 
