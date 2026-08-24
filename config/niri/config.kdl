@@ -106,7 +106,7 @@ output "PNP(AOC) U27P2G6B WZWP4HA006418" {
   position x=0 y=0
   mode "3840x2160@60.000"
   background-color "#000000"
-  scale 2
+  scale 2.0
 }
 
 output "BOE 0x0A2F Unknown" {
