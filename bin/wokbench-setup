@@ -34,7 +34,7 @@ sudo apt upgrade -y -qq
 sudo apt install -y -qq \
   build-essential curl unzip xz-utils \
   libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
-  libncurses-dev ninja-build cmake git jq tar stow
+  libncurses-dev libclang-dev ninja-build cmake git jq tar stow
 
 if ! command -v zsh &>/dev/null || [[ "$(zsh --version | grep -oP '\d+\.\d+\.\d+')" < "5.9" ]]; then
   info "Building zsh from source"
@@ -326,6 +326,10 @@ if install_tool rust-analyzer; then
   url="$(gh_download_arch "rust-lang/rust-analyzer" "rust-analyzer-x86_64-unknown-linux-gnu\.gz")"
   curl -sL "$url" | gunzip > "$BIN/rust-analyzer"
   chmod +x "$BIN/rust-analyzer"
+fi
+
+if install_tool tree-sitter; then
+  cargo install --quiet tree-sitter-cli 2>/dev/null || warn "tree-sitter: install manually if cargo install fails"
 fi
 
 if ! have clangd; then
