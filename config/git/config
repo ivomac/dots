@@ -2,7 +2,6 @@
 	name = Ivo Maceira
 	email = ivomaceira@gmail.com
 	username = ivomac
-	signingkey = 9C3FD9FF001B2055
 
 [credential "https://github.com"]
 	username = ivomac
