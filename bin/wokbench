@@ -41,6 +41,32 @@ wait_active() {
   echo ""
 }
 
+wait_stopped() {
+  while [ "$(instance_state)" != "STOPPED" ]; do
+    printf "\rWaiting for wokbench to stop..."
+    sleep 5
+  done
+  echo ""
+}
+
+ssh_remote() {
+  TERM=xterm-256color gcloud compute ssh --zone "$LOCATION" \
+    "$INSTANCE" --tunnel-through-iap "$@"
+}
+
+ssh_during_provisioning() {
+  local state
+  while true; do
+    if ssh_remote "$@" &>/dev/null; then
+      return 0
+    fi
+    state="$(instance_state)"
+    [ "$state" = "PROVISIONING" ] || return 1
+    printf "\rSSH unavailable, instance is still provisioning..."
+    sleep 5
+  done
+}
+
 is_mounted() { mountpoint -q "$MOUNT"; }
 
 mount_remote() {
@@ -76,17 +102,15 @@ on)
 connect)
   ensure_auth
   start_instance
-  wait_active
-  TERM=xterm-256color gcloud compute ssh --zone "$LOCATION" \
-    "$INSTANCE" --tunnel-through-iap \
-    --command "sudo --login --user jupyter theme-switch $(theme-switch)" &>/dev/null
-  TERM=xterm-256color gcloud compute ssh --zone "$LOCATION" \
-    "$INSTANCE" --tunnel-through-iap
+  ssh_during_provisioning \
+    --command "sudo --login --user jupyter theme-switch $(theme-switch)"
+  ssh_remote
   ;;
 off)
   ensure_auth
   unmount_remote
   gcloud workbench instances stop --location "$LOCATION" "$INSTANCE"
+  wait_stopped
   ;;
 status)
   ensure_auth
