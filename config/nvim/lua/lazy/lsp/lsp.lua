@@ -40,6 +40,7 @@ return {
       }
 
       vim.lsp.config["basedpyright"] = {
+        root_markers = { "pyproject.toml" },
         settings = {
           basedpyright = {
             analysis = {
