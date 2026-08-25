@@ -36,7 +36,7 @@ sudo apt install -y -qq \
   libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
   libncurses-dev libclang-dev ninja-build cmake git jq tar stow
 
-if ! command -v zsh &>/dev/null || [[ "$(zsh --version | grep -oP '\d+\.\d+\.\d+')" < "5.9" ]]; then
+if ! command -v zsh &>/dev/null || [[ "$(printf '%s\n5.9' "$(zsh --version | grep -oP '\d+\.\d+\.\d+')" | sort -V | head -1)" != "5.9" ]]; then
   info "Building zsh from source"
   ZSH_VERSION="5.9.2"
   ZSH_TMPDIR="$(mktemp -d)"
@@ -304,21 +304,42 @@ fi
 
 if have npm; then
   info "Installing npm-based LSP servers"
-  npm install -g --silent \
-    bash-lsp css-lsp html-lsp \
+  for pkg in bash-language-server vscode-langservers-extracted \
     typescript-language-server vim-language-server \
-    yaml-language-server marksman 2>/dev/null || true
+    yaml-language-server marksman; do
+    if npm list -g "$pkg" &>/dev/null; then
+      skip "$pkg"
+    elif npm install -g --silent "$pkg" 2>/dev/null; then
+      info "$pkg installed"
+    else
+      warn "$pkg failed to install"
+    fi
+  done
 fi
 
 if have cargo; then
   info "Installing cargo-based LSP servers"
-  cargo install --quiet gopls taplo 2>/dev/null || true
+  for pkg in gopls taplo; do
+    if cargo install --list 2>/dev/null | grep -q "^$pkg:"; then
+      skip "$pkg"
+    elif cargo install --quiet "$pkg" 2>/dev/null; then
+      info "$pkg installed"
+    else
+      warn "$pkg failed to install"
+    fi
+  done
 fi
 
 if have uv; then
   info "Installing Python tools"
   for tool in basedpyright ruff mypy hatch; do
-    uv tool install --python 3.14 "$tool" 2>/dev/null || true
+    if uv tool list 2>/dev/null | grep -q "^$tool"; then
+      skip "$tool"
+    elif uv tool install --python 3.14 "$tool" 2>/dev/null; then
+      info "$tool installed"
+    else
+      warn "$tool failed to install"
+    fi
   done
 fi
 
