@@ -328,16 +328,13 @@ if have npm; then
 fi
 
 if have cargo; then
-  info "Installing cargo-based LSP servers"
-  for pkg in gopls taplo; do
-    if cargo install --list 2>/dev/null | grep -q "^$pkg:"; then
-      skip "$pkg"
-    elif cargo install --quiet "$pkg" 2>/dev/null; then
-      info "$pkg installed"
-    else
-      warn "$pkg failed to install"
-    fi
-  done
+  if have taplo; then
+    skip "taplo"
+  elif cargo install --quiet --locked taplo-cli 2>/dev/null; then
+    info "taplo installed"
+  else
+    warn "taplo failed to install"
+  fi
 fi
 
 if have uv; then
