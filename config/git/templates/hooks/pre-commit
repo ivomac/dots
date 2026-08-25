@@ -1,2 +1,26 @@
 #!/bin/sh
+
+remote=$(git remote get-url origin 2>/dev/null || true)
+case "$remote" in
+    git@github.com:Spiden-RnD/*|https://github.com/Spiden-RnD/*|ssh://git@github.com/Spiden-RnD/*|git@github.com:liom-ivomac/*|https://github.com/liom-ivomac/*|ssh://git@github.com/liom-ivomac/*)
+        expected='Ivo Maceira <ivo.maceira@liom.com>'
+        author=$(git var GIT_AUTHOR_IDENT)
+        committer=$(git var GIT_COMMITTER_IDENT)
+        case "$author" in
+            "$expected"*) ;;
+            *)
+                printf 'Refusing commit: work repository has author identity %s\nExpected %s\n' "$author" "$expected" >&2
+                exit 1
+                ;;
+        esac
+        case "$committer" in
+            "$expected"*) ;;
+            *)
+                printf 'Refusing commit: work repository has committer identity %s\nExpected %s\n' "$committer" "$expected" >&2
+                exit 1
+                ;;
+        esac
+        ;;
+esac
+
 gitleaks git --staged --verbose

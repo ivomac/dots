@@ -292,6 +292,16 @@ if install_tool shellcheck; then
   fi
 fi
 
+if install_tool gitleaks; then
+  url="$(gh_download_arch "gitleaks/gitleaks" "gitleaks_.*_linux_x64\.tar\.gz")"
+  if [[ -n "$url" ]]; then
+    curl -sL "$url" | tar -xz -C "$BIN" gitleaks
+    chmod +x "$BIN/gitleaks"
+  else
+    warn "gitleaks: no binary found for linux x86_64, install manually"
+  fi
+fi
+
 if install_tool opencode; then
   url="$(gh_download_arch "anomalyco/opencode" "opencode-linux-x64\.tar\.gz")"
   if [[ -n "$url" ]]; then

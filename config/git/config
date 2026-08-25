@@ -11,6 +11,7 @@
 	editor = nvim
 	pager = $PAGER
 	excludesfile = ~/.config/git/ignore
+	hooksPath = ~/.config/git/templates/hooks
 	fsmonitor = true
 	untrackedCache = true
 
@@ -121,3 +122,20 @@
 	cm = commit -m
 	fp = push --force-with-lease
 
+[includeIf "hasconfig:remote.*.url:git@github.com:Spiden-RnD/**"]
+	path = ~/.config/git/work.conf
+
+[includeIf "hasconfig:remote.*.url:https://github.com/Spiden-RnD/**"]
+	path = ~/.config/git/work.conf
+
+[includeIf "hasconfig:remote.*.url:ssh://git@github.com/Spiden-RnD/**"]
+	path = ~/.config/git/work.conf
+
+[includeIf "hasconfig:remote.*.url:git@github.com:liom-ivomac/**"]
+	path = ~/.config/git/work.conf
+
+[includeIf "hasconfig:remote.*.url:https://github.com/liom-ivomac/**"]
+	path = ~/.config/git/work.conf
+
+[includeIf "hasconfig:remote.*.url:ssh://git@github.com/liom-ivomac/**"]
+	path = ~/.config/git/work.conf
