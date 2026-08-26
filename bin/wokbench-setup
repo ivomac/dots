@@ -141,7 +141,7 @@ fi
 
 if install_tool python3.12; then
   info "Installing Python 3.12 via uv"
-  uv python install 3.12 2>/dev/null || warn "Python 3.12 install failed"
+  uv python install --default 3.12 2>/dev/null || warn "Python 3.12 (default) install failed"
 fi
 if install_tool python3.13; then
   info "Installing Python 3.13 via uv"
@@ -151,7 +151,6 @@ if install_tool python3.14; then
   info "Installing Python 3.14 via uv"
   uv python install 3.14 2>/dev/null || warn "Python 3.14 install failed"
 fi
-uv python install 3.14 --default 2>/dev/null || true
 
 gh_download() {
   local repo="$1" asset="$2"
@@ -342,7 +341,7 @@ if have uv; then
   for tool in basedpyright ruff mypy hatch git-filter-repo; do
     if uv tool list 2>/dev/null | grep -q "^$tool"; then
       skip "$tool"
-    elif uv tool install --python 3.14 "$tool" 2>/dev/null; then
+    elif uv tool install --python 3.12 "$tool" 2>/dev/null; then
       info "$tool installed"
     else
       warn "$tool failed to install"
