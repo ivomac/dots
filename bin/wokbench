@@ -94,6 +94,11 @@ unmount_remote() {
   echo "unmounted $MOUNT"
 }
 
+notify() {
+  notify-send -u critical "Shutdown" "$1"
+  echo "$1"
+}
+
 case "${1:-}" in
 on)
   ensure_auth
@@ -144,8 +149,20 @@ mount)
 unmount | umount)
   unmount_remote
   ;;
+shutdown)
+  ensure_auth
+  if [ "$(instance_state)" = "ACTIVE" ] || is_mounted; then
+    notify "Turning off wokbench..."
+    unmount_remote
+    gcloud workbench instances stop --location "$LOCATION" "$INSTANCE"
+    wait_stopped
+    notify "Wokbench stopped"
+  fi
+  notify "Shutting down..."
+  sudo shutdown now
+  ;;
 *)
-  echo "usage: wokbench {on|connect|off|status|push|pull|mount|unmount}" >&2
+  echo "usage: wokbench {on|connect|off|status|push|pull|mount|unmount|shutdown}" >&2
   exit 1
   ;;
 esac
