@@ -315,7 +315,7 @@ if have npm; then
   info "Installing npm-based LSP servers"
   for pkg in bash-language-server vscode-langservers-extracted \
     typescript-language-server vim-language-server \
-    yaml-language-server marksman; do
+    yaml-language-server marksman oxfmt; do
     if npm list -g "$pkg" &>/dev/null; then
       skip "$pkg"
     elif npm install -g --silent "$pkg" 2>/dev/null; then
@@ -338,7 +338,7 @@ fi
 
 if have uv; then
   info "Installing Python tools"
-  for tool in basedpyright ruff mypy hatch git-filter-repo; do
+  for tool in basedpyright ruff ty mypy hatch git-filter-repo; do
     if uv tool list 2>/dev/null | grep -q "^$tool"; then
       skip "$tool"
     elif uv tool install --python 3.12 "$tool" 2>/dev/null; then
