@@ -108,7 +108,7 @@ connect)
   ensure_auth
   start_instance
   ssh_during_provisioning \
-    --command "sudo --login --user jupyter theme-switch $(theme-switch)"
+    --command "echo 'exec sudo --login --user jupyter' > /home/$SSH_USER/.profile && sudo --login --user jupyter theme-switch $(theme-switch)"
   ssh_remote
   ;;
 off)
