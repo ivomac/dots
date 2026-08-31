@@ -2,6 +2,21 @@
 set -euo pipefail
 
 SESSIONS_DIR="$HOME/Docs/.local/nvim/sessions"
+PROJECT_MARKERS=(.git pyproject.toml package.json Cargo.toml go.mod pom.xml build.gradle composer.json Gemfile)
+
+project_root() {
+  local root="$1"
+  while [[ "$root" != "/" ]]; do
+    for marker in "${PROJECT_MARKERS[@]}"; do
+      if [[ -e "$root/$marker" ]]; then
+        echo "$root"
+        return
+      fi
+    done
+    root="$(dirname "$root")"
+  done
+  git -C "$1" rev-parse --show-toplevel 2>/dev/null || echo "$1"
+}
 
 choose_session() {
   local tmux_sessions
@@ -49,7 +64,7 @@ session_root() {
       return
     fi
   fi
-  git rev-parse --show-toplevel 2>/dev/null || pwd
+  project_root "$(pwd)"
 }
 
 setup_layout() {
@@ -137,7 +152,8 @@ choice=$(choose_session) || true
 
 case "$choice" in
 "NEW: create session")
-  launch "$(basename "$(pwd)")"
+  root="$(project_root "$(pwd)")"
+  launch "$(basename "$root")"
   ;;
 "RESTART: restart current")
   name="$(tmux display -p '#S')"

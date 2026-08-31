@@ -218,16 +218,10 @@ function M.load()
   local cwd = vim.fn.getcwd()
   local session_files = vim.fn.glob(M.opts.folder .. "/*.vim", false, true)
 
-  local function load_git_files(opts)
+  local function load_session_files(opts)
     opts = opts or {}
     local text_only = opts.text_only ~= false -- default true
-    local files = vim.fn.systemlist("git ls-files --full-name")
-    local readable = {}
-    for _, file in ipairs(files) do
-      if vim.fn.filereadable(file) == 1 then
-        table.insert(readable, file)
-      end
-    end
+    local readable = require("workout").project_files()
 
     local mime = {}
     if text_only and #readable > 0 then
@@ -269,7 +263,7 @@ function M.load()
           }
           load_session(session)
           vim.notify("Session loaded: " .. session.name, vim.log.levels.INFO)
-          load_git_files() -- register any new files
+          load_session_files() -- register any new files
           return
         end
         break
@@ -278,7 +272,7 @@ function M.load()
   end
 
   -- No session found: load git files, prompt to create
-  local first_file = load_git_files()
+  local first_file = load_session_files()
   if first_file then
     vim.cmd("edit " .. vim.fn.fnameescape(first_file))
     trim_buffers()
@@ -353,4 +347,3 @@ function M.setup(opts)
 end
 
 return M
-

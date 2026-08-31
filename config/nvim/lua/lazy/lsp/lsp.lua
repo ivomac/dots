@@ -252,7 +252,7 @@ return {
               )
             end
 
-            trigger_workspace_diagnostics(client, ev.buf, require("workout").git_files())
+            trigger_workspace_diagnostics(client, ev.buf, require("workout").project_files())
           end,
         }
       )

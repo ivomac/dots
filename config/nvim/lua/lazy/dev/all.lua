@@ -242,7 +242,7 @@ return {
       { mode = { "n" }, "<leader>wc", function() require("workout").chdir("current") end,             silent = true, noremap = true, desc = "cd %:h" },
       { mode = { "n" }, "<leader>wp", function() require("workout").chdir("parent") end,              silent = true, noremap = true, desc = "cd .." },
       { mode = { "n" }, "<leader>wg", function() require("workout").chdir("git") end,                 silent = true, noremap = true, desc = "cd git" },
-      { mode = { "n" }, "<leader>we", function() require("workout").load_git_files() end,             silent = true, noremap = true, desc = "Load Git files" },
+      { mode = { "n" }, "<leader>we", function() require("workout").load_project_files() end,        silent = true, noremap = true, desc = "Load project files" },
     },
   },
 

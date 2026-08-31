@@ -1,42 +1,93 @@
 local M = {}
 
-function M.git_files()
-  local files = vim.fn.systemlist("git ls-files --full-name")
+local PROJECT_MARKERS = {
+  ".git",
+  "pyproject.toml",
+  "package.json",
+  "Cargo.toml",
+  "go.mod",
+  "pom.xml",
+  "build.gradle",
+  "composer.json",
+  "Gemfile",
+}
+
+function M.project_root(path)
+  local root = path or vim.fn.getcwd()
+  while root ~= "/" do
+    for _, marker in ipairs(PROJECT_MARKERS) do
+      if vim.uv.fs_stat(root .. "/" .. marker) then
+        return root
+      end
+    end
+    root = vim.fs.dirname(root)
+  end
+  return root
+end
+
+function M.project_files()
+  local root = M.project_root()
+  local escaped_root = vim.fn.shellescape(root)
+  local git_root = vim.fn.trim(vim.fn.system("git -C " .. escaped_root .. " rev-parse --show-toplevel 2>/dev/null"))
+  if git_root == "" then
+    local project_files = {}
+    local function collect(path)
+      for name, filetype in vim.fs.dir(path) do
+        if name ~= ".git" and name ~= ".venv" and name ~= "node_modules" then
+          local child = path .. "/" .. name
+          if filetype == "file" then
+            table.insert(project_files, child)
+          elseif filetype == "directory" then
+            collect(child)
+          end
+        end
+      end
+    end
+    collect(root)
+    return project_files
+  end
+
+  local files = vim.fn.systemlist("git -C " .. escaped_root .. " ls-files --full-name -- .")
   local readable_files = {}
 
   for _, file in ipairs(files) do
-    if vim.fn.filereadable(file) == 1 then
-      table.insert(readable_files, file)
+    local path = git_root .. "/" .. file
+    if vim.fn.filereadable(path) == 1 then
+      table.insert(readable_files, path)
     end
   end
   return readable_files
 end
 
-function M.load_git_files()
-  for _, file in ipairs(M.git_files()) do
+function M.load_project_files()
+  for _, file in ipairs(M.project_files()) do
     vim.fn.bufadd(vim.fn.fnamemodify(file, ":p"))
   end
 end
 
-function M.chdir(dest)
+function M.chdir(dest, path)
   local dest_path = ""
   if dest == "parent" then
     dest_path = ".."
   elseif dest == "current" then
     dest_path = vim.fn.expand("%:p:h")
+  elseif dest == "project" then
+    dest_path = M.project_root(path)
   elseif dest == "git" then
     local dot_git_path = vim.fn.finddir(".git", ".;")
     dest_path = vim.fs.dirname(dot_git_path)
   end
   if dest_path == nil or dest_path == "" or dest_path == "." then
-    return
+    return false
   end
   local short_path = vim.fn.pathshorten(dest_path, 3)
   local last_dir = vim.fn.chdir(dest_path)
   if last_dir == "" then
     vim.notify("cd failed: " .. dest_path, vim.log.levels.WARN)
+    return false
   else
     vim.notify("cd " .. short_path, vim.log.levels.INFO)
+    return true
   end
 end
 
@@ -228,20 +279,20 @@ function M.setup()
     }
   )
 
-  M.did_autocd = false
+  M.did_project_autocd = false
   vim.api.nvim_create_autocmd({ "BufReadPost" },
     {
-      group = vim.api.nvim_create_augroup("GIT_AUTOCD", { clear = true }),
+      group = vim.api.nvim_create_augroup("PROJECT_AUTOCD", { clear = true }),
       callback = function(args)
-        if M.did_autocd then return end
+        if M.did_project_autocd then return end
         local buftype = vim.bo[args.buf].buftype
         local filetype = vim.bo[args.buf].filetype
 
         if buftype ~= "" or filetype == "help" or filetype == "man" then
           return
         end
-        local ret = M.chdir("git")
-        M.did_autocd = ret ~= ""
+        local path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+        M.did_project_autocd = M.chdir("project", path)
       end
     }
   )
