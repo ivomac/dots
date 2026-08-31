@@ -119,6 +119,14 @@ add-zsh-hook chpwd osc7-pwd
 
 function yazi_cwd() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  if [[ -n "$1" && "$1" != -* ]]; then
+    local target="${1:A}"
+    if [[ -d "$target" ]]; then
+      builtin cd -- "$target" || return
+    elif [[ -e "$target" ]]; then
+      builtin cd -- "${target:h}" || return
+    fi
+  fi
   yazi "$@" --cwd-file="$tmp"
   if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
     cd -- "$cwd"
