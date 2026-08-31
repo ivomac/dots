@@ -338,7 +338,7 @@ fi
 
 if have uv; then
   info "Installing Python tools"
-  for tool in basedpyright ruff ty mypy hatch git-filter-repo; do
+  for tool in basedpyright ruff ty pyrefly mypy hatch git-filter-repo; do
     if uv tool list 2>/dev/null | grep -q "^$tool"; then
       skip "$tool"
     elif uv tool install --python 3.12 "$tool" 2>/dev/null; then
