@@ -329,7 +329,7 @@ fi
 if have cargo; then
   if have taplo; then
     skip "taplo"
-  elif cargo install --quiet --locked taplo-cli 2>/dev/null; then
+  elif cargo install --quiet --locked --features lsp taplo-cli 2>/dev/null; then
     info "taplo installed"
   else
     warn "taplo failed to install"

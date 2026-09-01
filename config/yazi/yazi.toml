@@ -15,9 +15,7 @@ image_delay = 100
 image_quality = 65
 
 [opener]
-edit = [
-  { run = 'nvimwrapper %s', desc = "EDITOR", block = true, for = "unix" },
-]
+edit = [{ run = 'nvimwrapper %s', desc = "EDITOR", block = true, for = "unix" }]
 tabular = [
   { run = 'visidata %s', desc = "tabular", block = true, for = "unix" },
 ]
@@ -26,12 +24,8 @@ viewer = [{ run = 'qimgv %s1', desc = "Qimgv", orphan = true, for = "unix" }]
 browser = [
   { run = 'firefox %s1', desc = "Browser", orphan = true, for = "unix" },
 ]
-extract = [
-  { run = 'ya pub extract --list %s', desc = "Extract", for = "unix" },
-]
-reader = [
-  { run = 'zathura %s1', desc = "Reader", orphan = true, for = "unix" },
-]
+extract = [{ run = 'ya pub extract --list %s', desc = "Extract", for = "unix" }]
+reader = [{ run = 'zathura %s1', desc = "Reader", orphan = true, for = "unix" }]
 
 [open]
 rules = [
