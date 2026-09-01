@@ -159,7 +159,7 @@ shutdown)
     notify "Wokbench stopped"
   fi
   notify "Shutting down..."
-  sudo shutdown now
+  poweroff
   ;;
 *)
   echo "usage: wokbench {on|connect|off|status|push|pull|mount|unmount|shutdown}" >&2
