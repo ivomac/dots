@@ -5,11 +5,6 @@ run = "filter --smart"
 desc = "Smart filter"
 
 [[mgr.prepend_keymap]]
-on = ["\\"]
-run = "plugin jump-to-char"
-desc = "Jump to char"
-
-[[mgr.prepend_keymap]]
 on = "<C-Enter>"
 run = 'shell --orphan $TERMCMD -D=$0'
 desc = "Open terminal here"
@@ -58,3 +53,9 @@ desc = "Jump to a bookmark"
 on = ["M"]
 run = "plugin bookmarks delete"
 desc = "Delete a bookmark"
+
+[[mgr.prepend_keymap]]
+on   = ["\\"]
+run  = "plugin toggle-pane min-preview"
+desc = "Maximize or restore the preview pane"
+

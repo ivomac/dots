@@ -1,5 +1,5 @@
 [mgr]
-ratio = [0, 1, 1]
+ratio = [0, 4, 6]
 sort_by = "natural"
 sort_translit = true
 linemode = "size"
