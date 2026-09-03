@@ -84,7 +84,7 @@ return {
               dismiss = nil,
             },
           },
-          provider = "openai_fim_compatible",
+          provider = "openai",
           context_window = 8000,
           context_ratio = 0.75,
           throttle = 1000,
@@ -95,13 +95,13 @@ return {
           n_completions = 3,
           after_cursor_filter_length = 15,
           provider_options = {
-            openai_fim_compatible = {
+            openai = {
               stream = true,
-              model = "deepseek-v4-flash",
-              api_key = "DEEPSEEK_API_KEY",
+              model = "gpt-5.6-luna",
+              api_key = "OPENAI_API_KEY",
               optional = {
-                stop = { "\n\n", "\t" },
-                max_tokens = 256,
+                max_completion_tokens = 256,
+                service_tier = "fast",
               },
             },
           }
