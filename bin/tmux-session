@@ -6,6 +6,13 @@ PROJECT_MARKERS=(.git pyproject.toml package.json Cargo.toml go.mod pom.xml buil
 
 project_root() {
   local root="$1"
+  local git_root
+  git_root=$(git -C "$root" rev-parse --show-toplevel 2>/dev/null || true)
+  if [[ -z "$git_root" ]]; then
+    echo "$root"
+    return
+  fi
+
   while [[ "$root" != "/" ]]; do
     for marker in "${PROJECT_MARKERS[@]}"; do
       if [[ -e "$root/$marker" ]]; then
@@ -15,7 +22,7 @@ project_root() {
     done
     root="$(dirname "$root")"
   done
-  git -C "$1" rev-parse --show-toplevel 2>/dev/null || echo "$1"
+  echo "$git_root"
 }
 
 choose_session() {

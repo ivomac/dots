@@ -14,6 +14,12 @@ local PROJECT_MARKERS = {
 
 function M.project_root(path)
   local root = path or vim.fn.getcwd()
+  local escaped_root = vim.fn.shellescape(root)
+  local git_root = vim.fn.trim(vim.fn.system("git -C " .. escaped_root .. " rev-parse --show-toplevel 2>/dev/null"))
+  if git_root == "" then
+    return root
+  end
+
   while root ~= "/" do
     for _, marker in ipairs(PROJECT_MARKERS) do
       if vim.uv.fs_stat(root .. "/" .. marker) then
@@ -27,27 +33,18 @@ end
 
 function M.project_files()
   local root = M.project_root()
-  local escaped_root = vim.fn.shellescape(root)
-  local git_root = vim.fn.trim(vim.fn.system("git -C " .. escaped_root .. " rev-parse --show-toplevel 2>/dev/null"))
+  local git_root = vim.fn.trim(vim.fn.system("git -C " .. vim.fn.shellescape(root) .. " rev-parse --show-toplevel 2>/dev/null"))
   if git_root == "" then
-    local project_files = {}
-    local function collect(path)
-      for name, filetype in vim.fs.dir(path) do
-        if name ~= ".git" and name ~= ".venv" and name ~= "node_modules" then
-          local child = path .. "/" .. name
-          if filetype == "file" then
-            table.insert(project_files, child)
-          elseif filetype == "directory" then
-            collect(child)
-          end
-        end
-      end
-    end
-    collect(root)
-    return project_files
+    return {}
   end
 
-  local files = vim.fn.systemlist("git -C " .. escaped_root .. " ls-files --full-name -- .")
+  local pathspec = "."
+  if not vim.uv.fs_stat(root .. "/.git") then
+    pathspec = root:sub(#git_root + 2)
+  end
+  local escaped_git_root = vim.fn.shellescape(git_root)
+  local escaped_pathspec = vim.fn.shellescape(pathspec)
+  local files = vim.fn.systemlist("git -C " .. escaped_git_root .. " ls-files --full-name -- " .. escaped_pathspec)
   local readable_files = {}
 
   for _, file in ipairs(files) do
