@@ -125,6 +125,15 @@
       "env": "allow",
       "env *": "allow",
 
+      "hatch --version": "allow",
+      "hatch env find": "allow",
+      "hatch env show": "allow",
+      "hatch project metadata": "allow",
+      "hatch version": "allow",
+      "hatch run check": "allow",
+      "hatch run format": "allow",
+      "hatch run test": "allow",
+
       "git log": "allow",
       "git log *": "allow",
       "git status": "allow",
